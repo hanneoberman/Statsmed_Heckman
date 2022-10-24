@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.14)  23 OCT 2022 14:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.14)  24 OCT 2022 16:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1007,165 +1007,130 @@ Overfull \vbox (6.46347pt too high) has occurred while \output is active []
 
 \openout3 = `Paper.pag'.
 
-]
-
-LaTeX Warning: Reference `simulation' on page 2 undefined on input line 187.
-
-[2]
-<DAG_heckman.png, id=49, 478.78876pt x 289.08pt>
+] [2]
+<DAG_heckman.png, id=55, 478.78876pt x 289.08pt>
 File: DAG_heckman.png Graphic file (type png)
 <use DAG_heckman.png>
-Package pdftex.def Info: DAG_heckman.png  used on input line 214.
+Package pdftex.def Info: DAG_heckman.png  used on input line 215.
 (pdftex.def)             Requested size: 167.57857pt x 101.1795pt.
 [3 <./DAG_heckman.png>] [4]
-LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 422.
+LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 423.
 [5] [6]
-LaTeX Font Info:    Trying to load font information for TS1+stix on input line 647.
+LaTeX Font Info:    Trying to load font information for TS1+stix on input line 650.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ts1stix.fd
 File: ts1stix.fd 2015/04/17 v1.1.2-latex STIX TS1 font definitions
-) [7]
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 759.
-(/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 759.
-
-LaTeX Warning: Reference `fig:rhocont' on page 8 undefined on input line 779.
-
-[8]
-
-LaTeX Warning: Reference `tab:rhotable' on page 9 undefined on input line 799.
-
-
-LaTeX Warning: Reference `fig:continuous3' on page 9 undefined on input line 808.
-
-
-LaTeX Warning: Reference `fig:rhosize' on page 9 undefined on input line 826.
-
-
-LaTeX Warning: Reference `fig:rhosize' on page 9 undefined on input line 835.
-
-[9]
-
-Package natbib Warning: Citation `staedke2019' on page 10 undefined on input line 879.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 895--895
+) [7] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 819--819
 []|\T1/stix/m/n/10.03749 Districts
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 895--895
+Underfull \hbox (badness 10000) in paragraph at lines 819--819
 []|\T1/stix/m/n/10.03749 Children
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 895--895
+Underfull \hbox (badness 10000) in paragraph at lines 819--819
 []|\T1/stix/m/n/10.03749 Age
  []
 
 
-Overfull \hbox (2.25623pt too wide) in paragraph at lines 895--895
+Overfull \hbox (2.25623pt too wide) in paragraph at lines 819--819
 \T1/stix/m/n/10.03749 (years)| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 895--895
+Underfull \hbox (badness 10000) in paragraph at lines 819--819
 []|\T1/stix/m/n/10.03749 Log10
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 895--895
+Underfull \hbox (badness 10000) in paragraph at lines 819--819
 \T1/stix/m/n/10.03749 Female
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 895--895
+Underfull \hbox (badness 10000) in paragraph at lines 819--819
 []|\T1/stix/m/n/10.03749 Bednet
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 895--895
+Underfull \hbox (badness 10000) in paragraph at lines 819--819
 []|\T1/stix/m/n/10.03749 Females
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 895--896
+Underfull \hbox (badness 10000) in paragraph at lines 819--820
 []|\T1/stix/m/n/10.03749 Missing
  []
 
 
-Overfull \hbox (1.09973pt too wide) in paragraph at lines 897--897
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 821--821
 []|\T1/stix/m/n/10.03749 2.67[1.5,4.3]| 
  []
 
 
-Overfull \hbox (1.09973pt too wide) in paragraph at lines 898--898
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 822--822
 []|\T1/stix/m/n/10.03749 0.84[0.1,2.5]| 
  []
 
 
-Overfull \hbox (5.67342pt too wide) in paragraph at lines 899--899
+Overfull \hbox (5.67342pt too wide) in paragraph at lines 823--823
 []|\T1/stix/m/n/10.03749 South_Western| 
  []
 
 
-Overfull \hbox (1.09973pt too wide) in paragraph at lines 899--899
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 823--823
 []|\T1/stix/m/n/10.03749 0.27[0.1,1.3]| 
  []
 
 
-Overfull \hbox (1.09973pt too wide) in paragraph at lines 900--900
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 824--824
 []|\T1/stix/m/n/10.03749 1.27[0.1,3.2]| 
  []
 
 
-Overfull \hbox (1.09973pt too wide) in paragraph at lines 901--901
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 825--825
 []|\T1/stix/m/n/10.03749 2.74[0.4,6.3]| 
  []
 
 
-Overfull \hbox (22.5231pt too wide) in paragraph at lines 893--904
+Overfull \hbox (22.5231pt too wide) in paragraph at lines 817--828
  [][] 
  []
 
 
 Package natbib Warning: Author undefined for citation`rugnao2019' 
-(natbib)                on page 10 on input line 908.
+(natbib)                on page 9 on input line 832.
 
 
-LaTeX Warning: Reference `fig:region' on page 10 undefined on input line 957.
+LaTeX Warning: Reference `fig:region' on page 9 undefined on input line 881.
 
-<Paper_files/figure-latex/region-1.pdf, id=167, 469.755pt x 325.215pt>
+<Paper_files/figure-latex/region-1.pdf, id=162, 469.755pt x 325.215pt>
 File: Paper_files/figure-latex/region-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/region-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/region-1.pdf  used on input line 962.
+Package pdftex.def Info: Paper_files/figure-latex/region-1.pdf  used on input line 886.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[10]
+[9]
 
-LaTeX Warning: Reference `figure:region_age' on page 11 undefined on input line 967.
+LaTeX Warning: Reference `figure:region_age' on page 10 undefined on input line 891.
 
-<Paper_files/figure-latex/region_age-1.pdf, id=176, 469.755pt x 325.215pt>
+<Paper_files/figure-latex/region_age-1.pdf, id=172, 469.755pt x 325.215pt>
 File: Paper_files/figure-latex/region_age-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/region_age-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/region_age-1.pdf  used on input line 969.
+Package pdftex.def Info: Paper_files/figure-latex/region_age-1.pdf  used on input line 893.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 1043) in paragraph at lines 964--970
+Underfull \hbox (badness 1043) in paragraph at lines 888--894
 []\T1/stix/m/n/10.03749 In terms of preva-lences by age, there are no sig-nif-i-cant dif-fer-ences between meth-ods over-all. The preva-lence esti-
  []
 
 
-Underfull \hbox (badness 1383) in paragraph at lines 964--970
+Underfull \hbox (badness 1383) in paragraph at lines 888--894
 \T1/stix/m/n/10.03749 mates for chil-dren aged 2 to 6 years accord-ing to the approaches eval-u-ated in all regions are very sim-i-lar (Figure
  []
 
-[11 <./Paper_files/figure-latex/region-1.pdf>] [12 <./Paper_files/figure-latex/region_age-1.pdf>] (./Paper.bbl [13])
-
-Package natbib Warning: There were undefined citations.
-
-[14] (./Paper.aux)
+[10 <./Paper_files/figure-latex/region-1.pdf>] [11 <./Paper_files/figure-latex/region_age-1.pdf>] (./Paper.bbl [12]) [13] (./Paper.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1174,18 +1139,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 20629 strings out of 477031
- 320036 string characters out of 5827206
- 648078 words of memory out of 5000000
- 41349 multiletter control sequences out of 15000+600000
- 584137 words of font info for 170 fonts, out of 8000000 for 9000
+ 20606 strings out of 477031
+ 318756 string characters out of 5827206
+ 650072 words of memory out of 5000000
+ 41333 multiletter control sequences out of 15000+600000
+ 581095 words of font info for 168 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 87i,11n,91p,3004b,571s stack positions out of 10000i,1000n,20000p,200000b,200000s
- </Users/jmunozav/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk>{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
-Output written on Paper.pdf (14 pages, 286019 bytes).
+ 87i,11n,91p,982b,571s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
+Output written on Paper.pdf (13 pages, 272559 bytes).
 PDF statistics:
- 380 PDF objects out of 1000 (max. 8388607)
- 302 compressed objects within 4 object streams
- 91 named destinations out of 1000 (max. 500000)
- 152 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 334 PDF objects out of 1000 (max. 8388607)
+ 293 compressed objects within 3 object streams
+ 88 named destinations out of 1000 (max. 500000)
+ 136 words of extra memory for PDF output out of 10000 (max. 10000000)
 
