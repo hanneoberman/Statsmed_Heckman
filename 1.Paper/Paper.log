@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.14)  24 OCT 2022 16:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.14)  24 OCT 2022 17:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -967,39 +967,39 @@ Package hyperref Info: Link coloring OFF on input line 27.
 LaTeX Info: Command `\dddot' is already robust on input line 27.
 LaTeX Info: Command `\ddddot' is already robust on input line 27.
 \c@lstlisting=\count435
-LaTeX Font Info:    Trying to load font information for LS1+stixscr on input line 71.
+LaTeX Font Info:    Trying to load font information for LS1+stixscr on input line 70.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls1stixscr.fd
 File: ls1stixscr.fd 2015/04/17 v1.1.2-latex STIX script LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixex on input line 71.
+LaTeX Font Info:    Trying to load font information for LS2+stixex on input line 70.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls2stixex.fd
 File: ls2stixex.fd 2015/04/17 v1.1.2-latex STIX extentions LS2 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixfrak on input line 71.
+LaTeX Font Info:    Trying to load font information for LS1+stixfrak on input line 70.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls1stixfrak.fd
 File: ls1stixfrak.fd 2015/04/17 v1.1.2-latex STIX fraktur LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixbb on input line 71.
+LaTeX Font Info:    Trying to load font information for LS1+stixbb on input line 70.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls1stixbb.fd
 File: ls1stixbb.fd 2015/04/17 v1.1.2-latex STIX blackboard LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixcal on input line 71.
+LaTeX Font Info:    Trying to load font information for LS2+stixcal on input line 70.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls2stixcal.fd
 File: ls2stixcal.fd 2015/04/17 v1.1.2-latex STIX calligraphic LS2 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixsf on input line 71.
+LaTeX Font Info:    Trying to load font information for LS1+stixsf on input line 70.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls1stixsf.fd
 File: ls1stixsf.fd 2015/04/17 v1.1.2-latex STIX sans-serif LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixtt on input line 71.
+LaTeX Font Info:    Trying to load font information for LS2+stixtt on input line 70.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls2stixtt.fd
 File: ls2stixtt.fd 2015/04/17 v1.1.2-latex STIX typewriter LS2 font definitions
 )
-Overfull \hbox (346.99213pt too wide) in paragraph at lines 71--71
+Overfull \hbox (346.99213pt too wide) in paragraph at lines 70--70
 [][] | || []|[][] 
  []
 
-LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 71.
+LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 70.
 
 Overfull \vbox (6.46347pt too high) has occurred while \output is active []
 
@@ -1011,12 +1011,12 @@ Overfull \vbox (6.46347pt too high) has occurred while \output is active []
 <DAG_heckman.png, id=55, 478.78876pt x 289.08pt>
 File: DAG_heckman.png Graphic file (type png)
 <use DAG_heckman.png>
-Package pdftex.def Info: DAG_heckman.png  used on input line 215.
+Package pdftex.def Info: DAG_heckman.png  used on input line 214.
 (pdftex.def)             Requested size: 167.57857pt x 101.1795pt.
 [3 <./DAG_heckman.png>] [4]
-LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 423.
+LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 422.
 [5] [6]
-LaTeX Font Info:    Trying to load font information for TS1+stix on input line 650.
+LaTeX Font Info:    Trying to load font information for TS1+stix on input line 649.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ts1stix.fd
 File: ts1stix.fd 2015/04/17 v1.1.2-latex STIX TS1 font definitions
 ) [7] [8]
@@ -1147,7 +1147,7 @@ Here is how much of TeX's memory you used:
  40 hyphenation exceptions out of 8191
  87i,11n,91p,982b,571s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
-Output written on Paper.pdf (13 pages, 272559 bytes).
+Output written on Paper.pdf (13 pages, 272606 bytes).
 PDF statistics:
  334 PDF objects out of 1000 (max. 8388607)
  293 compressed objects within 3 object streams
