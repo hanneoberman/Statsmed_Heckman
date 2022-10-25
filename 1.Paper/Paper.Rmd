@@ -305,62 +305,62 @@ The Heckman 2L imputation method is available  in mice R package (\textbf{mice.2
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
-<!-- ```{r, include=FALSE} -->
-<!-- library(here) -->
-<!-- source(here("2.Simulation", "simplot.R"),local =knitr::knit_global()) -->
-<!-- ``` -->
+```{r, include=FALSE}
+library(here)
+source(here("2.Simulation","simplot.R"),local =knitr::knit_global())
+```
 
 ##### Descriptive results
 We generated data sets of 10 groups of 1000 patients each in each scenario. For example, for the scenario in which the error terms followed a normal distribution, out of the 500 datasets generated, we obtained that on average 48.2\% of the Y response was missing, with the lowest missing percentage being 26.84\% and the maximum being 73.67\%.  At the cluster level, looking only at the sporadic missing clusters, we found an average of 35.25\% missing values, but there were clusters with no missing data at all and up to 98\% missing data in Y. 
 
 
-<!-- ##### Results M(N)AR scenarios -->
+##### Results M(N)AR scenarios
 
-<!-- # ```{r rhocont,fig.pos="h",fig.cap="\\label{fig:rhocont} Comparison of methods for continuous incomplete variable under systematical missingness by varing $\rho$, the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"} -->
-<!-- # plot_cont_rho -->
-<!-- # ``` -->
+ ```{r rhocont,fig.pos="h",fig.cap="\\label{fig:rhocont} Comparison of methods for continuous incomplete variable under systematical missingness by varing $\rho$, the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
+plot_rho
+ ```
 
-<!-- Figure \ref{fig:rhocont} shows the results of simulations where the missing variable was continuous.In the MAR scenario, i.e. when $\rho=0$, all imputation methods provide similar unbiased estimates of the coefficient parameters, but as rho increases, i.e. the mechanism becomes MNAR, the estimates for the complete case analysis and the MAR-IPD imputation method turns more biased. -->
-<!-- Overall, both Heckman-based imputation (1l. and 2l.) models provide less biased estimates of the coefficient parameters in MNAR scenarios, but the random effects estimates on the 1l.heckman are far away from the true values as no cluster information was considered at all. The precision of the Heckman IPD separated seems it is better than the Heckman IPD full version, specially in the MAR scenarios, when we checked simulation results it seems that the high variability on the full version is related to simulations in which singularity fit that it is an indication that the model is overfitted. Regarding the coverage, the Heckman-IPD imputation method provides the best coverage values across all the $\rho$ scenarios with a coverage level up to 95%. -->
+Figure \ref{fig:rhocont} shows the results of simulations where the missing variable was continuous.In the MAR scenario, i.e. when $\rho=0$, all imputation methods provide similar unbiased estimates of the coefficient parameters, but as rho increases, i.e. the mechanism becomes MNAR, the estimates for the complete case analysis and the MAR-IPD imputation method turns more biased.
+Overall, both Heckman-based imputation (1l. and 2l.) models provide less biased estimates of the coefficient parameters in MNAR scenarios, but the random effects estimates on the 1l.heckman are far away from the true values as no cluster information was considered at all. The precision of the Heckman IPD separated seems it is better than the Heckman IPD full version, specially in the MAR scenarios, when we checked simulation results it seems that the high variability on the full version is related to simulations in which singularity fit that it is an indication that the model is overfitted. Regarding the coverage, the Heckman-IPD imputation method provides the best coverage values across all the $\rho$ scenarios with a coverage level up to 95%.
 
 
-<!-- The Heckman-IPD method, by incorporating individual and marginal level information, allows a bias-variance trade off, thus, as it was observed in Table \ref{tab:rhotable} the Heckman IPD separated resulted in better estimates in terms of RMSE than the other methods evaluated. -->
-<!-- In particular, the method provides an advantage over the Heckman-single method in systematic missingness scenarios, since the latter does not allow to specify any cluster information implicitly, i.e. by adding a group variable in the imputation model. This can be seen in the estimates of the random effects parameters of the Heckman-single model, which are more biassed than those of the other methods in which cluster information was included. -->
-<!-- Moreover, the method could be affected by the ratio of the pooled data (See Annex Figure\ref{fig:continuous3}). To demonstrate this, we increased the variance of the random effects in the simulated data, reducing the intra-cluster correlation (ICC) from 0.33 to 0.23. This resulted in less biassed estimates for both coefficient and random effects parameters, along with narrower confidence intervals. -->
+The Heckman-IPD method, by incorporating individual and marginal level information, allows a bias-variance trade off, thus, as it was observed in Table \ref{tab:rhotable} the Heckman IPD separated resulted in better estimates in terms of RMSE than the other methods evaluated.
+In particular, the method provides an advantage over the Heckman-single method in systematic missingness scenarios, since the latter does not allow to specify any cluster information implicitly, i.e. by adding a group variable in the imputation model. This can be seen in the estimates of the random effects parameters of the Heckman-single model, which are more biassed than those of the other methods in which cluster information was included.
+Moreover, the method could be affected by the ratio of the pooled data (See Annex Figure\ref{fig:continuous3}). To demonstrate this, we increased the variance of the random effects in the simulated data, reducing the intra-cluster correlation (ICC) from 0.33 to 0.23. This resulted in less biassed estimates for both coefficient and random effects parameters, along with narrower confidence intervals.
 
-<!-- ##### Results sensitivity to number of clusters and sample size of clusters -->
-<!-- We evaluated how robust our method was to variations in the sample size of the studies included in the IPD and also the number of clusters. -->
-<!-- Our method allows for the inclusion of studies with different sample sizes, but to facilitate the evaluation of the method, in this simulation study we used 10 studies each with a fixed sample size of 1000 observations. -->
+##### Results sensitivity to number of clusters and sample size of clusters
+We evaluated how robust our method was to variations in the sample size of the studies included in the IPD and also the number of clusters.
+Our method allows for the inclusion of studies with different sample sizes, but to facilitate the evaluation of the method, in this simulation study we used 10 studies each with a fixed sample size of 1000 observations.
 
-<!-- <!-- ```{r rhosize,fig.pos="h",fig.cap="\\label{fig:size} Comparison of methods for continuous incomplete variable under systematical missingness by varing (number of studies- sample size per study), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"} --> -->
-<!-- <!-- figure_final_s --> -->
-<!-- <!-- ``` --> -->
+```{r rhosize,fig.pos="h",fig.cap="\\label{fig:size} Comparison of methods for continuous incomplete variable under systematical missingness by varing (number of studies- sample size per study), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
+plot_N
+```
 
-<!-- When we reduced the sample size to 50 patients per study (left-most panel 10-50, Figure \ref{fig:rhosize}), we observed that the bias could be affected by some of the coefficient parameters, especially in MNAR scenarios. All simulated data were successfully imputed with the Heckman IPD methods but we observed that the precision of the parameters was drastically affected especially for the Heckman IPD full method, due to singularity fitting problems in the estimation of the mixed model, so we prefer not to show it in the graph. -->
+When we reduced the sample size to 50 patients per study (left-most panel 10-50, Figure \ref{fig:rhosize}), we observed that the bias could be affected by some of the coefficient parameters, especially in MNAR scenarios. All simulated data were successfully imputed with the Heckman IPD methods but we observed that the precision of the parameters was drastically affected especially for the Heckman IPD full method, due to singularity fitting problems in the estimation of the mixed model, so we prefer not to show it in the graph.
 
-<!-- On the other hand, by increasing the number of studies to 100 (rightmost panel 100-1000, Figure \ref{fig:rhosize}) we observe a higher precision of the estimates. There was an increase in the coverage of the estimates in the MAR scenario, i.e. rho=0, as the number of studies increases, which is in line with Audigier's results. However, in the case of MNAR, i.e. rho=0.6, we unfortunately observed a decrease in coverage, which could be explained by an increased complexity of the Heckman model. -->
+On the other hand, by increasing the number of studies to 100 (rightmost panel 100-1000, Figure \ref{fig:rhosize}) we observe a higher precision of the estimates. There was an increase in the coverage of the estimates in the MAR scenario, i.e. rho=0, as the number of studies increases, which is in line with Audigier's results. However, in the case of MNAR, i.e. rho=0.6, we unfortunately observed a decrease in coverage, which could be explained by an increased complexity of the Heckman model.
 
-<!-- Furthermore, we observed that for the full Heckman IPD method, the number of successfully imputed datasets was only 90% of the simulated datasets. This could be explained by the fact that increasing the number of studies included in the analysis might make it more difficult to estimate the marginal parameters when applying the meta-analysis model with random effects, especially when considering maximum likelihood or restrictive maximum likelihood as the estimation method. To ensure the estimation of the marginal parameters, our method evaluates the marginal parameters using the method of moments when it is not possible to estimate them with other methods chosen by the user.  We use the method of moments estimation as an alternative estimation method, as it was previously evaluated by Audigier, and was found to provide robust results when estimating the marginal parameters. -->
+Furthermore, we observed that for the full Heckman IPD method, the number of successfully imputed datasets was only 90% of the simulated datasets. This could be explained by the fact that increasing the number of studies included in the analysis might make it more difficult to estimate the marginal parameters when applying the meta-analysis model with random effects, especially when considering maximum likelihood or restrictive maximum likelihood as the estimation method. To ensure the estimation of the marginal parameters, our method evaluates the marginal parameters using the method of moments when it is not possible to estimate them with other methods chosen by the user.  We use the method of moments estimation as an alternative estimation method, as it was previously evaluated by Audigier, and was found to provide robust results when estimating the marginal parameters.
 
-<!-- ##### Results deviations in distribution assumptions -->
+##### Results deviations in distribution assumptions
 
-<!-- ```{r dist,fig.pos="!H",fig.cap="\\label{fig:dist} Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"} -->
-<!-- plot_cont_dist -->
-<!-- ``` -->
+```{r dist,fig.pos="!H",fig.cap="\\label{fig:dist} Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
+plot_S
+```
 
-<!-- To investigate how the imputation models behaves in settings with departures of binormal distribution, we draw error terms from a bivariate skew student-t distribution using the same location parameter and covariance matrix of the normal distributed settings,  with 8 degrees of freedom and an $\alpha=\{-5,5\}$ parameter which regulates the the slant of the density. In addition we simulated a explicit missing process, where error terms of selection and outcome equation were normally independent distributed and the inclusion depends on the value of the missing variable, as follows: -->
-<!-- $ry_i=0.1y_i+\epsilon^S_{i}$ -->
+To investigate how the imputation models behaves in settings with departures of binormal distribution, we draw error terms from a bivariate skew student-t distribution using the same location parameter and covariance matrix of the normal distributed settings,  with 8 degrees of freedom and an $\alpha=\{-5,5\}$ parameter which regulates the the slant of the density. In addition we simulated a explicit missing process, where error terms of selection and outcome equation were normally independent distributed and the inclusion depends on the value of the missing variable, as follows:
+$ry_i=0.1y_i+\epsilon^S_{i}$
 
-<!-- These settings assure that the percentage of missingness is similar in all the evaluated scenarios around 60\%. We observed that for these simulated settings. -->
+These settings assure that the percentage of missingness is similar in all the evaluated scenarios around 60\%. We observed that for these simulated settings.
 
-<!-- Figure \ref{fig:dist} depicts the results of this scenario. When we use the Heckman model in an explicit MNAR missing process, we observe that our model might not be completely suitable for this type of scenario, as we can observe that it affects the error variance which mainly affects the bias in the intersection coefficient parameter. and also its coverage. With respect to the t-distributed error scenario, apparently for the simulated measurements there is not much variation in the estimation of the coefficient parameters, however, we also observe that the estimation of the error variance was affected. In this scenario it is also seen that the coverage in the intercept parameter varies.  Similar variations occurred in the imputations performed with the simple Heckman imputation method, which is in line with the findings of @liu2020a. -->
+Figure \ref{fig:dist} depicts the results of this scenario. When we use the Heckman model in an explicit MNAR missing process, we observe that our model might not be completely suitable for this type of scenario, as we can observe that it affects the error variance which mainly affects the bias in the intersection coefficient parameter. and also its coverage. With respect to the t-distributed error scenario, apparently for the simulated measurements there is not much variation in the estimation of the coefficient parameters, however, we also observe that the estimation of the error variance was affected. In this scenario it is also seen that the coverage in the intercept parameter varies.  Similar variations occurred in the imputations performed with the simple Heckman imputation method, which is in line with the findings of @liu2020a.
 
-<!-- ##### Bivariate incomplete variable -->
-<!-- We also evaluate the performance of the imputation methods for bivariate missing variables (Figure \ref{fig:bin}). We also find that the Heckman-IPD separate method provides unbiased results on coefficient parameters and random effects with better convergence compared to the other imputation method evaluated. However, we observe that the accuracy of the random parameter effects is sensitive to $rho$ the correlation between the outcome and the selection equation, resulting in more imprecise estimators as the $rho$ parameter increases. -->
+##### Bivariate incomplete variable
+We also evaluate the performance of the imputation methods for bivariate missing variables (Figure \ref{fig:bin}). We also find that the Heckman-IPD separate method provides unbiased results on coefficient parameters and random effects with better convergence compared to the other imputation method evaluated. However, we observe that the accuracy of the random parameter effects is sensitive to $rho$ the correlation between the outcome and the selection equation, resulting in more imprecise estimators as the $rho$ parameter increases.
 
-<!-- ```{r bin,fig.pos="!H",fig.cap="\\label{fig:bin} Comparison of methods for binary incomplete variable under systematical missingness, the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"} -->
-<!-- plot_bin -->
-<!-- ``` -->
+```{r bin,fig.pos="!H",fig.cap="\\label{fig:bin} Comparison of methods for binary incomplete variable under systematical missingness, the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
+plot_bin
+```
 
 # An ilustrative study
 \label{example}
@@ -392,7 +392,7 @@ xt <- xtable(sum.table,
                                    "p{0.07\\textwidth}|", 
                                    "p{0.07\\textwidth}|", 
                                    "p{0.07\\textwidth}|"))
-names(xt) <- c("Subregion","Districts (N)","Children (N)","Age (years)",
+names(xt) <- c("Subregion","Districts (N)","Children (N)","Age mean (years)",
                 "Log10 Female Anopheline","Wealth index",
                 "Bednet (%)","Females (%)","Holidays (%)",
                 "Missing test(%)")
