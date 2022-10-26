@@ -311,8 +311,8 @@ source(here("2.Simulation","simplot.R"),local =knitr::knit_global())
 ```
 
 ##### Descriptive results
-We generated data sets of 10 groups of 1000 patients each in each scenario. For example, for the scenario in which the error terms followed a normal distribution, out of the 500 datasets generated, we obtained that on average 48.2\% of the Y response was missing, with the lowest missing percentage being 26.84\% and the maximum being 73.67\%.  At the cluster level, looking only at the sporadic missing clusters, we found an average of 35.25\% missing values, but there were clusters with no missing data at all and up to 98\% missing data in Y. 
-
+We generated data sets of 10 groups of 1000 patients each in each scenario. For example, for the scenario in which the error terms followed a normal distribution, out of the 500 datasets generated, we obtained that on average 60.8\% of the Y response was missing, with the lowest missing percentage being 26.84\% and the maximum being 73.67\%.  At the cluster level, looking only at the sporadic missing clusters, we found an average of 35.25\% missing values, but there were clusters with no missing data at all and up to 98\% missing data in Y. Regarding the binary response scenarios, the proportion mean of treatment is around 60% CI[20%,90%].
+Processing times differ in the imputation methods evaluated, for example, for 10 clusters of 1000 units, the 1l. Heckman takes an average of 2 minutes, the 2l.MAR takes 10 minutes and the 2l. Heckman takes about 19 minutes. It should be noted that the time of the last two approaches depends strongly on the number of clusters included and the sample size in the data set. 
 
 ##### Results M(N)AR scenarios
 
@@ -321,7 +321,10 @@ plot_rho
  ```
 
 Figure \ref{fig:rhocont} shows the results of simulations where the missing variable was continuous.In the MAR scenario, i.e. when $\rho=0$, all imputation methods provide similar unbiased estimates of the coefficient parameters, but as rho increases, i.e. the mechanism becomes MNAR, the estimates for the complete case analysis and the MAR-IPD imputation method turns more biased.
-Overall, both Heckman-based imputation (1l. and 2l.) models provide less biased estimates of the coefficient parameters in MNAR scenarios, but the random effects estimates on the 1l.heckman are far away from the true values as no cluster information was considered at all. The precision of the Heckman IPD separated seems it is better than the Heckman IPD full version, specially in the MAR scenarios, when we checked simulation results it seems that the high variability on the full version is related to simulations in which singularity fit that it is an indication that the model is overfitted. Regarding the coverage, the Heckman-IPD imputation method provides the best coverage values across all the $\rho$ scenarios with a coverage level up to 95%.
+Overall, both Heckman-based imputation (1l. and 2l.) models provide less biased estimates of the coefficient parameters in MNAR scenarios, but the random effects estimates on the 1l.heckman are far away from the true values as no cluster information was considered at all.
+ Regarding the coverage, the Heckman-IPD imputation method provides the best coverage values across all the $\rho$ scenarios with a coverage level close to the nominal 95\% interval. Even 2l.Heckman is not properly a randomization-valid (Rubin 1987b) method across all the $\rho$ values it leads to better results in terms of bias and coverage compared to the evalueated methods.  
+
+The precision of the Heckman IPD separated seems it is better than the Heckman IPD full version, specially in the MAR scenarios, when we checked simulation results it seems that the high variability on the full version is related to simulations in which singularity fit that it is an indication that the model is overfitted.
 
 
 The Heckman-IPD method, by incorporating individual and marginal level information, allows a bias-variance trade off, thus, as it was observed in Table \ref{tab:rhotable} the Heckman IPD separated resulted in better estimates in terms of RMSE than the other methods evaluated.
