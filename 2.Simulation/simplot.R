@@ -4,13 +4,18 @@ library(ggplot2)
 
 # Arrange dataset
 data<-as.data.table(readxl::read_xlsx(here('2.Simulation','Sim_results.xlsx'),sheet="Sheet4"))
-data<-data[,grep("Scenario|Method|Variation|^Bias|^EmpSE|^RMSE|^CIW|^Cov|^SE", names(data)), with = FALSE]
+#data<-data[,grep("Scenario|Method|Variation|^Bias|^EmpSE|^RMSE|^CIW|^Cov|^SE", names(data)), with = FALSE]
+#colnames(data)<-c("Scenario","Variation","Method", paste0("p_Coverage_",0:2), paste0("p_Bias_",0:6),paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("p_EmpSE_",0:6),paste0("SE_Bias_",0:6),paste0("SE_EmpSE_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2), paste0("SE_Coverage_",0:2))
+#data<- setDT(melt(data, measure.vars = c( paste0("p_Bias_",0:6), paste0("p_Coverage_",0:2), paste0("p_EmpSE_",0:6), paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("SE_Bias_",0:6), paste0("SE_Coverage_",0:2),paste0("SE_EmpSE_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2)),variable.name = "Statistic", value.name = "Value"))
+data<-data[Variation!="10-50",]
+data<-data[,grep("Scenario|Method|Variation|^Bias|^RMSE|^CIW|^Cov|^SE_B|^SE_C|^SE_W|^SE_RM", names(data)), with = FALSE]
 colnames(data)<-c("Scenario","Variation","Method", paste0("p_Coverage_",0:2), paste0("p_Bias_",0:6),
-                  paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("p_EmpSE_",0:6),paste0("SE_Bias_",0:6),
-                  paste0("SE_EmpSE_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2), paste0("SE_Coverage_",0:2))
-data<- setDT(melt(data, measure.vars = c( paste0("p_Bias_",0:6), paste0("p_Coverage_",0:2), paste0("p_EmpSE_",0:6), paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),
-                                          paste0("SE_Bias_",0:6), paste0("SE_Coverage_",0:2),paste0("SE_EmpSE_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2)
-                                          ),variable.name = "Statistic", value.name = "Value"))
+                  paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("SE_Bias_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2), paste0("SE_Coverage_",0:2))
+data<- setDT(melt(data, measure.vars = c( paste0("p_Bias_",0:6), paste0("p_Coverage_",0:2), paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),
+                                          paste0("SE_Bias_",0:6), paste0("SE_Coverage_",0:2),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2)),variable.name = "Statistic", value.name = "Value"))
+
+
+
 data[, c("Type","Statistic", "Parameter") := tstrsplit(Statistic, "_", fixed=TRUE)]
 data<- setDT(dcast(data, Scenario+ Variation+ Method +  Parameter+Statistic~Type, value.var = "Value"))
 param_val <- c("0"="beta_0", "1"="beta_1", "2"="beta_2", 
@@ -27,8 +32,8 @@ data[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","sigm
 plotsim<-function(Scenariov,levelsvar){
 datagraph<-data[Scenario==Scenariov,]
 datalines <- data.table(Parameter = c("beta_0","beta_1", "beta_2","sigma_b0", "sigma_b1","sigma_b2","sigma_e"),
-                        Z = c(rep(0,7),rep(0.95,7),rep(0,7),rep(0,7),rep(0,7)),
-                        Statistic=c(rep("Bias",7),rep("Coverage",7),rep("EmpSE",7),rep("RMSE",7),rep("Width",7)))
+                        Z = c(rep(0,7),rep(0.95,7),rep(0,7),rep(0,7)),
+                        Statistic=c(rep("Bias",7),rep("Coverage",7),rep("RMSE",7),rep("Width",7)))
 datalines[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","sigma_b0","sigma_b1","sigma_b2","sigma_e"),
                                ordered = TRUE, labels=c(expression(beta[0]),expression(beta[1]),expression(beta[2]),
                                                         expression(sigma[b*0]),expression(sigma[b*1]),expression(sigma[b*2]),
