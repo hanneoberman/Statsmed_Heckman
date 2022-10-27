@@ -3,7 +3,7 @@ library(data.table)
 library(ggplot2)
 
 # Arrange dataset
-data<-as.data.table(readxl::read_xlsx(here('2.Simulation','Sim_results.xlsx'),sheet="Sheet4"))
+data<-as.data.table(readxl::read_xlsx(here('2.Simulation','Sim_results.xlsx'),sheet="Sheet1"))
 #data<-data[,grep("Scenario|Method|Variation|^Bias|^EmpSE|^RMSE|^CIW|^Cov|^SE", names(data)), with = FALSE]
 #colnames(data)<-c("Scenario","Variation","Method", paste0("p_Coverage_",0:2), paste0("p_Bias_",0:6),paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("p_EmpSE_",0:6),paste0("SE_Bias_",0:6),paste0("SE_EmpSE_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2), paste0("SE_Coverage_",0:2))
 #data<- setDT(melt(data, measure.vars = c( paste0("p_Bias_",0:6), paste0("p_Coverage_",0:2), paste0("p_EmpSE_",0:6), paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("SE_Bias_",0:6), paste0("SE_Coverage_",0:2),paste0("SE_EmpSE_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2)),variable.name = "Statistic", value.name = "Value"))
@@ -61,7 +61,7 @@ return(plot)
 }
 
 
-plot_rho<-plotsim(Scenariov="Rho3",levelsvar=c("0","0.3","0.6","0.9"))
-plot_bin<-plotsim(Scenariov="Bin3",levelsvar=c("0","0.3","0.6","0.9"))
-plot_N<-plotsim(Scenariov="N3",levelsvar=c("10-50","10-100","10-1000","50-1000","100-1000"))
-plot_S<-plotsim(Scenariov="S3",levelsvar=c("e~BVGamma","e~BVN","R=f(Y)" ))
+plot_rho<-plotsim(Scenariov="Rho",levelsvar=c("0","0.3","0.6","0.9"))
+plot_bin<-plotsim(Scenariov="Bin",levelsvar=c("0","0.3","0.6","0.9"))
+plot_N<-plotsim(Scenariov="N",levelsvar=c("10-50","10-100","10-1000","50-1000","100-1000"))
+plot_S<-plotsim(Scenariov="S",levelsvar=c("e~BVGamma","e~BVN","R=f(Y)" ))

@@ -211,7 +211,7 @@ We design a simulation study aimed to compare the performance of imputation meth
 #### Data-generation mechanism
 
 We generated the data from the Heckman selection model with bivariate normal distribution error terms. For simplicity we assume that the database collects information from $N=10$ clusters of equal number of individuals $n_i=1000$. 
-For each dataset, we generated $X_{1i}$ a treatment indicator variable from a Bernoulli distribution with a probability of treatment on each cluster equal to 0.6. Next we simulated the mean of two continuous covariates from a multivariate normal distribution $\mu_h\sim N(\begin{psmallmatrix}0\\0\end{psmallmatrix},\begin{psmallmatrix}0.2 & 0.015\\0.015 & 0.2\end{psmallmatrix})$, with $h=\{2,3\}$. We then simulated for each cluster a baseline covariate $X_{2i}\sim N(\mu_2,1)$ and a exclusion restriction  $X_{3i} \sim N(\mu_3,0.5^2)$.
+For each dataset, we generated $X_{1i}$ a treatment indicator variable from a Bernoulli distribution with a probability of treatment on each cluster equal to 0.6. Next we simulated the mean of two continuous covariates from a multivariate normal distribution $\mu_h\sim N(\begin{psmallmatrix}0\\0\end{psmallmatrix},\begin{psmallmatrix}0.2 & 0.015\\0.015 & 0.2\end{psmallmatrix})$, with $h=\{2,3\}$. We then simulated for each cluster a baseline covariate $X_{2i}\sim N(\mu_2,1)$ and a exclusion restriction  $X_{3i} \sim N(\mu_3,0.5)$.
 
 Here, we considered $X_{1i}$ and $X_{2i}$ as predictors in the outcome equation $X_i^O=[1,X_{1i},X_{2i}]$. For the selection equation we included both variables and the $X_{3i}$ exclusion restriction, $X_i^S=[1,X_{1i},X_{2i},X_{3i}]$. Then in case of a missing continuous variable, we calculate the latent variables  $y_{i}^*$ and $r^*_{i}$ as follows:
 \begin{align*}
@@ -223,7 +223,7 @@ Here we assumed that all coefficient parameters varied across studies, by includ
  \beta_{hi}^O&= \beta_h^O + b_{hi}^O\\
  \beta_{hi}^S&= \beta_h^S + b_{hi}^S
 \end{align*}
-We used these fixed coefficients $\beta_h^O=\{2,1,1\}$  and $\beta_h^S=\{0.1,1.5,-0.7,1.8\}$ in order to get around 40\% of sporadically missing values on the response $y_{ij}$ in the entire data set. Additionally, we made that the $y_{ij}^*$ observations were systematically missing in 20% of the clusters included in data set.
+We used these fixed coefficients $\beta_h^O=\{0.3,1,1\}$  and $\beta_h^S=\{-0.8,1.3,-0.7,1.2\}$ in order to get around 40\% of sporadically missing values on the response $y_{ij}$ in the entire data set. Additionally, we made that the $y_{ij}^*$ observations were systematically missing in 20% of the clusters included in data set.
 We assumed that random effects were independent within equations ($b_{h0}^O\indep b_{h1}^O \indep b_{h2}^O$ and $b_{h0}^S \indep b_{h1}^S \indep b_{h2}^S$), but were linked between both selection and outcome equations through a bivariate normal distributed as: 
 \[\begin{pmatrix}
 b^O_{h} \\
@@ -236,7 +236,7 @@ b^S_{h}
 \rho*0.4 &1 
 \end{pmatrix}\right)
 \]
-with the parameters $\sigma_{b0}^2=\sigma_{b1}^2=\sigma_{b2}^2=0.5$.  We considered that the correlation parameter of the random effects between equations is a 40% of the value of the assumed correlation parameter between error terms $\rho$. In addition, we included a random effect on the exclusion restriction variable given by $b_3\sim N(0,0.3)$ assuming that the intracluster variation in the exclusion restriction effect is lower than the variation on other coefficient parameters effects. The $\rho$ parameter adopts different values depending on the simulated missing mechanism (See below additional scenarios) .
+with the parameters $\sigma_{b0}^2=\sigma_{b1}^2=\sigma_{b2}^2=0.4$.  We considered that the correlation parameter of the random effects between equations is a 40% of the value of the assumed correlation parameter between error terms $\rho$. In addition, we included a random effect on the exclusion restriction variable given by $b_3\sim N(0,0.2)$ assuming that the intracluster variation in the exclusion restriction effect is lower than the variation on other coefficient parameters effects. The $\rho$ parameter adopts different values depending on the simulated missing mechanism (See below additional scenarios) .
 
 As regards the error terms, they were bivariate normal distributed as:
 \[\begin{pmatrix}
@@ -250,7 +250,7 @@ As regards the error terms, they were bivariate normal distributed as:
 \rho\sigma_i & 1
 \end{pmatrix}\right)
 \]
-whose $\sigma_i^2$ is variable across clusters and distributed as $log(\sigma_i) \sim N(log(0.7),0.05)$. 
+whose $\sigma_i^2$ is variable across clusters and distributed as $log(\sigma_i) \sim N(0,0.05)$. 
 
 
 ##### Adittional scenarios
@@ -260,7 +260,7 @@ To investigate the performance of the imputation methods under the following sce
 - \textbf{M(N)AR scenarios:} We assessed whether the model performed well in terms of bias and coverage when the data followed a missing MAR mechanism ($\rho=0$), and when it followed a MNAR mechanism with a low ($\rho=0.3$), intermediate ($\rho=0.6$) and strong correlation ($\rho=0.9$) between $y^*$ and $r^*$.
 - \textbf{Influence of sample size}: Model sensitivity was analysed with respect to $n_i=\{50,100,1000\}$ the number of patients per cluster and $N=\{10,50,100\}$ the number of studies. We consider the 
 - \textbf{Violation of distributional assumptions:} To assess how imputation models behave in the face of deviations from normality assumptions, we simulated data in which the errors followed a skewed t-distribution and also in which the missing process follows a MNAR mechanism with an explicit truncated model, i.e., the participation is directly related to the value of the outcome variable. 
-- \textbf{Binary response}: We evaluated the imputation method when missing variables is binary. Therefore we simulated  $y_{i}$ binary incomplete variables, the marginal set of parameters were fixed to  $B_h^O=\{0.5,1,1\}$ and  $B_h^S=\{0.1,1.5,-0.7,1.2\}$, keeping the other parameters similar to the ones used in the simulation of missing continuous variables. The observable binary variables was defined as:
+- \textbf{Binary response}: We evaluated the imputation method when missing variables is binary. Therefore we simulated  $y_{i}$ binary incomplete variables, we keep the parameters similar to the ones used in the simulation of missing continuous variables,but the observable binary variables was defined as:
 \begin{align*}
     r_{i}&=I(r*_{i}>0)\\
     y_{i}&=I(y^*_{i}>0) \forall r^*_{ij}>0
@@ -273,7 +273,7 @@ After the imputation procedure, we estimated the following (generalized) mixed l
 $y_{i}=\beta_i^OX_i^O+\epsilon^O_{i}$
 In case of missing binary variable, we used the same matrix of predictors but on a binary model estimated with glmer() functions. Then, we pooled the estimates of the $\beta_i^O$ and the variance of random effect and residual errors of the multiple imputed datasets according to Rubin's rule [@rubin1987], over which we calculated the performance measures on estimands. 
 
-To calculate the coverage of the parameter coefficients, we estimate confidence intervals (CI) with the Wald method. Although it is possible to obtain CI through the profile or bootstrap method for the variances of the random effects, we prefer not to estimate them (and hence the coverage) for these parameters due to computational time. 
+To calculate the coverage of the parameter coefficients, we estimate confidence intervals (CI) with the Wald method. Although it is possible to obtain CI through the profile or bootstrap method for the variances of the random effects, we prefer not to estimate them (and hence the coverage) for the random effects parameters due to computational time. 
 
 #### Method
 
@@ -286,14 +286,14 @@ For each scenario we simulated 500 datasets over which we evaluated the followin
 
 #### Performance measures
 
-We calculated the following evaluation criteria according to the formulas provided in Morris et al.(2019)[@morris2019]:
+We calculated the following evaluation criteria [@VanBureen] according to the formulas provided in Morris et al.(2019)[@morris2019]:
 
 - \textbf{Bias:} Bias on the coefficient and random effect parameters.
-- \textbf{EmpSE:} Empirical standard errors of the estimates on the coefficient and random effect parameters.
-- \textbf{ModSE:} Monte Carlo standard errors on the coefficient  parameters.
-- \textbf{MSE:} Mean squared error of the coefficient  and random effect parameters.
 - \textbf{Coverage(\%):} Coverage of the 95\% confidence intervals for the coefficient  parameters.
-In addition we reported the average time processing and the percentage of datasets where the imputation method converged, i.e., the imputation method generated an output. 
+-\testbf{Width}: Width of the confidence interval on the coefficient parameters.
+- \textbf{RMSE:} Root mean squared error of the coefficient  and random effect parameters.
+
+In addition, in the appendix table we reported the empirical standard errors (EmpSE), Monte Carlo standard errors (ModSE) on the coefficient  parameters,average time processing (time in seconds) and the percentage of datasets where the imputation method converged (run), i.e., the imputation method generated an output. 
 
 #### Software
 For simulation study and illustrative examples we used  R version 4.0.4  in a linux environment.
