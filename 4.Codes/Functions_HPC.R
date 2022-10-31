@@ -16,8 +16,9 @@ library(miceMNAR)
 library(glmmTMB)
 
 
+#1. Data generation process ----
 
-# Define list of parameters----
+# 1.1. Define list of parameters ----
 par_data <- list ( N = 10, # Number of studies
                    ni = 1000, # Number of patients per study
                    sigmav = 1, # Mean of sigma_e parameter (error terms)
@@ -75,7 +76,6 @@ par_data_conts4$ni=50
 par_data_conts4$rho = 0.6
 
 
-
 # Parameters binomial (systematic)
 par_data_bin <- par_data
 par_data_bin$typey<-"binomial"
@@ -92,7 +92,7 @@ par_data_bin3$rho= 0.3
 par_data_bin4 <- par_data_bin
 par_data_bin4$rho= 0.0
 
-
+# Parameters of deviations in distribution assumptions
 # Parameters for continuous missing variable MNAR truncated (systematic)
 par_data_contrun <- par_data
 par_data_contrun$typey <- "normal"
@@ -115,7 +115,7 @@ par_data_skew$valadd <- 0.29
 #par_datal=list(par_data_cont1,par_data_cont2,par_data_cont3,par_data_cont4)
 
 
-
+# 1.2. Generate data with missing outcome ---- 
 gen_complete_data <- function( DataID, #ID data
                                par_data){ #list of parameters to generate data
   
@@ -268,8 +268,9 @@ gen_complete_data <- function( DataID, #ID data
 }
 
 
+#2. Imputation process ----
 
-# 0.2 Define settings for imputation models-----
+# 2.1 Define settings for imputation methods-----
 
 Sigma.co <- matrix(0, 5, 5)
 diag(Sigma.co) <- exp(rnorm(5))
@@ -302,7 +303,7 @@ dm<-data.table(dm)
 par_imp1<-list(dm=dm,pred=pred_list,meth=meth_list)
 
 
-
+# 2.2. 2l.Heckman imputation method ----
 mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_method ="reml",...) {
   
   
@@ -383,7 +384,7 @@ mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_meth
     }
   }
   
-  
+
   # 4. Get theta_k and var(theta_k) from full conditional distribution ----
   if (Grp_est == 1) { # Applies imputation at cluster level
     for (i in names.clust) { #Loop across studies
@@ -426,9 +427,9 @@ mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_meth
 }
 
 
-# 0. Define additional functions ----
+# 5. Define additional functions for 2l.Heckman method ----
 
-# F 0.1. CopulaIPD: Apply Binomial or Gaussian model depending on y type
+# F1. CopulaIPD: Apply Binomial or Gaussian model depending on y type
 
 copulaIPD <- function(data, sel, out, family, send) {
   
@@ -503,7 +504,7 @@ copulaIPD <- function(data, sel, out, family, send) {
   
 }
 
-# F 0.2. cov_mat_vector: Transform covariance matrix in a ordered vector
+# F2. cov_mat_vector: Transform covariance matrix in a ordered vector
 cov_mat_vector <- function(cov_mat, vnames) {
   cov_mat[upper.tri(cov_mat)] <- "Up"
   cov_vec <- as.vector(cov_mat[vnames, vnames])
@@ -511,7 +512,7 @@ cov_mat_vector <- function(cov_mat, vnames) {
   return(cov_vec)
   
 }
-# F 0.3. draw_theta_psi_mar: Estimate true effect size and draw a marginal theta and psi=var(theta) .
+# F3. draw_theta_psi_mar: Estimate true effect size and draw a marginal theta and psi=var(theta) .
 
 draw_theta_psi_mar <- function(coef_mat_s, Vb_list, meta_method, Mvma_est, vnames = NULL) {
   
@@ -575,7 +576,7 @@ draw_theta_psi_mar <- function(coef_mat_s, Vb_list, meta_method, Mvma_est, vname
   
 }
 
-# F 0.4 Conditional posterior distribution
+# F4. Conditional posterior distribution
 draw_cond_theta <- function(theta_mar, theta_k, var_theta_k, vnames) {
   W_m <- MASS::ginv(theta_mar[[2]])
   W_k <- MASS::ginv(var_theta_k[vnames, vnames])
@@ -586,7 +587,7 @@ draw_cond_theta <- function(theta_mar, theta_k, var_theta_k, vnames) {
 }
 
 
-# F 0.5 Get marginal draws
+# F5. Get marginal draws
 get_marginal <- function(coef_mat_s, Vb_list, selnam, outnam, meta_method ){
   
   beta_s = beta_o = rho_t = sigma_t = NA
@@ -630,7 +631,7 @@ get_marginal <- function(coef_mat_s, Vb_list, selnam, outnam, meta_method ){
 
 
 
-# F 0.6 Get draw from systematically missing groups
+# F6. Get draw from systematically missing groups
 star_systematic <- function(Heck_mod, send, oend, family){
   
   if (is.null(Heck_mod$Mvma_est)){ # From total data model
@@ -662,7 +663,7 @@ star_systematic <- function(Heck_mod, send, oend, family){
                 sigma_star = sigma_star))}
 
 
-## F 0.7 Get draw from sporadically missing groups
+## F7. Get draw from sporadically missing groups
 star_sporadic <- function(Heck_mod, coef_list_i, Vb_list_i, selnam, outnam, family){
   
   beta_s_star = beta_o_star = sigma_star = rho_star = NA
@@ -707,7 +708,7 @@ star_sporadic <- function(Heck_mod, coef_list_i, Vb_list_i, selnam, outnam, fami
 }
 
 
-# F 0.8 Generate the imputation values
+# F8. Generate the imputation values
 
 gen_y_star <- function(Xm, sel_name, bos_name, out_name, beta_s_star, beta_o_star,
                        sigma_star,rho_star, pmm, y, ry) {
@@ -743,7 +744,7 @@ gen_y_star <- function(Xm, sel_name, bos_name, out_name, beta_s_star, beta_o_sta
   return(y.star)
 }
 
-
+#2.3. Get estimates from imputed datasets ----
 get_estimates <- function( data = data, # data with missing values
                            DataID = DataID, #data ID
                            ImpID = ImpID, # imputation ID
@@ -895,7 +896,7 @@ get_estimates <- function( data = data, # data with missing values
   return(output)
 }
 
-# HPC Function to estimate parameters on imputed datasets ----
+#3. HPC Function ----
 fun_HPC <- function(ID,par_data,par_imp,M){
   DataID <- ceiling(ID/(nrow(par_imp$dm)+2))
   ImpID <- ID%%(nrow(par_imp$dm)+2)
@@ -909,8 +910,7 @@ fun_HPC <- function(ID,par_data,par_imp,M){
   if(inherits( final_est, "try-error")){
     final_est <- cbind(DataID = DataID,ImpID=ImpID, run = 0) }
   else{
-    final_est<-cbind(final_est,run = 1)
-  }
+    final_est<-cbind(final_est,run = 1)}
   
   return(final_est)
 }
