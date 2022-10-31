@@ -334,7 +334,7 @@ However, the accuracy (Width) of the 2l.Heckman model is higher than that of the
 We evaluated how robust our method was to variations in the number of clusters and also in the sample size of cluster.
 
 
-```{r rhosize,fig.pos="h",fig.cap="\\label{fig:size} Comparison of methods for continuous incomplete variable under systematical missingness by varing (N=number of clusters- $n_i$=sample size per cluster), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
+```{r rhosize,fig.pos="h",fig.cap="\\label{fig:size} Comparison of methods for continuous incomplete variable under systematical missingness by varing (N=number of clusters;$n_i$=sample size per cluster), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
 plot_N
 ```
 

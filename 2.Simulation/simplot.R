@@ -7,7 +7,7 @@ data<-as.data.table(readxl::read_xlsx(here('2.Simulation','Sim_results.xlsx'),sh
 #data<-data[,grep("Scenario|Method|Variation|^Bias|^EmpSE|^RMSE|^CIW|^Cov|^SE", names(data)), with = FALSE]
 #colnames(data)<-c("Scenario","Variation","Method", paste0("p_Coverage_",0:2), paste0("p_Bias_",0:6),paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("p_EmpSE_",0:6),paste0("SE_Bias_",0:6),paste0("SE_EmpSE_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2), paste0("SE_Coverage_",0:2))
 #data<- setDT(melt(data, measure.vars = c( paste0("p_Bias_",0:6), paste0("p_Coverage_",0:2), paste0("p_EmpSE_",0:6), paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("SE_Bias_",0:6), paste0("SE_Coverage_",0:2),paste0("SE_EmpSE_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2)),variable.name = "Statistic", value.name = "Value"))
-data<-data[Variation!="10-50",]
+data<-data[Variation!="10;50",]
 data<-data[,grep("Scenario|Method|Variation|^Bias|^RMSE|^CIW|^Cov|^SE_B|^SE_C|^SE_W|^SE_RM", names(data)), with = FALSE]
 colnames(data)<-c("Scenario","Variation","Method", paste0("p_Coverage_",0:2), paste0("p_Bias_",0:6),
                   paste0("p_RMSE_",0:6),paste0("p_Width_",0:2),paste0("SE_Bias_",0:6),paste0("SE_RMSE_",0:6),paste0("SE_Width_",0:2), paste0("SE_Coverage_",0:2))
@@ -29,7 +29,7 @@ data[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","sigm
                                                    expression(sigma[e])))]
 
 
-plotsim<-function(Scenariov,levelsvar){
+plotsim<-function(Scenariov,levelsvar,yaxis){
 datagraph<-data[Scenario==Scenariov,]
 datalines <- data.table(Parameter = c("beta_0","beta_1", "beta_2","sigma_b0", "sigma_b1","sigma_b2","sigma_e"),
                         Z = c(rep(0,7),rep(0.95,7),rep(0,7),rep(0,7)),
@@ -56,12 +56,14 @@ plot<-ggplot(datagraph[Parameter%in%c("beta[0]","beta[1]","beta[2]","sigma[b * 0
   theme_light()+  
   theme(strip.background =element_rect(fill="white"),legend.position="bottom")+
   theme(strip.text = element_text(colour = 'black'))+
-  xlab("Value")+ylab(expression(rho))
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.15,size=7))+
+  theme(axis.text.y = element_text(size=7))+
+  xlab("Value")+ylab(yaxis)
 return(plot)
 }
 
 
-plot_rho<-plotsim(Scenariov="Rho",levelsvar=c("0","0.3","0.6","0.9"))
-plot_bin<-plotsim(Scenariov="Bin",levelsvar=c("0","0.3","0.6","0.9"))
-plot_N<-plotsim(Scenariov="N",levelsvar=c("10-50","10-100","10-1000","50-1000","100-1000"))
-plot_S<-plotsim(Scenariov="S",levelsvar=c("Skewed-t","Normal","ry*=f(y*)"))
+plot_rho<-plotsim(Scenariov="Rho",levelsvar=c("0","0.3","0.6","0.9"),yaxis=expression(rho))
+plot_bin<-plotsim(Scenariov="Bin",levelsvar=c("0","0.3","0.6","0.9"),yaxis=expression(rho))
+plot_N<-plotsim(Scenariov="N",levelsvar=c("10;50","10;100","10;1000","50;1000","100;1000"),yaxis="Number of clusters; sample size per cluster")
+plot_S<-plotsim(Scenariov="S",levelsvar=c("Skewed-t","Normal","ry*=f(y*)"),yaxis="Missing process")

@@ -1,4 +1,3 @@
-rm(list=ls())
 library(here) 
 library(data.table)
 library(micemd)
@@ -100,7 +99,7 @@ pred_model<-function(model,source){
 
 # 1. Subset original dataset ----
 
-data_original <- read.delim(here('3.Ilustrative_study','ISASimple_Gates_LLINE-UP_rct_RSRC.txt'))
+data_original <- read.delim(here('3.Ilustrative_study','ISASimple_Gates_LLINE-UP_rct_RSRC.txt')) # Dataset retrieved from https://clinepidb.org/ce/app/workspace/analyses/DS_7c4cd6bba9/new/details#AccessRequest
 dist <- readxl::read_xlsx(here('3.Ilustrative_study','Districts.xlsx')) #district specification
 source(here('3.Ilustrative_study','Additional_functions.R'))
 source(here('4.Codes','mice.impute.2l.heckman.R'))
@@ -293,7 +292,7 @@ pd <- position_dodge(width = 0.4)
 plot_dist<-ggplot(data_wide, aes(x = subreg_id, y = p, colour = Parameter)) +
                   geom_pointrange(aes(ymax = UC, ymin = LC),position = pd) + 
                   geom_point(position = pd)+ theme_light()+
-                  ylab("Parasite prevalence (%)")+xlab("Sub region")+
+                  ylab("Parasite prevalence (%)")+xlab("Sub-region")+
                   scale_color_brewer(palette="Dark2")
                   
 
