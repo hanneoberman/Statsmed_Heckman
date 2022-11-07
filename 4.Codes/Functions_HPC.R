@@ -783,7 +783,7 @@ get_estimates <- function( data = data, # data with missing values
     m <- 1
     
   }else {
-    if(ImpID != 3){ #HeckmanIPD or Riche-Rignon
+    if(ImpID != 3){ #HeckmanIPD or 2l.2stage.norm
       
       name <- par_imp$dm[[ImpID,"name"]]
       methv <- ifelse(par_imp$dm[[ImpID,"meth"]] == "R"&family == "probit",
