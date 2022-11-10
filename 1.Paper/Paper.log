@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.27)  4 NOV 2022 16:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.27)  10 NOV 2022 11:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -880,9 +880,6 @@ LaTeX Warning: Unused global option(s):
 
 (./Paper.aux
 
-LaTeX Warning: Label `methods' multiply defined.
-
-
 LaTeX Warning: Label `discussion' multiply defined.
 
 )
@@ -1017,77 +1014,67 @@ File: DAG_heckman.png Graphic file (type png)
 Package pdftex.def Info: DAG_heckman.png  used on input line 220.
 (pdftex.def)             Requested size: 167.57857pt x 101.1795pt.
 [3 <./DAG_heckman.png>] [4]
-LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 430.
+LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 436.
 [5] [6]
-LaTeX Font Info:    Trying to load font information for TS1+stix on input line 648.
+LaTeX Font Info:    Trying to load font information for TS1+stix on input line 657.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ts1stix.fd
 File: ts1stix.fd 2015/04/17 v1.1.2-latex STIX TS1 font definitions
-) [7]
-<Paper_files/figure-latex/rhocont-1.pdf, id=151, 469.755pt x 325.215pt>
+) [7] [8]
+<Paper_files/figure-latex/rhocont-1.pdf, id=171, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/rhocont-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/rhocont-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/rhocont-1.pdf  used on input line 791.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 809--816
-
- []
-
-
-LaTeX Warning: Reference `fig:rhosize' on page 9 undefined on input line 842.
-
-<Paper_files/figure-latex/rhosize-1.pdf, id=171, 469.755pt x 325.215pt>
-File: Paper_files/figure-latex/rhosize-1.pdf Graphic file (type pdf)
-<use Paper_files/figure-latex/rhosize-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/rhosize-1.pdf  used on input line 846.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+Package pdftex.def Info: Paper_files/figure-latex/rhocont-1.pdf  used on input line 804.
+(pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 [9 <./Paper_files/figure-latex/rhocont-1.pdf>]
-<Paper_files/figure-latex/bin-1.pdf, id=185, 469.755pt x 325.215pt>
-File: Paper_files/figure-latex/bin-1.pdf Graphic file (type pdf)
-<use Paper_files/figure-latex/bin-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/bin-1.pdf  used on input line 880.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Paper_files/figure-latex/dist-1.pdf, id=186, 469.755pt x 325.215pt>
+<Paper_files/figure-latex/rhobin-1.pdf, id=196, 433.62pt x 289.08pt>
+File: Paper_files/figure-latex/rhobin-1.pdf Graphic file (type pdf)
+<use Paper_files/figure-latex/rhobin-1.pdf>
+Package pdftex.def Info: Paper_files/figure-latex/rhobin-1.pdf  used on input line 864.
+(pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
+<Paper_files/figure-latex/size-1.pdf, id=198, 433.62pt x 289.08pt>
+File: Paper_files/figure-latex/size-1.pdf Graphic file (type pdf)
+<use Paper_files/figure-latex/size-1.pdf>
+Package pdftex.def Info: Paper_files/figure-latex/size-1.pdf  used on input line 879.
+(pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
+[10 <./Paper_files/figure-latex/rhobin-1.pdf>]
+<Paper_files/figure-latex/dist-1.pdf, id=212, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/dist-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/dist-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/dist-1.pdf  used on input line 893.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[10 <./Paper_files/figure-latex/rhosize-1.pdf>]
-Overfull \vbox (40.29231pt too high) has occurred while \output is active []
+Package pdftex.def Info: Paper_files/figure-latex/dist-1.pdf  used on input line 904.
+(pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
+[11 <./Paper_files/figure-latex/size-1.pdf>]
 
-[11 <./Paper_files/figure-latex/bin-1.pdf> <./Paper_files/figure-latex/dist-1.pdf>]
+LaTeX Warning: Reference `fig:dist' on page 12 undefined on input line 937.
 
-LaTeX Warning: Reference `fig:dist' on page 12 undefined on input line 921.
+[12 <./Paper_files/figure-latex/dist-1.pdf>]
 
-
-LaTeX Warning: Reference `tab:descriptive' on page 12 undefined on input line 960.
+LaTeX Warning: Reference `tab:descriptive' on page 13 undefined on input line 976.
 
 
 Package natbib Warning: Author undefined for citation`rugnao2019' 
-(natbib)                on page 12 on input line 964.
+(natbib)                on page 13 on input line 980.
 
 
-LaTeX Warning: Reference `tab:exclusion' on page 12 undefined on input line 991.
+LaTeX Warning: Reference `tab:exclusion' on page 13 undefined on input line 1007.
 
 
-LaTeX Warning: Reference `fig:region' on page 12 undefined on input line 997.
+LaTeX Warning: Reference `fig:region' on page 13 undefined on input line 1013.
 
-[12]
 
-LaTeX Warning: Reference `figure:region_age' on page 13 undefined on input line 1005.
+LaTeX Warning: Reference `figure:region_age' on page 13 undefined on input line 1021.
 
-[13]
-<flag_EU.pdf, id=240, 597.23125pt x 845.1575pt>
+[13] [14]
+<flag_EU.pdf, id=264, 597.23125pt x 845.1575pt>
 File: flag_EU.pdf Graphic file (type pdf)
 <use flag_EU.pdf>
-Package pdftex.def Info: flag_EU.pdf  used on input line 1142.
+Package pdftex.def Info: flag_EU.pdf  used on input line 1158.
 (pdftex.def)             Requested size: 40.60155pt x 57.45189pt.
-(./Paper.bbl [14 <./flag_EU.pdf>]
+(./Paper.bbl [15 <./flag_EU.pdf>]
 Underfull \hbox (badness 2277) in paragraph at lines 161--164
 []\T1/stix/m/n/10.03749 Audigier VCM, Resche-Rigon MIE. Micemd: Mul-ti-ple Impu-ta-tion by Chained Equations with Mul-ti-level Data.
  []
 
-[15]) [16] (./Paper.aux)
+) [16] (./Paper.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1096,18 +1083,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 20691 strings out of 477031
- 320573 string characters out of 5827206
- 647974 words of memory out of 5000000
- 41393 multiletter control sequences out of 15000+600000
+ 20718 strings out of 477031
+ 320906 string characters out of 5827206
+ 645949 words of memory out of 5000000
+ 41406 multiletter control sequences out of 15000+600000
  581095 words of font info for 168 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 87i,11n,91p,982b,647s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,11n,91p,982b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
-Output written on Paper.pdf (16 pages, 465899 bytes).
+Output written on Paper.pdf (16 pages, 467888 bytes).
 PDF statistics:
- 427 PDF objects out of 1000 (max. 8388607)
- 371 compressed objects within 4 object streams
- 111 named destinations out of 1000 (max. 500000)
- 207 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 480 PDF objects out of 1000 (max. 8388607)
+ 423 compressed objects within 5 object streams
+ 125 named destinations out of 1000 (max. 500000)
+ 295 words of extra memory for PDF output out of 10000 (max. 10000000)
 

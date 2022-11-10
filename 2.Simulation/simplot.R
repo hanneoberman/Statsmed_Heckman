@@ -54,11 +54,15 @@ plot<-ggplot(datagraph[Parameter%in%c("beta[0]","beta[1]","beta[2]","sigma[b * 0
   scale_color_brewer(palette="Dark2")+
   guides(color=guide_legend(title="Imputation method"))+
   theme_light()+  
-  theme(strip.background =element_rect(fill="white"),legend.position="bottom")+
+  theme(strip.background =element_rect(fill="white"),legend.position="bottom",legend.margin=margin(t=-12))+
   theme(strip.text = element_text(colour = 'black'))+
-  theme(axis.text.x = element_text(angle = 45, vjust = 0.15,size=7))+
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.15,size=7),
+        axis.title=element_text(size=8))+
   theme(axis.text.y = element_text(size=7))+
-  xlab("Value")+ylab(yaxis)
+  xlab("Performance measure")+ylab(yaxis)+
+  theme(legend.text=element_text(size=6))+
+  theme(legend.title=element_text(size=7))
+
 return(plot)
 }
 

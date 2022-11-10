@@ -53,13 +53,11 @@ Clustered datasets often contain  many incomplete variables. For example, in reg
 To address the presence of missing data, it is important to consider  the proportion of missingness and the missing mechanism for each incomplete variable. Rubin (1976) [@rubin76] identified three missing mechanisms where the probability of missingness: 1) is constant (missing completely  at random; MCAR), 2) depends on observed data only (missing at random; MAR), or 3) depends on unobserved information even after conditioning on all observable variables (missing not at random; MNAR).  Traditional imputation methods are designed to address incomplete data sets where variables are MCAR or MAR. Their implementation is reasonable when there is no obvious mechanism of missingness, or when the observed data strongly relate to unobserved information. 
 
 
-
-Although it is possible to formally rule out MCAR, [@little1988]  
 <!-- Stat med uses the AMA citation style. citations at the end of sentence go after the period: "out MCAR. [@little1988]" , and those at the end of a clause go after the period: "out MCAR, [@little1988]". Inline citations like "the clinical practice research datalink (CRPD) [@herrett2015]" are fine though.  See an example here:
 https://onlinelibrary.wiley.com/doi/epdf/10.1002/sim.9221 Cool thanks a lot!! -->
-it is impossible to assess whether data are MAR or MNAR as the observable data are not enough to test the assumptions of both mechanisms.[@enders2022]  For this reason, researchers often conveniently assume that data are MAR, or present results that are based on a complete case analysis. In practice, however, unless missingness is artificially introduced by study design, e.g. when a test is only taken on patients with certain characteristics, missingness will often (partially) depend on unobserved information. 
+Although it is possible to formally rule out MCAR, [@little1988]  it is impossible to assess whether data are MAR or MNAR as the observable data are not enough to test the assumptions of both mechanisms.[@enders2022]  For this reason, researchers often conveniently assume that data are MAR, or present results that are based on a complete case analysis. In practice, however, unless missingness is artificially introduced by study design, e.g. when a test is only taken on patients with certain characteristics, missingness will often (partially) depend on unobserved information. 
 
-The missingness mechanism of a variable may be a mixture of MAR and MNAR, depending on the availability of data that may predict the missing data. Therefore, the MAR mechanism may become more influential than the MNAR mechanism as more information is recorded. <!-- MAR does not really become more likely. It is rather that the MAR mechanism becomes stronger than the MNAR mechanism. I have tried to capture this with the alternative text !! perfect thanks :D-->
+The missingness mechanism of a variable may be a mixture of MAR and MNAR, depending on the availability of data that may predict the missing data. Therefore, the MAR mechanism may become more influential than the MNAR mechanism as more information is recorded. <!-- MAR does not really become more likely. It is rather that the MAR mechanism becomes stronger than the MNAR mechanism. I have tried to capture this with the alternative text !! perfect thanks, your point is correct and now sound so much better :D-->
 For instance, healthcare professionals may decide what type of measurement on indication, and depending on their personal experience or behavior decide whether or not to record the reasons for the measurement. 
 
 Registries are notoriously prone to incomplete variables that are MNAR, due to the complex recording process. [@liu2021] e.g. laboratory tests are taken only in certain patients based on sign and symptom information that is often incomplete or not recorded. Also IPD may suffer from MNAR, for example when study participants who experience unfavorable results drop out of the study. Also, heterogeneity of the primary objective or resources of the studies involved may result in variables relevant to explain the missing process not being recorded.
@@ -70,7 +68,7 @@ Over the past few years, several extensions and adaptations to the Heckman selec
 
 In clustered data sets, multilevel imputation methods are needed to properly propagate uncertainty within and across clusters. [@audigier_etal18]  However, to our knowledge, existing multilevel imputation methods mainly focus  on situations where data are MAR, and do not adopt Heckman selection models. Although Hammon and Zinn (2020) [@hammon_zinn20] recently proposed an extension that allows for the inclusion of random intercept effects, it can only be used for binary missing variables and assume that the effect of explanatory variables on the missingness mechanisms is common across clusters. 
 
-Therefore, the aim of this paper is to develop a multilevel imputation method for incomplete continuous and binary variables that are MNAR. In section \ref{heckman} we provide an introduction to the Heckman model and its estimation, and we extended to a hierarchical setting. Then in section \ref{methods} we define the main steps of the proposed imputation method. In section \ref{simulation} we provide the settings and results of a Monte Carlo simulation study used to evaluate the performance of the proposed imputation method. In section \ref{example} we illustrate the method using the survey information collected in different sub-districts in Uganda to estimate the prevalence of malaria in children. 
+Therefore, the aim of this paper is to develop a multilevel imputation method for incomplete continuous and binary variables that are MNAR. In section \ref{heckman} we provide an introduction to the Heckman model and its estimation, and we extended to a hierarchical setting. Then in section \ref{methodsn} we define the main steps of the proposed imputation method. In section \ref{simulation} we provide the settings and results of a Monte Carlo simulation study used to evaluate the performance of the proposed imputation method. In section \ref{example} we illustrate the method using the survey information collected in different sub-districts in Uganda to estimate the prevalence of malaria in children. 
 Finally we provide a discussion  in section \ref{discussion} about  the results, limitations and propose future extension of our method.
 
 # The Heckman model
@@ -93,7 +91,9 @@ y^*_{i}&=X^O_{i}\beta^O_{i}+\epsilon^O_{i}\label{eq:1}\\
 r^*_{i}&=X^S_{ij}\beta^S_{i}+\epsilon^S_{i}\label{eq:2}
 \end{align}
 
-Here $\beta^O_{i}$ and $\beta^S_{i}$ are $p\times1$ and $q\times1$ coefficient parameter vectors and $\epsilon^O_{i}=(\epsilon^O_{i1},\epsilon^O_{i2},...,\epsilon^O_{in_i})^T$ and $\epsilon^S_{i}=(\epsilon^S_{i1},\epsilon^S_{i2},...,\epsilon^S_{in_i})^T$ are the residual terms vectors for the outcome and selection equations, respectively. Generally the same variables can be used on the matrix of predictor variables $X^O_{i}$ and $X^S_{i}$. However, to avoid multicollinearity problems, [@puhani1997] it is recommended to include in $X^S_{i}$ at least one variable that is not included in the outcome model. [@angrist2001] This variable is commonly known as an exclusion restriction variable, and should only be associated with the selection in the sample $r^*_{ij}$ but not with the actual observation $y^*_{ij}$. 
+Here $\beta^O_{i}$ and $\beta^S_{i}$ are $p\times1$ and $q\times1$ coefficient parameter vectors and $\epsilon^O_{i}=(\epsilon^O_{i1},\epsilon^O_{i2},...,\epsilon^O_{in_i})^T$ and $\epsilon^S_{i}=(\epsilon^S_{i1},\epsilon^S_{i2},...,\epsilon^S_{in_i})^T$ are the residual terms vectors for the outcome and selection equations, respectively. 
+
+Generally the same variables can be used on the matrix of predictor variables $X^O_{i}$ and $X^S_{i}$. However, to avoid multicollinearity problems, [@puhani1997] it is recommended to include in $X^S_{i}$ at least one variable that is not included in the outcome model. [@angrist2001] This variable is commonly known as an exclusion restriction variable (ERV), and should only be associated with the selection in the sample $r^*_{ij}$ (relevance condition) but not with the actual observation $y^*_{ij}$ (exclusion condition).[@gomes_etal20] The ERV should meet the relevance and exclusion conditions in order to provide independent information about the selection processing in order to facilitate the estimation of the Heckman model specially when dataset does not follow the BVN assumption.
 <!-- Can you give some explanation (1-3 sentences?) on the exclusion and restriction assumptions here? -->
 
 In the presence of selection bias, aforementioned outcome equation will yield biased estimates of $\beta^O_{i}$ if no efforts are made to adjust for the non-representativeness of the observed $X^O_{i}$ and $y_{i}$ values. For this reason, the Heckman model aims to jointly estimate the outcome and selection equation by defining a relation between their respective error distributions. For instance, Heckman’s original model [@heckman1976] assumes that residual terms have a bivariate normal distribution (BVN),
@@ -128,22 +128,22 @@ Since most statistical analyses assume that the sample units are independent of 
 
 Different procedures can be adopted to combine information between groups; however, in our imputation method we opted for the two-stage approach that is often used in meta-analyses. This is because such an approach is less computationally intensive and could potentially generate fewer convergence problems in the estimation of the Heckman hierarchical model compared to other approaches. 
 
-<!-- This sentence was too long and has the verbs all the way at the end, making it hard to read. I suggest to rephrase to three shorter sentences: -->
-Briefly, in a first stage $\theta_i$ the cluster specific parameters of the Heckman model are estimated. That is, the parameters of the two equations in each study, the outcome model and the selection model, are estimated separately for each of the $N$ clusters. In the second stage, all $\theta_i$ are combined using a random effects meta-analysis model. 
+<!-- This sentence was too long and has the verbs all the way at the end, making it hard to read. I suggest to rephrase to three shorter sentences: OK!!-->
+Briefly, in a first stage  we estimate $\theta_i$ the cluster specific parameters of the Heckman model. That is, we estimate separately for each of the $N$ clusters,the parameters of the two equations in each study, the outcome model and the selection model. In the second stage, we combine all $\theta_i$  by using a random effects meta-analysis model. 
 
-<!-- I wouldn't call the distribution imaginary. It is assumed to be real but latent. Some words we could use: conjectured, latent, presupposed, presumed  -->
+<!-- I wouldn't call the distribution imaginary. It is assumed to be real but latent. Some words we could use: conjectured, latent, presupposed, presumed, Thanks :D -->
 In a random effects model, $\theta_i$ parameters are assumed to be drawn independently and identically from a latent distribution of parameters with a  population mean $\theta_m$ and a population variance $\psi$. [@higgins2009] Thus, the  $\theta_i=\theta_m + b_i$ can be specified using $b_i \sim N(0,\psi)$ random effects to allow for between-study heterogeneity in observed data relationships, and between-study heterogeneity in missing patterns.
 
 
 # Method
-\label{methods}
+\label{methodsn}
 We follow a similar approach proposed by Resche-Rigon and White (2018) [@resche-rigon2018] for multilevel imputation of data. Briefly, their method was developed to impute variables from a hierarchical structure (i.e., when there are samples unit grouped within a cluster or group).
 This method involves estimating an outcome equation (describing the relationships of the observed data to the missing variable) separately in each cluster, after which the parameter estimates of that equation are pooled using random effects meta-analysis. 
 
 With this method, values can be imputed in very common scenarios in IPD, e.g., sporadic and systematic missing patterns. In particular, when the response variable is systematically missing within a group, i.e., when $y_{ij}$ are totally missing within a group, the imputation values are drawn from a (generalized) linear model conditional on $\theta_m$ the marginal population parameters, i.e., those estimated after pooling the cluster-specific parameters $\theta_i$. On the other hand, when the variable is sporadically missing within the group, i.e., there are some observed $y_{ij}$ within the cluster, the imputation model is conditional on the shrunk-cluster parameters, i.e., those coming from the shrinkage of $\theta_i$ towards $\theta_m$.
 
-Our imputation approach differs crucially from the previous approach as here we estimate two correlated equations (instead of a single outcome equation) in each cluster, thus obtaining $\theta_i=\{\beta_i^O,\beta_i^S,\sigma_i,\rho_i\}$ parameters from both equations which are then pooled into a $\theta_m$ parameter set at the marginal or population level. Our method is basically a univariate imputation method, but since it is implemented in a Gibbs sampling procedure, it can also be used to impute multiple incomplete variables in a data set.
-<!-- I don't understand what you mean here: it is univariate and it can be used to impute multiple variables? I would say these two statements contradict each other. -->
+Our imputation approach differs crucially from the previous approach as here we estimate two correlated equations (instead of a single outcome equation) in each cluster, thus obtaining $\theta_i=\{\beta_i^O,\beta_i^S,\sigma_i,\rho_i\}$ parameters from both equations which are then pooled into a $\theta_m$ parameter set at the marginal or population level. Our imputation method was created for impute univariate incomplete datasets, but since it is implemented in a Gibbs sampling procedure, it can also be used to impute multiple incomplete variables in a data set.
+<!-- I don't understand what you mean here: it is univariate and it can be used to impute multiple variables? I would say these two statements contradict each other. yes you are right i tried to say is a mehtod for univariate incomplete dataset -->
 
 ## Imputation of univariate incomplete dataset
 Given an outcome variable $y=(y_1,y_2,...,y_N)^T$, that consists of $y^{miss}_{ij}$ missing and $y^{obs}_{ij}$ observable values, we generate independent draws from the posterior predictive distribution for the missing data, $y_{ij}^{miss}$, given the observable data information $y_{ij}^{obs}$.
@@ -164,19 +164,19 @@ Below we describe each step in depth:
 Initially, we use the copulat method to estimate the set of cluster-specific parameters, $\widehat{\theta_i}=\{\widehat{\beta^O_i}, \widehat{\beta^S_i}, \widehat{\sigma_i}, \widehat{\rho_i}\}$, using all $j$ units with observable measurements $y_{ij}^{obs}$ within each group $i$. 
 The Heckman model is estimated with the \textbf{gjrm} function of the GJRM R package, [@radiceGJRMGeneralisedJoint2021] under the bivariate model with the nonrandom sample selection (BSS) specification, from which we obtain not only the parameters' point estimates $\widehat{\theta_i}$, but also their corresponding $\widehat{S(\theta_i)}$ within-cluster variance-covariance matrix.
 
-<!-- Can you add a reference to the R package here? -->
+<!-- Can you add a reference to the R package here? OK -->
  
 <!-- When the model does not converge in a study, we assume that data follows a MAR mechanism so we fixed $\widehat{\rho_i} = 0$ and we estimate only the outcome equation parameters from a (generalized) linear model. -->
 
 #### Fit a meta-analysis model
 <!-- This paragraph starts of in the the present tense " we pool ", and later it's past tense " we pooled" etc. Stick to one tense. In applied papers, it is normal to use only past tense. In stats papers it is common to use present tense when describing a (new) method in the methods section. -->
-In this step, we pool the parameters $\widehat{\theta_i}$ with a random effects meta-analysis model using only the groups with observable information, i.e., those that are not systematically missing and have sufficient information to estimate the heckman model.  In particular, we pooled the $p$ coefficients of the $\beta^O$ outcome equation and estimated a multivariate random effects meta-analysis model with them, similarly we combined all $q$ coefficient parameters of the $\beta^S$ selection equation. 
+In this step, we pool the parameters $\widehat{\theta_i}$ with a random effects meta-analysis model using only the groups with observable information, i.e., those that are not systematically missing and have sufficient information to estimate the heckman model.  In particular, we pool the $p$ coefficients of the $\beta^O$ outcome equation and estimated a multivariate random effects meta-analysis model with them, similarly we combine all $q$ coefficient parameters of the $\beta^S$ selection equation. 
 <!-- The phrase " the log-transformed parameter of $\sigma$" is a description of $\sigma'$, so it is what is known as a commenting or parenthetical clause. That means you need to put a comma before and after this clause: "... on $\sigma'$, the log-transformed parameter of $\sigma$, ...". Although this article is not for the BMJ, I can recommend reading their house-style for writing: https://www.bmj.com/about-bmj/resources-authors/house-style -->
-<!-- Read more here if you like: http://content.principia.edu/teaching-excellence/commenting-with-commas-when-and-where-to-use-them/ -->
+<!-- Read more here if you like: http://content.principia.edu/teaching-excellence/commenting-with-commas-when-and-where-to-use-them/ Thanks a lot you are a walking library :D, very appreciated all your lessons!! -->
 We also performed a univariate random effects meta_analysis on $\sigma'$, the log-transformed parameter of $\sigma$, and another on $\rho'$, the fisher-transformed parameter of $\rho$.
 
-The meta-analysis model is performed with the \textbf{mixmeta} function of the R package *mixmeta*, which allows the use of maximum likelihood (ML), restricted maximum likelihood (REML), and moments estimation methods. For the simulation and illustrative study, we used the restricted REML estimation method, which is recommended as it has a good balance between insensitivity and efficiency. [@viechtbauer2005]
-<!-- Insensitivity is not generally a good thing. I think you should either explain why it is a good thing here: "... it is insensitive to the true value of the mean of the distribution of random effects and it is efficient" (or something similar, feel free to rephrase) , or simplify it to "... a good balance between unbiasedness and efficiency."  -->
+The meta-analysis model is performed with the \textbf{mixmeta} function of the R package *mixmeta*, which allows the use of maximum likelihood (ML), restricted maximum likelihood (REML), and moments estimation methods. For the simulation and illustrative study, we used the restricted REML estimation method, which is recommended as it has a good balance between unbiasedness and efficiency. [@viechtbauer2005]
+<!-- Insensitivity is not generally a good thing. I think you should either explain why it is a good thing here: "... it is insensitive to the true value of the mean of the distribution of random effects and it is efficient" (or something similar, feel free to rephrase) , or simplify it to "... a good balance between unbiasedness and efficiency. jajaj I think at certain point i used the translator to correct my writing and i did not notice that change unbiasedness by insensitive..But thanks God you have eagle eyes @@) .."  -->
 
 #### Draw $\theta^*_m$ the marginal parameters
 
@@ -190,24 +190,25 @@ From the meta-analysis model, we obtain the marginal estimates $\widehat{\theta_
 #### Draw the cluster parameters $\theta^*_i$
 <!-- Throughout the text, consider the order in which you put the symbol and the text: -->
 <!-- Put the symbol after the text if the text is a description of the symbol: "shrunk-cluster parameters $\theta^*_i$" . -->
-<!-- Put the text after the symbol if the symbol quantifies the text: "$n$ patients" , or " $N$ clusters" . -->
+<!-- Put the text after the symbol if the symbol quantifies the text: "$n$ patients" , or " $N$ clusters" . Whoahh you are a gramatical Lord thanks a lot!! -->
 We draw the shrunk-cluster parameters $\theta^*_i$ for each group $i$ from the following posterior distribution conditional on $\theta^*_m$ and $\psi^*$.
 \begin{align*}
 \theta^*_i\sim N\left(\frac{ \theta^*_m/\psi^*+\widehat{\theta_i}/\widehat{S_{\theta_i}}}{1/\psi^*+1/\widehat{S_{\theta_i}}},\frac{1}{1/\psi^*+1/\widehat{S_{\theta_i}}}\right)
 \end{align*}
 
 As can be seen, the mean and variance of the posterior distribution is a combination between the estimated marginal and cluster-specific parameters. Here the weights on the cluster-specific parameters $\widehat{\theta_i}$ and the marginal parameters $\theta^*_m$ are inversely proportional to the within cluster variance $\widehat{S_{\theta_i}}$ and between clusters variance $\psi^*$. For example, when $\widehat{S_{\theta_i}} < \psi^*$ the mean of the conditional distribution gives more weight to the estimated cluster-specific parameter.
-Conversely, when $\widehat{S_{\theta_i}}>\psi^*$, more weight is given to the estimated marginal parameters.  In the case of systematic missingness, it is like considering the within-cluster variance to be infinite ($\widehat{S_{\theta_i}}\to\infty$), then letting all parameters rely only on the marginal estimates. 
-<!-- What does then mean in this last part? should it be " and lettting all parameters rely ..." ? -->
+Conversely, when $\widehat{S_{\theta_i}}>\psi^*$, more weight is given to the estimated marginal parameters. Therefore, in case of a cluster with systematic missingness, it is as if the within-cluster variance is infinite ($\widehat{S_{\theta_i}}\to\infty$), so all the weight is assigned to the parameters estimated at the marginal level. That is, when there is no information in a cluster, we rely entirely on the marginal information. 
+
+<!-- What does then mean in this last part? should it be " and lettting all parameters rely ..." ? I think now is more clear, thanks!! -->
 
 
 ### Draw $y_{ij}^{miss}$ observation
 
-Having $\theta^*_i$ the shrunk-cluster parameters vector for each group, we back-transform $\sigma^*$ and $\rho^*$ to the original scale. Then $y^{miss}_{ij}$ the missing values can be drawn from $p(y^{miss}_{ij}|\theta^*_i)$ their predictive distribution given $\theta^*_i$ as follows:
+Having $\theta^*_i$, the shrunk-cluster parameters vector for each group, we back-transform $\sigma^*$ and $\rho^*$ to the original scale. Then $y^{miss}_{ij}$, the missing values, can be drawn from $p(y^{miss}_{ij}|\theta^*_i)$, their predictive distribution given $\theta^*_i$, as follows:
 
 #### Continuous missing variable
 
-The imputed value of the $y_{ij}^{miss}$ missing observation can be drawn from the conditional expectation of $y_{ij}$ on unobserved measurements:
+The imputed value of $y_{ij}^{miss}$ can be drawn from the conditional expectation of $y_{ij}$ on unobserved measurements:
 \begin{align*}
 \mu&= E[y_{ij}|r_{ij}=0,{\beta^O_{i}}^*,{\beta^{S}_{i}}^*,{\rho_{i}}^*,{\sigma_i}^*]\\
 \mu&= x^O_{ij}{\beta^O_{i}}^*+\rho_{i}^*\sigma_i^*\frac{-\phi(x^{S}_{ij}{\beta^{S}_{i}}^*)}{\Phi(-x^{S}_{ij}{\beta^{S}_i}^*)}\\
@@ -217,7 +218,7 @@ y_{ij}^{miss}&\sim N(\mu,{\sigma_i^*}^2)
 
 #### Binary missing variable
 
-The missing $y_{ij}^{miss}$ is drawn from a Bernoulli distribution with $p_{ij}^*$ proportion parameter given by $P[y_{ij}=1|r_{ij}=0]$, the conditional probability that $y_{ij}=1$ given that the measure is unobservable ($r_{ij}=0$), in a bivariate probit model: [@greene2018]
+When $y_{ij}^{miss}$ is a binary variable, the imputed value is drawn from a Bernoulli distribution with a proportion parameter $p_{ij}^*$  given by $P[y_{ij}=1|r_{ij}=0]$, that is the conditional probability that $y_{ij}=1$ given that the measure is unobservable ($r_{ij}=0$). The $p_{ij}^*$ is obtained from a bivariate probit model, as follows: [@greene2018]
 \begin{align*}
 p^*_{ij} &= P[y_{ij}=1|r_{ij}=0,{\beta^O_{i}}^*,{\beta^{S}_{i}}^*,{\rho_{i}}^*]\\
 p^*_{ij} &=\frac{\Phi_2(x^O_{ij}{\beta^{O}_i}^*,-x^S_{ij}{\beta^{S}_i}^*,-\rho_i)}{\Phi(-x^{S}_{ij}{\beta^{S}_i}^*)}\\
@@ -236,13 +237,13 @@ The MICE package allows one to specify imputation methods to each of the missing
 # Simulation study
 \label{simulation}
 
-#### Aim
+## Aim
 We designed a simulation study aimed to compare the performance of imputation methods for imputing a missing variable in a hierarchical dataset, where the missingness follows a MNAR mechanism.
 
-#### Data-generation mechanism
+## Data-generation mechanism
 
-We generated the data from the Heckman selection model with bivariate normal distribution error terms. For simplicity we assume that the database collects information from $N=10$ clusters of equal number of individuals $n_i=1000$. 
-<!-- But you also have scenarios with different numbers for N and n_i. You could write here that for the "basic scenario" we have N =  and n_i = , and that we alter this in other scenarios, or in " senstivity analyses" . -->
+We generated the data from the Heckman selection model with bivariate normal distribution error terms. For simplicity we assume a "basic scenario" where the database collects information from $N=10$ clusters of equal number of individuals $n_i=1000$. However, we altered both $N$ and $n_i$ in the sensitivity analysis (see below). 
+<!-- But you also have scenarios with different numbers for N and n_i. You could write here that for the "basic scenario" we have N =  and n_i = , and that we alter this in other scenarios, or in " senstivity analyses" ok . -->
 For each dataset, we generated $X_{1i}$ a treatment indicator variable from a Bernoulli distribution with a probability of treatment on each cluster equal to 0.6. Next, we simulated the mean of two continuous covariates from a multivariate normal distribution $\mu_h\sim N(\begin{psmallmatrix}0\\0\end{psmallmatrix},\begin{psmallmatrix}0.2 & 0.015\\0.015 & 0.2\end{psmallmatrix})$, with $h=\{2,3\}$. We then simulated for each cluster a baseline covariate $X_{2i}\sim N(\mu_2,1)$ and a exclusion restriction  $X_{3i} \sim N(\mu_3,0.5)$.
 
 Here, we considered $X_{1i}$ and $X_{2i}$ as predictors in the outcome equation $X_i^O=[1,X_{1i},X_{2i}]$. For the selection equation we included both variables and the $X_{3i}$ exclusion restriction, $X_i^S=[1,X_{1i},X_{2i},X_{3i}]$. Then in case of a missing continuous variable, we calculate the latent variables  $y_{i}^*$ and $r^*_{i}$ as follows:
@@ -255,8 +256,8 @@ Here we assumed that all coefficient parameters varied across studies, by includ
  \beta_{hi}^O&= \beta_h^O + b_{hi}^O\\
  \beta_{hi}^S&= \beta_h^S + b_{hi}^S
 \end{align*}
-We fixed coefficients $\beta_h^O=\{0.3,1,1\}$  and $\beta_h^S=\{-0.8,1.3,-0.7,1.2\}$ in order to get around 40\% of sporadically missing values on the response $y_{ij}$ in the entire data set. Additionally, we ensured that the $y_{ij}^*$ observations were systematically missing in 20% of the clusters included in the data set. 
-<!-- How did we ensure that these were systematically missing in 20% of the clusters? Does that follow from the fixing of the betas? Or did you remove the y values in 20% of the clusters? Please be specific. -->
+We fixed coefficients $\beta_h^O=\{0.3,1,1\}$  and $\beta_h^S=\{-0.8,1.3,-0.7,1.2\}$ in order to get around 40\% of sporadically missing values on the response $y_{ij}$ in the entire data set. Additionally, we ensured that the $y_{ij}^*$ observations were systematically missing in 20% of the clusters included in the data set, by removing the outcome values in the 20% of the clusters. 
+<!-- How did we ensure that these were systematically missing in 20% of the clusters? Does that follow from the fixing of the betas? Or did you remove the y values in 20% of the clusters? Please be specific. OK-->
 We assumed that random effects were independent within equations ($b_{h0}^O\indep b_{h1}^O \indep b_{h2}^O$ and $b_{h0}^S \indep b_{h1}^S \indep b_{h2}^S$), but were linked between both selection and outcome equations through a bivariate normal distributed as: 
 \[\begin{pmatrix}
 b^O_{h} \\
@@ -286,32 +287,32 @@ As regards the error terms, they were bivariate normal distributed as:
 whose $\sigma_i^2$ is variable across clusters and distributed as $log(\sigma_i) \sim N(0,0.05)$. 
 
 
-##### Adittional scenarios
+## Adittional scenarios
 
 To investigate the performance of the imputation methods under the following scenarios:
 
-- \textbf{M(N)AR scenarios:} We assessed whether the model performed well in terms of bias and coverage when the data followed a missing MAR mechanism ($\rho=0$), and when it followed a MNAR mechanism with a low ($\rho=0.3$), intermediate ($\rho=0.6$) and strong correlation ($\rho=0.9$) between $y^*$ and $r^*$.
-- \textbf{Influence of sample size}: Model sensitivity was analysed with respect to $n_i=\{50,100,1000\}$ the number of patients per cluster and $N=\{10,50,100\}$ the number of studies. We consider the 
-<!-- The sentence above stops mid-sentence. -->
-- \textbf{Violation of distributional assumptions:} To assess how the imputation models behave in the face of deviations from normality assumptions, we simulated data in which the errors followed a skewed t-distribution and also in which the missing process follows a MNAR mechanism with an explicit truncated model, i.e., the participation is directly related to the value of the outcome variable. 
-- \textbf{Binary response}: We evaluated the imputation method when the missing variables are binary. Therefore we simulated  $y_{i}$ binary incomplete variables, we keep the parameters similar to the ones used in the simulation of missing continuous variables, but the observable binary variables were defined as:
+- \textbf{M(N)AR scenarios:} We assessed whether the model performed well in terms of bias and coverage when the data followed a missing MAR mechanism ($\rho=0$), and when data followed a MNAR mechanism with a low ($\rho=0.3$), intermediate ($\rho=0.6$) and strong correlation ($\rho=0.9$) between $y^*$ and $r^*$. We evaluated also the imputation method when the missing variable is binary. Therefore we simulated a $y_{i}$ binary incomplete variable, by keeping similar parameters to the ones used in the simulation of a missing continuous variable, but here we defined the observable binary variable as:
 \begin{align*}
     r_{i}&=I(r*_{i}>0)\\
     y_{i}&=I(y^*_{i}>0) \forall r^*_{ij}>0
 \end{align*}
-<!-- One binary variable or multiple binary variables? -->
 
-#### Estimand
+
+- \textbf{Influence of sample size}: Model sensitivity was analysed with respect to the the number of patients per cluster $n_i=\{50,100,1000\}$  and the number of studies $N=\{10,50,100\}$.
+
+- \textbf{Violation of distributional assumptions:} To assess how the imputation models behave in the face of deviations from normality assumptions, we simulated data in which the errors followed a skewed t-distribution and also in which the missing process follows a MNAR mechanism with an explicit truncated model, i.e., the participation is directly related to the value of the outcome variable. 
+
+
+## Estimand
 The estimands were the parameter coefficients of the outcome equation $\beta^O={\beta^O_0,\beta^O_1,\beta^O_2}$, with special emphasis on the treatment effect parameter $\beta^0_1$. We also report the estimated variance of the random effects and residual errors $\sigma_{b0}^2$,$\sigma_{b1}^2$,$\sigma_{b2}^2$,$\sigma_{e}^2$.
 
 After the imputation procedure, we estimated the following (generalized) mixed linear effect model using the *lmer()* function from the *lme4* R package.[@bates2022]
-<!-- Add ref to lme4 package -->
 $y_{i}=\beta_i^OX_i^O+\epsilon^O_{i}$
 In case of missing binary variable, we used the same matrix of predictors but on a binary model estimated with the *glmer()* function from the *lme4* R package. Then, we pooled the estimates of the $\beta_i^O$ and the variance of the random effect and residual errors of the multiple imputed datasets according to Rubin's rule, [@rubin1987] over which we calculated the performance measures on the estimands. 
 
 To calculate the coverage of the parameter coefficients' \95% confidence intervals (CI), we estimate CI with the Wald method. Although it is possible to obtain CI through the profile or bootstrap method for the variances of the random effects, we prefer not to estimate them (and hence the coverage) for the random effects parameters due to computational time. 
 
-#### Method
+## Method
 
 For each scenario we simulated 500 datasets over which we evaluated the following imputation methods: 
 
@@ -321,23 +322,23 @@ For each scenario we simulated 500 datasets over which we evaluated the followin
 
 - \textbf{2l.Heckman}: The proposed imputation method based on the Heckman model for hierarchical datasets.
 
-#### Performance measures
+## Performance measures
 
 We calculated the following evaluation criteria, usually employed to evaluate imputation methods, [@buuren18c] according to the formulas provided in Morris et al.(2019): [@morris2019]
 
 - \textbf{Bias:} Bias on the coefficient and random effect parameters.
 - \textbf{Coverage:} Coverage of the 95\% confidence intervals for the coefficient  parameters.
-- \textbf{Width}: Width of the confidence interval on the coefficient parameters.
+- \textbf{Width}: Average width of the confidence interval on the coefficient parameters.
 - \textbf{RMSE:} Root mean squared error of the coefficient  and random effect parameters.
 
 In addition, in the appendix table we reported the empirical standard errors (EmpSE), Monte Carlo standard errors (ModSE) on the coefficient  parameters, average processing time (time in seconds) and the percentage of datasets where the imputation method converged (run), i.e., the imputation method generated an output. 
 
-#### Software
-For the simulation study and illustrative examples we used R version 4.0.4 in a linux environment. 
-<!-- Add a reference to R if you haven't done so yet. Run citation() in R to get a bibtex entry. -->
-The Heckman 2L imputation method is available in the mice R package (as \textbf{mice.2l.heckman()}) and also on the github repository \url{https://github.com/johamunoz/Heckman2l} where you can also find all the codes accompanying this paper and a toy example that explains how to implement the method in mice. 
+## Software
+For the simulation study and illustrative examples we used R version 4.0.4 in a linux environment. [@Rpackage]
+<!-- Add a reference to R if you haven't done so yet. Run citation() in R to get a bibtex entry. Mago!!! -->
+The Heckman 2L imputation method is available in the mice R package (as \textbf{mice.2l.heckman()}) and also on the github repository \url{https://github.com/johamunoz/Statsmed_Heckman} where you can also find all the codes accompanying this paper and a toy example that explains how to implement the method in mice. 
 
-#### Results
+## Results
 
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
@@ -348,75 +349,78 @@ library(here)
 source(here("2.Simulation","simplot.R"),local =knitr::knit_global())
 ```
 
-##### Descriptive results
+### Descriptive results
 We generated data sets of 10 groups of 1000 patients each in each scenario. For example, for the scenario in which the error terms followed a normal distribution, out of the 500 datasets generated, we obtained that on average 60.8\% of the Y response was missing, with the lowest missing percentage being 26.84\% and the maximum being 73.67\%.  At the cluster level, looking only at the sporadic missing clusters, we found an average of 35.25\% missing values, but there were clusters with no missing data at all and up to 98\% missing data in Y. Regarding the binary response scenarios, the proportion of treated  patients is around 60% CI[20%,90%].
 Processing times differ in the imputation methods evaluated, for example, for 10 clusters of 1000 units, the 1l. Heckman takes an average of 10 seconds, the 2l.MAR takes 1.5 and the 2l. Heckman takes about 18 seconds. It should be noted that the time of the last two approaches depends strongly on the number of clusters included and the sample size in the data set. 
 
-##### Results M(N)AR scenarios
+### Results M(N)AR scenarios
 
- ```{r rhocont,fig.pos="h",fig.cap="\\label{fig:rhocont} Comparison of methods for continuous incomplete variable under systematical missingness by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last"}
+#### Continuous incomplete variable
+ ```{r rhocont,fig.pos="!htb",fig.cap="\\label{fig:rhocont} Continuous incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_rho
  ```
 
-Figure \ref{fig:rhocont} shows the results of simulations where the missing variable was continuous. In the MAR scenario, i.e. when $\rho=0$, all imputation methods provide similar unbiased estimates of the coefficient parameters, but as rho increases, i.e. the mechanism becomes MNAR, the estimates for the complete case analysis and the MAR-IPD imputation method become biased.
-
-Overall, both Heckman-based imputation (1l. and 2l.) models provide less biased estimates of the coefficient parameters in MNAR scenarios, but the random effects estimates on the 1l.heckman are far away from the true values as no cluster information was considered at all.
-
- Regarding the coverage, the 2l.Heckman imputation method provides the best coverage values across all the $\rho$ scenarios with a coverage level close to the nominal 95\% interval. Even though 2l.Heckman is not properly a randomization-valid method [@buuren18c], as it is not unbiased and with a coverage above 95\% across all the $\rho$ values, it leads to better results in terms of bias and coverage compared to the evaluated methods.  
- <!-- What do you mean with "Even" here? Do you mean to say "Even though" ? Can you add one sentence on what you mean that it is not randomization valid? -->
-
-The 2l.Heckman method, by incorporating individual and marginal level information, allows a bias-variance trade-off. Thus, we observed that the 2l.Heckman resulted in better estimates in terms of RMSE than the other methods evaluated.
-<!-- What is "Heckman IPD separated" Is that the 2l.Heckman method? -->
-In particular, the method provides an advantage over the 1l.Heckman method in systematic missingness scenarios, since the latter does not allow the specification of any cluster information implicitly, i.e. by adding a group variable in the imputation model. This can be seen in the estimates of the random effects parameters of the 1l.Heckman method, which are more biased than those of the other methods in which cluster information was included.
-
+ <!-- What do you mean with "Even" here? Do you mean to say "Even though" ? Can you add one sentence on what you mean that it is not randomization valid? OK -->
+<!-- What is "Heckman IPD separated" Is that the 2l.Heckman method? Yes jaja-->
 <!-- I would not equate accuracy with CI width -->
-However, the 95\% CI width of the 2l.Heckman model is greater than that of the other evaluated methods, which generally increases as $\rho$ moves away from zero. In particular, we noticed in $\beta_2$ that the width was larger in the MAR scenario. It seems that the high variability came from simulations in which the linear model estimation had singularity problems (not shown).
+Figure \ref{fig:rhocont} shows the results of simulations where the missing variable was continuous. In the MAR scenario, i.e. when $\rho=0$, all imputation methods provided similar unbiased estimates of the coefficient parameters, but as rho increased, i.e. the mechanism becomed MNAR, the estimates for the complete case analysis and the MAR-IPD imputation method became biased.
 
-##### Results sensitivity to number of clusters and sample size of clusters
-We evaluated how robust our method was to variations in the number of clusters and also in the sample size of cluster (Figure \ref{fig:rhosize}).
+Overall, both Heckman-based imputation (1l. and 2l.) models provided less biased estimates of the coefficient parameters in MNAR scenarios, but the random effects estimates on the 1l.heckman were far away from the true values as no cluster information was considered at all.
+
+Regarding the coverage, the 2l.Heckman imputation method provided the best coverage values across all the $\rho$ scenarios with a coverage level close to the nominal 95\% interval. Even though 2l.Heckman was not properly a randomization-valid method [@buuren18c], as it was not unbiased and had a coverage above 95\% across all the $\rho$ values, it leaded to better results in terms of bias and coverage compared to the evaluated methods.  
+
+The 2l.Heckman method, by incorporating individual and marginal level information, allowed a bias-variance trade-off. Thus, we observed that the 2l.Heckman resulted in better estimates in terms of RMSE than the other methods evaluated.
+
+In particular, the method provided an advantage over the 1l.Heckman method in systematic missingness scenarios, since the latter does not allow the specification of any cluster information implicitly, i.e. by adding a group variable in the imputation model. This can be seen in the estimates of the random effects parameters of the 1l.Heckman method, which were more biased than those of the other methods in which cluster information was included.
+
+Regarding the CI length of the 95th percentile of the estimated parameters, we observed that using the 2l.Heckman model we obtained larger CIs than when using other evaluated methods, which generally increased as $\rho$ moved away from zero. In particular, we observed in $\beta_2$ that the CI length was larger in the MAR scenario. By checking the simulation results further, we noted that the high variability came from one simulation in which the linear model estimation had singularity problems (not shown here).
+
+#### Bivariate incomplete variable
+
+In case of a bivariate missing variable, we also find (Figure \ref{fig:bin}) that the 2l.Heckman method provides unbiased results on coefficient parameters and random effects when the missing variable is binary. However, we observe more variability in the estimates of random effects, reflected on longer confidence intervals on the Bias and RMSE criteria.
+
+ ```{r rhobin,fig.pos="!htb",fig.cap="\\label{fig:bin} Binary incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+plot_bin
+```
 
 
-```{r rhosize,fig.pos="h",fig.cap="\\label{fig:size} Comparison of methods for continuous incomplete variable under systematical missingness by varing (N=number of clusters- $n_i$=sample size per cluster), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
+### Sensitivity analysis: number of clusters and sample size of clusters
+We evaluated how robust our method was to variations in the number of clusters and also in the sample size of cluster (Figure \ref{fig:size}).
+
+
+```{r size,fig.pos="h",fig.cap="\\label{fig:size} Continuous incomplete variable under systematical missingness by varing: number of clusters (N); sample size per cluster ($n_i$), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_N
 ```
 
 <!-- Again, try to use only one tense: past or present tense. This paragraph mixed both within a single sentence. It is standard to write the results and discussion sections in past tense. -->
 <!-- What do you mean with "the average width of the estimates"? Are you referring to the CI width for the individual estimates? Or are you referring to the width of the estimates of the bias as resulting from monte carlo error?  -->
-By increasing N, the number of clusters, from 10 to 100, we observe that the bias was not affected but the average width of the estimates decreases (larger precision) and hence the RMSE decreased. On the other hand, by decreasing the number of units per cluster (from $n_i$=1000 to $n_i$=100) the precision decreased for all coefficients, the bias on coefficient estimates were not drastically affected but the variances of random effects did. 
+By increasing N, the number of clusters, from 10 to 100, we observed that the bias was not affected but the CI width of the estimates decreased (larger precision) and hence the RMSE decreased. On the other hand, by reducing the number of units per cluster (from $n_i$=1000 to $n_i$=100) the precision decreased for all coefficients, the bias on coefficient estimates were not drastically affected but the variances of random effects did. 
 
-When we reduced the sample size to 50 patients per study (Appendix), the bias and RMSE of the $\sigma_b2$ were drastically affected, with variability on these criteria. This could be explained in part due to the scarce information on certain clusters, which affects directly the estimation of the Heckman model on those clusters.
+When we reduced the sample size to 50 patients per study (Appendix), the bias and RMSE of the $\sigma_b2$ were drastically affected compared to the previous $N; n_i$ settings. This could be explained in part due to the scarce information on certain clusters, which affects directly the estimation of the Heckman model on those clusters.
 
-##### Bivariate incomplete variable
-This is part of the main analyses is in't it? I moved it up accordingly.
-We also find (Figure \ref{fig:bin}) that the 2l.Heckman method provides unbiased results on coefficient parameters and random effects when the missing variable is binary. However, we observe more variability in the estimates of random effects, reflected on longer confidence intervals on the Bias and RMSE criteria.
-
-```{r bin,fig.pos="!H",fig.cap="\\label{fig:bin} Comparison of methods for binary incomplete variable under systematical missingness, the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
-plot_bin
-```
 
 ### Sensitivity analysis: distributional assumptions
-In this sensitivity analysis, we aimed to investigate the importance of distributional assumptions regarding the error terms.
 
-```{r dist,fig.pos="!H",fig.cap="\\label{fig:dist} Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, where the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last"}
+```{r dist,fig.pos="!H",fig.cap="\\label{fig:dist} Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, where the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_S
 ```
 <!-- Ideally, the phrase " where the dashed line depicts the true simulated parameter" belongs in a note under the caption. -->
 
 <!-- This next paragraph belongs in the methods section. Alternatively, you could make a (sub) section for a sensitivity analysis, where you could describe both the methods and results of this sensitivity analysis (which I did here.  -->
 
-#### Methods
-To investigate how the imputation models behave in settings with departures from the bivariate normal distribution, provide two sensitivity analyses.
-1. \textbf{Skewed-t:} We drew error terms from a bivariate skewed student-t distribution using the same location parameter and covariance matrix of the normal distributed settings,  with 4 degrees of freedom and an $\alpha=\{-2,6\}$ parameter which regulates the the slant of the density. 
-2. \textbf{Name 2 :} In addition we simulated an explicit missingness process, where error terms of the selection and outcome equations were independently normal distributed and the selection of observations depended on the value of the outcome variable, as $ry^*_i=0.3y^*_i+\epsilon^S_{i}$. These settings assure that the percentage of missingness on the outcome variable is around 60\% in all the evaluated scenarios.
-3. \textbf{Normal :} As a reference, we provide the results from the basic scenario of the main simulation study, where the error terms were Normally distributed.  <!-- Multivariate normal? -->
+Here, we aimed to investigate how the imputation models behave in settings with departures from the bivariate normal distribution, provide two sensitivity analyses.
+
+ 1. \textbf{Skewed-t:} We drew error terms from a bivariate skewed student-t distribution using the same location parameter and covariance matrix of the normal distributed settings,  with 4 degrees of freedom and an $\alpha=\{-2,6\}$ parameter which regulates the the slant of the density. 
+ 2. \textbf{Explicit:} In addition we simulated an explicit missingness process, where error terms of the selection and outcome equations were independently normal distributed and the selection of observations depended on the value of the outcome variable, as $ry^*_i=0.3y^*_i+\epsilon^S_{i}$. These settings assure that the percentage of missingness on the outcome variable is around 60\% in all the evaluated scenarios.
+ 3. \textbf{Normal:} As a reference, we provide the results from the basic scenario of the main simulation study, where the error terms were Bivariate normal distributed. 
 
 <!-- Replace "Name 2" with a short name for this scenario, preferably not an equation. Then use the same name in the Figure. -->
 
-#### Results
 
-When we use the Heckman model in an explicit MNAR process ($ry^*=f(y^*)$), we observe that our model might not be completely suitable for this type of scenario, as it highly affected the bias of the intercept parameter ($\beta_0$) and the width of the 95\% CI of all the coefficient parameters \ref{fig:dist}. Also the bias of the random effects parameters ($\sigma_0$ and $\sigma_2$) was affected. 
+When we used the Heckman model in an explicit MNAR process, we observed that our model might not be completely suitable for this type of scenario, as it highly affected the bias of the intercept parameter ($\beta_0$) and the width of the 95\% CI of all the coefficient parameters \ref{fig:dist}. Also the bias of the random effects parameters ($\sigma_0$ and $\sigma_2$) was affected. 
 
-With respect to the t-distributed error scenario, only the bias of $\beta_0$ was affected. For both scenarios, it is also seen that the coverage in the $\beta_0$ was highly affected.
+With respect to the Skewed-t scenario, only the bias of $\beta_0$ was affected. For both scenarios, it is also seen that the coverage in the $\beta_0$ was highly affected.
+
 <!-- I don't see $\sigma_0$ and $\sigma_2$ in the figure. Are they called $\sigma_{b0}$ and $\sigma_{b2}$ there? -->
 <!-- Can you add some more description of the results of the sensitivity analyses? For instance, that in case of the skewed distribution the other methods are also biased and also have poor coverage? For the explicit MNAR process, the other methods are also biased. -->
 
