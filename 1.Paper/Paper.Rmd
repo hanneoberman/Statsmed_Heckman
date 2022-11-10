@@ -356,7 +356,7 @@ Processing times differ in the imputation methods evaluated, for example, for 10
 ### Results M(N)AR scenarios
 
 #### Continuous incomplete variable
- ```{r rhocont,fig.align='center',fig.pos="!htb",fig.cap="\\label{fig:rhocont} Continuous incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+ ```{r rhocont,fig.align='center',fig.pos="!htb",fig.cap="Continuous incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_rho
  ```
 
@@ -377,9 +377,9 @@ Regarding the CI length of the 95th percentile of the estimated parameters, we o
 
 #### Bivariate incomplete variable
 
-In case of a bivariate missing variable, we also find (Figure \ref{fig:bin}) that the 2l.Heckman method provides unbiased results on coefficient parameters and random effects when the missing variable is binary. However, we observe more variability in the estimates of random effects, reflected on longer confidence intervals on the Bias and RMSE criteria.
+In case of a bivariate missing variable, we also find (Figure \ref{fig:rhobin}) that the 2l.Heckman method provides unbiased results on coefficient parameters and random effects when the missing variable is binary. However, we observe more variability in the estimates of random effects, reflected on longer confidence intervals on the Bias and RMSE criteria.
 
- ```{r rhobin,fig.align='center',fig.pos="!htb",fig.cap="\\label{fig:bin} Binary incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+ ```{r rhobin,fig.align='center',fig.pos="!htb",fig.cap="Binary incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_bin
 ```
 
@@ -388,7 +388,7 @@ plot_bin
 We evaluated how robust our method was to variations in the number of clusters and also in the sample size of cluster (Figure \ref{fig:size}).
 
 
-```{r size,fig.align='center',fig.pos="!htb",fig.cap="\\label{fig:size} Continuous incomplete variable under systematical missingness by varing: number of clusters (N); sample size per cluster ($n_i$), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+```{r size,fig.align='center',fig.pos="!htb",fig.cap="Continuous incomplete variable under systematical missingness by varing: number of clusters (N); sample size per cluster ($n_i$), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_N
 ```
 
@@ -401,7 +401,7 @@ When we reduced the sample size to 50 patients per study (Appendix), the bias an
 
 ### Sensitivity analysis: distributional assumptions
 
-```{r dist,fig.align='center',fig.pos="!htb",fig.cap="\\label{fig:dist} Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, where the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+```{r dist,fig.align='center',fig.pos="!htb",fig.cap="Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, where the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_S
 ```
 <!-- Ideally, the phrase " where the dashed line depicts the true simulated parameter" belongs in a note under the caption. -->
@@ -438,7 +438,7 @@ Malaria is a mosquito-borne disease and, especially in children and pregnant wom
 <!-- else split it up into two sentences to make it easier to read (see below). -->
 Specifically, in Uganda, under the Uganda LLIN evaluation project, a LLINS distribution campaign was conducted between 2013 and 2014. In 2017, the effect of LLIN control together with insecticides was assessed through a cross-sectional community survey in 104 health sub-districts in 48 districts located within 5 sub-regions of Uganda.  
 
-In each sub-district, a sample of households with at least one child aged 2-10 years was surveyed, where information was collected on household conditions and use of preventive measures. In addition, finger prick blood samples were taken from each child to determine the prevalence of parasitaemia and an etymological study was conducted to estimate mosquito prevalence. Details of the project and survey are provided elsewhere. [@staedke2019]
+In each sub-district, a sample of households with at least one child aged 2-10 years was surveyed, where information was collected on household conditions and use of preventive measures. In addition, finger prick blood samples were taken from each child to determine the prevalence of parasitemia and an etymological study was conducted to estimate mosquito prevalence. Details of the project and survey are provided elsewhere. [@staedke2019]
 
 For this example, we used data accessed directly from CliniEpiDB, [@staedke] where data were collected from 5195 households with verified consent, inhabited by 11137 residents aged 2-10 years. Blood samples were only taken from 8846 children, as 69 were excluded from the study due to lack of consent and 2222 were not present at the time of the survey. Although the original data set consists of 164 variables, here we only consider the variables described in Table \ref{tab:descriptive}, which were used as predictors in the imputation model.
 
@@ -488,7 +488,7 @@ print(xt, comment = FALSE, include.rownames=FALSE,add.to.row = comment,
 <!-- What are non-participants? Children with missing values? -->
 According to our imputation approach, non-participants were estimated to have a higher prevalence of malaria than participants in more than half of the districts analyzed. 
 As can be seen in Figure \ref{fig:region}, for each subregion the prevalence estimates of the approaches do not differ significantly between methods. However, prevalence estimates under the MNAR assumption (i.e. 2 level Heckman)  are higher than those estimated under the MAR or MCAR aproaches, except for the East-Central region. 
-```{r region,fig.align='center',fig.width = 5, fig.asp =.67, fig.pos="!htb", fig.cap="\\label{fig:region} Estimates of malaria prevalence by Uganda subregion",echo=FALSE,fig.keep="last",cache = TRUE}
+```{r region,fig.align='center',fig.width = 5, fig.asp =.67, fig.pos="!htb", fig.cap="Estimates of malaria prevalence by Uganda subregion",echo=FALSE,fig.keep="last",cache=TRUE}
  plot_dist
 ```
 
@@ -497,7 +497,7 @@ In terms of prevalence by age, there are no significant differences between meth
 <!-- Can you explain in one sentence how mobility of children is related to prevalence here? -->
 
 
-```{r region_age,fig.align='center', fig.pos="!htb", fig.cap="\\label{fig:region_age} Estimation of malaria prevalence by region and age",echo=FALSE,fig.keep="last",cache = TRUE}
+```{r region_age,fig.align='center', fig.pos="!htb", fig.cap="Estimation of malaria prevalence by region and age",echo=FALSE,fig.keep="last",cache = TRUE}
 plot_sdist_age
 ```
 

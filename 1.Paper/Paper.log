@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  10 NOV 2022 12:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  10 NOV 2022 13:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -878,21 +878,6 @@ LaTeX Warning: Unused global option(s):
 
 (./Paper.aux
 
-LaTeX Warning: Label `fig:rhocont' multiply defined.
-
-
-LaTeX Warning: Label `fig:size' multiply defined.
-
-
-LaTeX Warning: Label `fig:dist' multiply defined.
-
-
-LaTeX Warning: Label `fig:region' multiply defined.
-
-
-LaTeX Warning: Label `fig:region_age' multiply defined.
-
-
 LaTeX Warning: Label `discussion' multiply defined.
 
 )
@@ -1169,7 +1154,7 @@ File: flag_EU.pdf Graphic file (type pdf)
 Package pdftex.def Info: flag_EU.pdf  used on input line 1222.
 (pdftex.def)             Requested size: 40.60155pt x 57.45189pt.
 (./Paper.bbl [16 <./flag_EU.pdf>]
-Underfull \hbox (badness 2277) in paragraph at lines 161--164
+Underfull \hbox (badness 2277) in paragraph at lines 160--163
 []\T1/stix/m/n/10.03749 Audigier VCM, Resche-Rigon MIE. Micemd: Mul-ti-ple Impu-ta-tion by Chained Equations with Mul-ti-level Data.
  []
 
@@ -1182,15 +1167,15 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 20754 strings out of 476931
- 321991 string characters out of 5824419
- 653331 words of memory out of 5000000
- 41533 multiletter control sequences out of 15000+600000
+ 20753 strings out of 476931
+ 321982 string characters out of 5824419
+ 653196 words of memory out of 5000000
+ 41532 multiletter control sequences out of 15000+600000
  581095 words of font info for 168 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  87i,11n,91p,982b,659s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
-Output written on Paper.pdf (18 pages, 492449 bytes).
+Output written on Paper.pdf (18 pages, 492271 bytes).
 PDF statistics:
  513 PDF objects out of 1000 (max. 8388607)
  450 compressed objects within 5 object streams

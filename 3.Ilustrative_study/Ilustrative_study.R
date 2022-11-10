@@ -287,13 +287,21 @@ data_long[, c("Statistic", "Parameter") := tstrsplit(Statistic, "_", fixed=TRUE)
 data_wide<- setDT(dcast(data_long, subreg_id + count+ Miss+Parameter ~ Statistic, value.var = "Value"))
 data_wide[,Parameter:=factor(Parameter,levels=c("MCAR","MAR","MNAR"))]
 levels(data_wide$Parameter)<-c("CC","2l.MAR","2l.Heckman")
-
+levels(data_wide$subreg_id)<-c("East\nCentral","Mid\nEastern","Mid\nWestern","North\nEast","South\nWestern")
 pd <- position_dodge(width = 0.4)
 plot_dist<-ggplot(data_wide, aes(x = subreg_id, y = p, colour = Parameter)) +
                   geom_pointrange(aes(ymax = UC, ymin = LC),position = pd) + 
                   geom_point(position = pd)+ theme_light()+
-                  ylab("Parasite prevalence (%)")+xlab("Sub-region")+
-                  scale_color_brewer(palette="Dark2")
+                  ylab("Parasitemia prevalence (%)")+xlab("Sub-region")+
+                  scale_color_brewer(palette="Dark2")+labs(color='Method')+ 
+                  theme(strip.background =element_rect(fill="white"),legend.position="bottom",legend.margin=margin(t=-12))+
+                  theme(axis.text.x = element_text(size=7),
+                        axis.text.y = element_text(size=7),
+                        axis.title=element_text(size=8),
+                        legend.text=element_text(size=6),
+                        legend.title=element_text(size=7))
+
+  
                   
 
 
@@ -323,7 +331,7 @@ mod2<-pred_model(model=mod.mar,source="2l.MAR")
 mod<-rbind(mod0,mod1,mod2)
 setDT(mod)[,source:=as.factor(source)]
 mod[,source:=factor(source,levels=c("CC","2l.MAR","2l.Heckman"))]
-
+levels(mod$subreg_id)<-c("East Central","Mid Eastern","Mid Western","North East","South Western")
 #Prevalence plot
 plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) + 
   geom_line(aes(colour=source))+ 
@@ -338,8 +346,13 @@ plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(), 
         legend.position = "bottom",
-        legend.title = element_blank())
-
+        legend.title = element_blank(),
+        axis.text.x = element_text(size=7),
+        axis.text.y = element_text(size=7),
+        axis.title=element_text(size=8),
+        legend.text=element_text(size=6),
+        strip.text.x = element_text(size = 7))+
+ theme(strip.background =element_rect(fill="white"),legend.position="bottom",legend.margin=margin(t=-10))
 
 ##### END CODE########
 # Prevalence per subregion----
