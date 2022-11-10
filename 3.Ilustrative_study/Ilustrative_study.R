@@ -156,23 +156,26 @@ hdataF0$dis_id<-as.integer(as.factor(hdataF0$dis_id)) #convert as numeric for im
 
 sum.table<-setDT(hdataF0)[,.(did=(length(unique(dis_name))),
                              N=.N,
-                             age=round(mean(age),2),
+                             age=format(round(mean(age),2),nsmall = 2),
                              p_anopheles= round(mean(exp(p_anopheles)),2),
                              LIp_an=round(exp(quantile(p_anopheles,probs=0.025,type=1)),1),
                              UIp_an=round(exp(quantile(p_anopheles,probs=0.975,type=1)),1),
-                             wealthin_hou=round(mean(wealthin_hou),2),
-                             LIw=round(quantile(wealthin_hou,probs=0.025,type=1),1),
-                             UIw=round(quantile(wealthin_hou,probs=0.975,type=1),1),
+                             wealthin_hou=format(round(mean(wealthin_hou),2), nsmall = 2),
+                             LIw=format(round(quantile(wealthin_hou,probs=0.025,type=1),1), nsmall = 1),
+                             UIw=format(round(quantile(wealthin_hou,probs=0.975,type=1),1), nsmall = 1),
                              bednets_pp=round(sum(ifelse(bednets_pp=="Yes",1,0))/.N*100,1),
-                             sex=round(sum(ifelse(sex=="Male",1,0))/.N*100,1),
+                             sex=format(round(sum(ifelse(sex=="Male",1,0))/.N*100,1),nsmall = 1),
                              fundays=round(sum(ifelse(fundays=="yes",1,0))/.N*100,1),
-                             ry=round((.N-sum(ry))/.N*100,1)),by=list(subreg_id)]
+                             ry=format(round((.N-sum(ry))/.N*100,1),nsmall = 1)),by=list(subreg_id)]
 
 
 sum.table[,p_anopheles:=paste0(p_anopheles,"[",LIp_an,",",UIp_an,"]")]
 sum.table[,wealthin_hou:=paste0(wealthin_hou,"[",LIw,",",UIw,"]")]
-
+sum.table$subreg_id<- c("North East","Mid Eastern","South Western","Mid Western","East Central")
 sum.table[,c("LIp_an","UIp_an","LIw","UIw"):=NULL]
+sum.table[ ,(colnames(sum.table)) := lapply(.SD, as.character),
+           .SDcols = colnames(sum.table)]
+
 
 # 2.1. Exclusion restriction assesment----
 fits <- gam(ry ~ s(age,k=3)+p_anopheles+wealthin_hou+bednets_pp+fundays+sex, family=binomial,data = hdataF0)
@@ -182,15 +185,17 @@ summary(fito)
 
 tfito<-as.data.table(rbind(summary(fito)$p.table,summary(fito)$s.table))
 tfits<-as.data.table(rbind(summary(fits)$p.table,summary(fits)$s.table))
-ps<-c("***","***","","***","***","","***")
-po <-c("***","***","***","***","","","***")
-names<-c("(Intercept)","Female Anopheline/house (Log10 mean)","Household wealth index","Bednet for 2 person-Yes","Sample taken in holidays-Yes","Sex-Male", "s(Age)")
-esto<-paste0(round(tfito$Estimate,3),"(",round(tfito$`Std. Error`,3),")",po)
-ests<-paste0(round(tfits$Estimate,3),"(",round(tfits$`Std. Error`,3),")",ps)
+ps <-c("***","***","   ","***","***","   ","***")
+po <-c("***","***","***","***","   ","   ","***")
+names<-c("(Intercept)","Log10 Female Anopheline","Wealth index","Bednet-Yes","Holidays-Yes","Girls-No", "s(Age)")
+esto<-paste0(format(round(tfito$Estimate,2), nsmall = 2),"(",format(round(tfito$`Std. Error`,2), nsmall = 2),")",po)
+ests<-paste0(format(round(tfits$Estimate,2), nsmall = 2),"(",format(round(tfits$`Std. Error`,2), nsmall = 2),")",ps)
 tablexc<-as.data.table(cbind(names,esto,ests))
+tablexc[ ,(colnames(tablexc)) := lapply(.SD, as.character),
+           .SDcols = colnames(tablexc)]
 
 
-#3. Multiple Imputation ---- 
+#3. Multiple Imputation ----
 
 #3.1. Transform dataset for imputation----
 #Get covariates of age splines
@@ -277,7 +282,7 @@ colnames(abs.outcome_mnar)<-c("subreg_id","p_MNAR","LC_MNAR","UC_MNAR")
 data_prev<-merge(data_MCAR, abs.outcome_mar,by="subreg_id")
 data_prev<-merge(data_prev,abs.outcome_mnar,by="subreg_id")
 
-data_long<- setDT(melt(data_prev, 
+data_long<- setDT(melt(data_prev,
                   measure.vars = c( "p_MCAR","p_MAR","p_MNAR",
                                     "LC_MCAR","LC_MAR","LC_MNAR",
                                     "UC_MCAR","UC_MAR","UC_MNAR"),
@@ -290,10 +295,10 @@ levels(data_wide$Parameter)<-c("CC","2l.MAR","2l.Heckman")
 levels(data_wide$subreg_id)<-c("East\nCentral","Mid\nEastern","Mid\nWestern","North\nEast","South\nWestern")
 pd <- position_dodge(width = 0.4)
 plot_dist<-ggplot(data_wide, aes(x = subreg_id, y = p, colour = Parameter)) +
-                  geom_pointrange(aes(ymax = UC, ymin = LC),position = pd) + 
+                  geom_pointrange(aes(ymax = UC, ymin = LC),position = pd) +
                   geom_point(position = pd)+ theme_light()+
                   ylab("Parasitemia prevalence (%)")+xlab("Sub-region")+
-                  scale_color_brewer(palette="Dark2")+labs(color='Method')+ 
+                  scale_color_brewer(palette="Dark2")+labs(color='Method')+
                   theme(strip.background =element_rect(fill="white"),legend.position="bottom",legend.margin=margin(t=-12))+
                   theme(axis.text.x = element_text(size=7),
                         axis.text.y = element_text(size=7),
@@ -301,8 +306,8 @@ plot_dist<-ggplot(data_wide, aes(x = subreg_id, y = p, colour = Parameter)) +
                         legend.text=element_text(size=6),
                         legend.title=element_text(size=7))
 
-  
-                  
+
+
 
 
 # 5.Prevalence per subregion and age ----
@@ -320,21 +325,21 @@ mod0$source<-"CC"
 
 # MNAR imputed dataset no full
 mod.mnarf <- with(data_heck, gam(test ~ subreg_id + s(age,k=3,by = subreg_id), family=binomial))
-mod1<-pred_model(model=mod.mnarf,source="2l.Heckman")  
+mod1<-pred_model(model=mod.mnarf,source="2l.Heckman")
 
 
 # MAR imputed dataset
 mod.mar <- with(data_mar, gam(test ~ subreg_id + s(age,k=3,by = subreg_id), family=binomial))
-mod2<-pred_model(model=mod.mar,source="2l.MAR")  
+mod2<-pred_model(model=mod.mar,source="2l.MAR")
 
-#Combine datasets   
+#Combine datasets
 mod<-rbind(mod0,mod1,mod2)
 setDT(mod)[,source:=as.factor(source)]
 mod[,source:=factor(source,levels=c("CC","2l.MAR","2l.Heckman"))]
 levels(mod$subreg_id)<-c("East Central","Mid Eastern","Mid Western","North East","South Western")
 #Prevalence plot
-plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) + 
-  geom_line(aes(colour=source))+ 
+plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) +
+  geom_line(aes(colour=source))+
   scale_color_brewer(palette="Dark2")+
   scale_fill_brewer(palette="Dark2")+
   geom_ribbon(aes(ymin=lb, ymax=ub,fill =source), alpha = 0.3)+
@@ -343,8 +348,8 @@ plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) +
   scale_x_continuous(limits=c(2,10)) +
   xlab("Age (years)")+ylab("Parasite prevalence (%)")+
   theme_bw() +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(), 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
         legend.position = "bottom",
         legend.title = element_blank(),
         axis.text.x = element_text(size=7),

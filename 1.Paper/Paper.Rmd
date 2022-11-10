@@ -32,7 +32,7 @@ output:
   fig_caption: yes
   longtable: yes
   doublespace: yes
-
+longtable: true
 header-includes:
    - \usepackage{mathtools}
    - \usepackage{float}
@@ -41,6 +41,22 @@ header-includes:
      \newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
    - \usepackage{amsmath}
      \DeclareMathOperator\arctanh{arctanh}
+   - \usepackage{booktabs}
+   - \usepackage{longtable}
+   - \usepackage{array}
+   - \usepackage{multirow}
+   - \usepackage{wrapfig}
+   - \usepackage{float}
+   - \usepackage{colortbl}
+   - \usepackage{pdflscape}
+   - \usepackage{tabu}
+   - \usepackage{threeparttable}
+   - \usepackage{makecell}
+   - \usepackage{xcolor}
+   - \usepackage{array}
+     \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+
 ---
 <!-- I tried to add a second affiliation for me, but I get 1,1 behind my name instead of 1,2. Do you happen to know how to fix this? Aparently we should not add space between comas :S -->
 <!-- I find the last sentence of the abstract a bit hard to read. Does the following rephrasing make sense? yes!! thanks i just add yours!! -->
@@ -76,8 +92,8 @@ Finally we provide a discussion  in section \ref{discussion} about  the results,
 The Heckman selection model was initially proposed as a method to correct for selection bias, in which individuals are not randomly selected from the population, leading to inconsistent estimates and erroneous conclusions. [@heckman1976]
 
 Selection bias occurs when the selection of a subject  or their observation into the sample is influenced by unobserved variables  (e.g., the respondent's level of trust toward healthcare entities may cause them to self-select out of the study or refuse to sign consent for a test), which in turn are correlated with unobserved variables related to a variable of interest (e.g., the result of a blood test). [@vella1998] 
-
 \begin{figure}[h!]
+\vspace{-0.7cm}
    \centering
    \includegraphics[scale=0.35]{DAG_heckman.png}
    \caption{DAG Heckman selection model: here the nodes (dotted = latent, continuous = observable) describe the relationship between $y^*_{ij}$ the latent response and $r^*_{ij}$ the latent  selection variables}
@@ -356,7 +372,7 @@ Processing times differ in the imputation methods evaluated, for example, for 10
 ### Results M(N)AR scenarios
 
 #### Continuous incomplete variable
- ```{r rhocont,fig.align='center',fig.pos="!htb",fig.cap="Continuous incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+ ```{r rhocont,fig.align='center',fig.pos="!htb",fig.cap="Continuous incomplete variable by varing $\\rho$, where dashed lines depict the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_rho
  ```
 
@@ -379,16 +395,15 @@ Regarding the CI length of the 95th percentile of the estimated parameters, we o
 
 In case of a bivariate missing variable, we also find (Figure \ref{fig:rhobin}) that the 2l.Heckman method provides unbiased results on coefficient parameters and random effects when the missing variable is binary. However, we observe more variability in the estimates of random effects, reflected on longer confidence intervals on the Bias and RMSE criteria.
 
- ```{r rhobin,fig.align='center',fig.pos="!htb",fig.cap="Binary incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+```{r rhobin,fig.align='center',fig.pos="!htb",fig.cap="Binary incomplete variable by varing $\\rho$, where dashed lines depict the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_bin
 ```
-
 
 ### Sensitivity analysis: number of clusters and sample size of clusters
 We evaluated how robust our method was to variations in the number of clusters and also in the sample size of cluster (Figure \ref{fig:size}).
 
 
-```{r size,fig.align='center',fig.pos="!htb",fig.cap="Continuous incomplete variable under systematical missingness by varing: number of clusters (N); sample size per cluster ($n_i$), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+```{r size,fig.align='center',fig.pos="!htb",fig.cap="Continuous incomplete variable under systematical missingness by varing: number of clusters (N); sample size per cluster ($n_i$), where dashed lines depict the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_N
 ```
 
@@ -401,7 +416,7 @@ When we reduced the sample size to 50 patients per study (Appendix), the bias an
 
 ### Sensitivity analysis: distributional assumptions
 
-```{r dist,fig.align='center',fig.pos="!htb",fig.cap="Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, where the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+```{r dist,fig.align='center',fig.pos="!htb",fig.cap="Continuous incomplete variable with deviations in distribution assumptions, where dashed lines depict the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_S
 ```
 <!-- Ideally, the phrase " where the dashed line depicts the true simulated parameter" belongs in a note under the caption. -->
@@ -414,7 +429,7 @@ Here, we aimed to investigate how the imputation models behave in settings with 
  2. \textbf{Explicit:} In addition we simulated an explicit missingness process, where error terms of the selection and outcome equations were independently normal distributed and the selection of observations depended on the value of the outcome variable, as $ry^*_i=0.3y^*_i+\epsilon^S_{i}$. These settings assure that the percentage of missingness on the outcome variable is around 60\% in all the evaluated scenarios.
  3. \textbf{Normal:} As a reference, we provide the results from the basic scenario of the main simulation study, where the error terms were Bivariate normal distributed. 
 
-<!-- Replace "Name 2" with a short name for this scenario, preferably not an equation. Then use the same name in the Figure. -->
+<!-- Replace "Name 2" with a short name for this scenario, preferably not an equation. Then use the same name in the Figure. Thanks a lot it is awesome :D!!-->
 
 
 When we used the Heckman model in an explicit MNAR process, we observed that our model might not be completely suitable for this type of scenario, as it highly affected the bias of the intercept parameter ($\beta_0$) and the width of the 95\% CI of all the coefficient parameters \ref{fig:dist}. Also the bias of the random effects parameters ($\sigma_0$ and $\sigma_2$) was affected. 
@@ -429,6 +444,7 @@ With respect to the Skewed-t scenario, only the bias of $\beta_0$ was affected. 
 \label{example}
 ```{r, include=FALSE,cache = TRUE}
 library(here)
+
  source(here('3.Ilustrative_study','Ilustrative_study.R'),local = knitr::knit_global())
 ```
 
@@ -441,28 +457,22 @@ Specifically, in Uganda, under the Uganda LLIN evaluation project, a LLINS distr
 In each sub-district, a sample of households with at least one child aged 2-10 years was surveyed, where information was collected on household conditions and use of preventive measures. In addition, finger prick blood samples were taken from each child to determine the prevalence of parasitemia and an etymological study was conducted to estimate mosquito prevalence. Details of the project and survey are provided elsewhere. [@staedke2019]
 
 For this example, we used data accessed directly from CliniEpiDB, [@staedke] where data were collected from 5195 households with verified consent, inhabited by 11137 residents aged 2-10 years. Blood samples were only taken from 8846 children, as 69 were excluded from the study due to lack of consent and 2222 were not present at the time of the survey. Although the original data set consists of 164 variables, here we only consider the variables described in Table \ref{tab:descriptive}, which were used as predictors in the imputation model.
-
-
-```{r descriptive,fig.align='center',cache = TRUE, results = "asis", table.pos="!htb", echo=FALSE}
-if (!require("xtable")) install.packages("xtable")
-xt <- xtable(sum.table,
-             caption = "Descriptive analysis, predictor variables", label = "tab:descriptive",align= c("p{0.0\\textwidth}|",
-                                   "p{0.11\\textwidth}|",
-                                   "p{0.07\\textwidth}|",
-                                   "p{0.07\\textwidth}|",
-                                   "p{0.05\\textwidth}|",
-                                   "p{0.10\\textwidth}|",
-                                   "p{0.12\\textwidth}|",
-                                   "p{0.07\\textwidth}|",
-                                   "p{0.07\\textwidth}|",
-                                   "p{0.07\\textwidth}|",
-                                   "p{0.07\\textwidth}|"))
-names(xt) <- c("Subregion","Districts (N)","Children (N)","Age mean (years)",
-                "Log10 Female Anopheline","Wealth index",
-                "Bednet (%)","Females (%)","Holidays (%)",
-                "Missing test(%)")
-print(xt, comment = FALSE, include.rownames=FALSE)
+```{r descriptive, echo = FALSE, warning = FALSE,cache = TRUE}
+options(kableExtra.latex.load_packages = FALSE) 
+library(kableExtra)
+kbl(sum.table, booktabs = T, align="r",
+    caption = "Descriptive analysis, predictor variables",
+    col.names = c("Sub-region","District (N)","Children (N)",
+                  "Age mean (years)","Log10 Female Anopheline","Wealth index",
+                "Bednet (%)","Girls (%)","Holiday (%)",
+                "No test (%)"),
+    row.names=FALSE)%>%
+  column_spec(c(1,5,6), width = "2,2cm")%>%
+  column_spec(c(2:3,7:10), width = "1cm")%>%
+  column_spec(c(4), width = "1,5cm")%>%
+  kable_styling(latex_options = c("striped", "scale_down"))
 ```
+
 
 <!-- I see you wrote both parasitemia and parasitaemia. Choose one -->
 To illustrate our proposed method, following the article by @rugnao2019, we estimated the prevalence of parasitemia by subregion and by age after approximately 3 years of LLIN campaigns started.  We estimated parasitemia prevalence using 3 approaches that made different assumptions on the missingness mechanism: MCAR, MAR and MNAR. 
@@ -471,33 +481,32 @@ Under the MCAR assumption, prevalence was calculated on the basis of the recorde
 
 Under the MNAR assumption, we used the proposed 2l.Heckman method to impute missing test values.  The selection and outcome equation included the same predictor variables as used under the MAR approach. 
 In addition, we included a holiday indicator variable as ERV, which was calculated according to school vacation calendars and public holidays in Uganda in 2017. We examined the association of this ERV with the outcome variable (y) and with the selection indicator (ry), conditioned on the remaining imputation predictors. The model results in Table \ref{tab:exclusion} indicate that the holiday indicator could be a plausible ERV variable, as it was significantly associated with ry, but not with y.
-
-```{r ERV,fig.align='center', cache = TRUE,results = "asis", table.pos="!htb", echo=FALSE}
-if (!require("xtable")) install.packages("xtable")
-xt <- xtable(tablexc,
-             caption = "Evaluation of Holidays as exclusion restriction variable", label = "tab:exclusion")
-names(xt) <- c("","Test result (y)"," Missing indicator (ry)")
-comment<- list( pos=list(0),command=NULL)
-comment$pos[[1]]<-c(nrow(xt))
-comment$command<-c(paste("\\hline",
-                         "***p<0.01",sep=" "))
-
-print(xt, comment = FALSE, include.rownames=FALSE,add.to.row = comment,
-      hline.after = c(-1,0))
+```{r exclusion, echo = FALSE, warning = FALSE,cache = TRUE}
+options(kableExtra.latex.load_packages = FALSE) 
+library(kableExtra)
+kbl(tablexc, booktabs = T, align="l",
+    caption = "Evaluation of Holidays as exclusion restriction variable",
+    col.names = c("Predictors/response","Test result (y)","Test taken (ry)"),
+    row.names=FALSE)%>%
+  column_spec(c(1,2,3), width = "2,5cm")%>%
+  kable_styling(position = "center",latex_options = c("striped"))%>%
+  footnote(general="***p<0.01",footnote_as_chunk = T)
 ```
+
+
 <!-- What are non-participants? Children with missing values? -->
-According to our imputation approach, non-participants were estimated to have a higher prevalence of malaria than participants in more than half of the districts analyzed. 
+According to our imputation approach, non-tested children were estimated to have a higher prevalence of malaria than participants in more than half of the districts analyzed. 
 As can be seen in Figure \ref{fig:region}, for each subregion the prevalence estimates of the approaches do not differ significantly between methods. However, prevalence estimates under the MNAR assumption (i.e. 2 level Heckman)  are higher than those estimated under the MAR or MCAR aproaches, except for the East-Central region. 
-```{r region,fig.align='center',fig.width = 5, fig.asp =.67, fig.pos="!htb", fig.cap="Estimates of malaria prevalence by Uganda subregion",echo=FALSE,fig.keep="last",cache=TRUE}
+```{r region,fig.align='center',fig.width = 5, fig.asp =.67, fig.pos="!htb", fig.cap="Estimates of malaria prevalence by sub-region",echo=FALSE,fig.keep="last",cache=TRUE}
  plot_dist
 ```
 
-<!-- The age at which children start going to school is not universal, so you need to mention this. -->
-In terms of prevalence by age, there are no significant differences between methods (Figure \ref{figure:region_age}). The prevalence estimates for children aged 2 to 6 years are very similar in all regions under the different assumptions. This could be partly explained by the mobility of children at this age compared to that of school-age children. 
-<!-- Can you explain in one sentence how mobility of children is related to prevalence here? -->
+<!-- The age at which children start going to school is not universal, so you need to mention this. done!! thanks -->
+In terms of prevalence by age, there are no significant differences between methods (Figure \ref{figure:region_age}). The prevalence estimates for children aged 2 to 6 years are very similar in all regions under the different assumptions. Assuming that children start going to school after the age of 6, the results could be partly explained by the mobility of 2-6 year olds compared to school-age children, i.e. school-age children spend more time outdoors and travel more than younger children.
+<!-- Can you explain in one sentence how mobility of children is related to prevalence here? OK-->
 
 
-```{r region_age,fig.align='center', fig.pos="!htb", fig.cap="Estimation of malaria prevalence by region and age",echo=FALSE,fig.keep="last",cache = TRUE}
+```{r region_age,fig.align='center', fig.pos="!htb", fig.cap="Estimates of malaria prevalence by sub-region and age",echo=FALSE,fig.keep="last",cache = TRUE}
 plot_sdist_age
 ```
 
@@ -510,37 +519,38 @@ However for school children, prevalences estimated with the Heckman method were 
 \label{discussion}
 We have extended and evaluated methods for multiple imputation of clustered datasets, in situations where some incomplete variables follow a MNAR mechanism.
 For clustered datasets, only imputation methods under the MAR mechanism had previously been proposed. Although imputation methods exist to handle MNAR they have only been designed for individual studies. This makes them limited in common IPD situations such as systematic missingness or when the proportion of missingness of a variable is very high in one of the included studies.   In this context, we proposed a new multiple imputation method to handle continuous and binary MNAR covariates specifically for a clustered dataset, which also allows appropriate borrowing of information between the clusters to obtain more reliable imputation results at the individual cluster level.
-<!-- If you say " a new multiple imputation method was proposed", it is unclear who proposed it. It is fine to say " We proposed a new multiple imputation method" (which is also shorter). -->
+<!-- If you say " a new multiple imputation method was proposed", it is unclear who proposed it. It is fine to say " We proposed a new multiple imputation method" (which is also shorter). thanks :D-->
 
 From the results of the simulations we can observe that the imputation method we propose can be valid for the imputation of continuous and binary type missing variables that follow a MNAR mechanism according to the Heckman model and that come from multilevel data such as those used in the IPDMA studies.
 
-Overall the method produced unbiased estimates with convergence close to 95\% for the fixed effects parameters with variation at the cluster level and also unbiased estimators for the random effects parameters. 
-<!-- What are "the fixed effects parameters with variation at the cluster level"? Isn't that a contradiction ? -->
+Overall, the method produced unbiased estimates with convergence close to 95\% for the coefficient parameters and for the random effects parameters resulted in less biased estimates compared to the other methods evaluated.  
 
-Empirically, we showed that the proposed method was robust to systemic and sporadic missingness in individual studies. This method, in particular, could provide more robust imputation values compared to individual-level imputation methods, as it not only allows for imputation of missing values in clusters with systematic losses, but can also shrink the values of individual clusters towards the global mean of studies. This is particularly advantageous in studies with extreme values or with values far away from those found on average at the global level. 
+Empirically, we showed that the proposed method was robust when there are systematic missigness at the cluster level. This method, in particular, could provide more robust imputation values compared with individual-level imputation methods, as it not only allows imputation of missing values in clusters with systematic missigness, but can also reduce the values of individual clusters toward the overall study mean. This is especially advantageous in studies with small sample sizes, where an analysis approach that ignores data from other studies may lead to extreme estimates of prevalence. By using our proposed method, these would be reduced to the overall mean. 
+
+
 <!-- But why is it advantageous for these studies? If the prevalence truly is large in these studies, they should not be shrunk. It may be advantageous (I guess) because these studies are too small to estimate the prevalence reliably. I suggest something like this:
 
-"This is particularly advantageous in studies with small sample sizes, where an analysis approach that ignores the data from other studies may lead to extreme estimates of prevalence. When using our proposed method, these would be shrunk to the overall mean."
+"This is particularly advantageous in studies with small sample sizes, where an analysis approach that ignores the data from other studies may lead to extreme estimates of prevalence. When using our proposed method, these would be shrunk to the overall mean. Sounds perfect!! thanks for ur suggestion."
 -->
 
-The advantage of the proposed method over methods that assume MAR is that it allows the imputation of variables from cluster level data following a MAR or MNAR mechanism according to Heckman's model. That is to say that under the specification of a valid exclusion variable the method determines by itself which is the most adjustable  correlation parameter between equations ($\rho$), or in general terms the  missingness mechanism  (MAR or MNAR), in each of the clusters evaluated.
-Our implementation of the imputation method is built on the mice R package, which allows, first of all, to be used both on the outcome and on the covariates. In addition, it offers the option of being used simultaneously with other imputation methods implemented the package, which is advantageous in databases containing missing variables with different prediction methods and models. Finally, the method can be used on systematically and sporadically missing clusters, both for continuous variables with heterogeneous error variance and for binary variables. 
+The advantage of the proposed method over methods that assume MAR is that it allows the imputation of variables from cluster level data following a MAR or MNAR mechanism according to the Heckman model. That is to say that under the specification of a valid exclusion variable the method determines by itself which is the most adjustable  correlation parameter between equations ($\rho$), or in general terms the  missingness mechanism  (MAR or MNAR), in each of the clusters evaluated.
+Our implementation of the imputation method was built according to the specifications of the mice R package, which allows, first of all, to be used both on the outcome and on the covariates. In addition, it offers the option of being used simultaneously with other imputation methods implemented in this package, which is advantageous in databases containing missing variables with different prediction methods and models. Finally, the method can be used on systematically and sporadically missing clusters, both for continuous and binary missing variables with heterogeneous effects and error variances. 
 
 ## Limitations and future directions
 
 A major limitation of our method is that it needs a valid restriction variable, which in some contexts is difficult to establish at the individual study level and can be even more challenging if one tries to find a valid exclusion variable across clusters.
-Also, the method is sensitive to the value of the correlation between the selection equation and outcome (rho), and in general it is observed that it can lead to biased results on fixed global parameters i.e. without variation across clusters. Similarly, the method can be sensitive to both the sample size and the number of studies included in the database. On the one hand, a small sample size at the individual study level can affect not only the precision of estimates but also the convergence of the method since it requires a minimum sample size to estimate all the parameters of the Heckman model which can be at least twice the number of parameters required in an imputation model that assumes MAR. On the other hand, a high number of studies that may improve the precision of the estimators may also make the estimation of the marginal parameters more difficult and also considerably increase the processing time of our method. 
+Also, the method can be sensitive to both the sample size and the number of studies included in the database. On the one hand, a small sample size at the individual study level can affect not only the precision of estimates but also the convergence of the method since it requires a minimum sample size to estimate all the parameters of the Heckman model which can be at least twice the number of parameters required in an imputation model that assumes MAR. On the other hand, a high number of studies that may improve the precision of the estimators may also make the estimation of the marginal parameters more difficult and also considerably increase the processing time of our method. 
 
 The data were simulated by attributing a constant correlation across all clusters in order to evaluate the performance against M(N)AR assumptions, but in practice this parameter is variable across clusters which can considerably affect the performance of the method. Therefore, in future research the effect of this parameter could be more deeply evaluated. One might also consider relaxing this assumption of constant correlation to allow for a random effects distribution for the correlation parameter. 
-<!-- Does my suggestion make sense? -->
 
-Further, the method can also be extended to other types of variables such as count or ordinal variables. Similarly, less restrictive Heckman based models can be considered in terms of normality distribution of errors and no specification of exclusion variables such as those proposed by Ogundimu. 
+<!-- Does my suggestion make sense? yes!!! thanks a lot-->
+
+Further, the method can also be extended to other types of variables such as count or ordinal variables. Similarly, less restrictive Heckman based models can be considered in terms of normality distribution of errors and no specification of exclusion variables such as those proposed by @ogundimu_collins19. 
 <!-- Add reference to Ogundimu -->
 
 ## Conclusion
 <!-- Always add a conclusion, also in stats papers. I'm thinking it should mention the following. I am not so sure on especially the last sentence, so feel free to rephrase -->
-We have <!--(well actually you) --> proposed an extension to the Heckman model that can account for MNAR, MAR or MCAR of a continuous or binary variable in clustered data sets. Our simulations showed that it has favorable statistical properties, when assumptions were met, and provided that the sample size was sufficiently large. Regarding deviations from distributional assumptions of the error terms, the coefficient parameters were fairly robust in terms of bias, but the intercept was not.
-
+We have <!--(well actually you) no actually Thomas :D --> proposed an extension to the Heckman model that can account for MNAR, MAR or MCAR of a continuous or binary variable in clustered data sets. Our simulations showed that it has favorable statistical properties, when assumptions were met, and provided that the sample size was sufficiently large. Regarding deviations from distributional assumptions of the error terms, the coefficient parameters were fairly robust in terms of bias, but the intercept was not.
 
 <!-- Can you add this disclaimer for me at the bottom? -->
 <!-- Also, I added recodid. If Harlan or Paul joins as co-author, don't forget to add the Canadian line as well -->
