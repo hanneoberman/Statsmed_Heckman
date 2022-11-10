@@ -225,30 +225,30 @@ pred["test","sage2"]<- 1
 meth<-ini$method
 meth[c("test")]<-"4l.heckman"
 
-# Full correlation of parameters
-# data_heck <- mice(hdataF0f, # dataset with missing values
-#                   m = 20,   # number of imputations
-#                   seed = 1234, #seed attached to the dataID
-#                   meth = meth, #imputation method vector
-#                   pred = pred, #imputation predictors matrix
-#                   maxit=1,
-#                   meta_method="reml",
-#                   pmm=FALSE)
-# save(data_heck,file=(here('3.Ilustrative_study','MalariaMNAR.RData')))
-load(file=here('3.Ilustrative_study','MalariaMNAR.RData'))
+#Full correlation of parameters
+data_heck <- mice(hdataF0f, # dataset with missing values
+                  m = 20,   # number of imputations
+                  seed = 1234, #seed attached to the dataID
+                  meth = meth, #imputation method vector
+                  pred = pred, #imputation predictors matrix
+                  maxit=1,
+                  meta_method="reml",
+                  pmm=FALSE)
+#save(data_heck,file=(here('3.Ilustrative_study','MalariaMNAR.RData')))
+#load(file=here('3.Ilustrative_study','MalariaMNAR.RData'))
 
 #3.4. Multiple imputation with  2l.2stage.bin method----
 
-# meth[c("test")]<-"2l.2stage.bin" 
-# pred["test","fundays"] <- 0
-# data_mar <- mice( hdataF0f, # dataset with missing values
-#                        m = 20,   # number of imputations
-#                        seed = 1234, #seed attached to the dataID
-#                        meth = meth, #imputation method vector
-#                        pred = pred, #imputation predictors matrix
-#                        maxit=1)
-# save(data_mar,file=(here('3.Ilustrative_study','MalariaMAR.RData')))
-load(file=here('3.Ilustrative_study','MalariaMAR.RData'))
+meth[c("test")]<-"2l.2stage.bin"
+pred["test","fundays"] <- 0
+data_mar <- mice( hdataF0f, # dataset with missing values
+                       m = 20,   # number of imputations
+                       seed = 1234, #seed attached to the dataID
+                       meth = meth, #imputation method vector
+                       pred = pred, #imputation predictors matrix
+                       maxit=1)
+#save(data_mar,file=(here('3.Ilustrative_study','MalariaMAR.RData')))
+#load(file=here('3.Ilustrative_study','MalariaMAR.RData'))
 
 # 4.1 Prevalence plot ----
 

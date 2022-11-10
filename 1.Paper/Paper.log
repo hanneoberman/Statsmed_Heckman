@@ -1,15 +1,15 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.27)  10 NOV 2022 11:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  10 NOV 2022 12:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **Paper.tex
 (./Paper.tex
-LaTeX2e <2022-06-01> patch level 5
-L3 programming layer <2022-09-28> (./WileyNJD-v2.cls
+LaTeX2e <2022-11-01>
+L3 programming layer <2022-11-02> (./WileyNJD-v2.cls
 Document Class: WileyNJD-v2 2017/06/23 v0.2 Standard LaTeX document class for Journal
 \job@temptoken=\toks16
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/base/fleqn.clo
 File: fleqn.clo 2016/12/29 v1.2b Standard LaTeX option (flush left equations)
 \mathindent=\skip47
@@ -20,7 +20,7 @@ Applying: [2015/01/01] Make \] robust on input line 74.
 LaTeX Info: Redefining \] on input line 75.
 Already applied: [0000/00/00] Make \] robust on input line 83.
 ) (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+File: size10.clo 2022/07/02 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count185
 \c@section=\count186
@@ -32,7 +32,7 @@ File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
 \c@table=\count192
 \abovecaptionskip=\skip48
 \belowcaptionskip=\skip49
-\bibindent=\dimen138
+\bibindent=\dimen140
 ) (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/etex-pkg/etex.sty
 Package: etex 2016/08/01 v2.7 eTeX basic definition package (PEB,DPC)
 \et@xins=\count193
@@ -51,8 +51,6 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 Package graphics Info: Driver file: pdftex.def on input line 107.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
-\stockwidth=\dimen139
-\stockheight=\dimen140
 ))
 \Gin@req@height=\dimen141
 \Gin@req@width=\dimen142
@@ -411,7 +409,7 @@ Package footmisc Info: Declaring symbol style lamport*-robust on input line 764.
 ) (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/tools/tabularx.sty
 Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/tools/array.sty
-Package: array 2022/03/10 v2.5f Tabular extension package (FMi)
+Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
 \col@sep=\dimen268
 \ar@mcellbox=\box109
 \extrarowheight=\dimen269
@@ -870,7 +868,7 @@ Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
 \xmathstrut@box=\box127
 \xmathstrut@dim=\dimen345
 ) (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-09-28 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2022-10-26 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count434
 \l__pdf_internal_box=\box128
 )
@@ -879,6 +877,21 @@ LaTeX Warning: Unused global option(s):
     [AMA,STIX1COL].
 
 (./Paper.aux
+
+LaTeX Warning: Label `fig:rhocont' multiply defined.
+
+
+LaTeX Warning: Label `fig:size' multiply defined.
+
+
+LaTeX Warning: Label `fig:dist' multiply defined.
+
+
+LaTeX Warning: Label `fig:region' multiply defined.
+
+
+LaTeX Warning: Label `fig:region_age' multiply defined.
+
 
 LaTeX Warning: Label `discussion' multiply defined.
 
@@ -1029,52 +1042,138 @@ Package pdftex.def Info: Paper_files/figure-latex/rhocont-1.pdf  used on input l
 <Paper_files/figure-latex/rhobin-1.pdf, id=196, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/rhobin-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/rhobin-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/rhobin-1.pdf  used on input line 864.
+Package pdftex.def Info: Paper_files/figure-latex/rhobin-1.pdf  used on input line 866.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 <Paper_files/figure-latex/size-1.pdf, id=198, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/size-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/size-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/size-1.pdf  used on input line 879.
+Package pdftex.def Info: Paper_files/figure-latex/size-1.pdf  used on input line 883.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 [10 <./Paper_files/figure-latex/rhobin-1.pdf>]
 <Paper_files/figure-latex/dist-1.pdf, id=212, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/dist-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/dist-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/dist-1.pdf  used on input line 904.
+Package pdftex.def Info: Paper_files/figure-latex/dist-1.pdf  used on input line 910.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 [11 <./Paper_files/figure-latex/size-1.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+[]|\T1/stix/m/n/10.03749 Districts
+ []
 
-LaTeX Warning: Reference `fig:dist' on page 12 undefined on input line 937.
 
-[12 <./Paper_files/figure-latex/dist-1.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+[]|\T1/stix/m/n/10.03749 Children
+ []
 
-LaTeX Warning: Reference `tab:descriptive' on page 13 undefined on input line 976.
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+[]|\T1/stix/m/n/10.03749 Age
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+\T1/stix/m/n/10.03749 mean
+ []
+
+
+Overfull \hbox (2.25623pt too wide) in paragraph at lines 994--994
+\T1/stix/m/n/10.03749 (years)| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+[]|\T1/stix/m/n/10.03749 Log10
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+\T1/stix/m/n/10.03749 Female
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+[]|\T1/stix/m/n/10.03749 Bednet
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+[]|\T1/stix/m/n/10.03749 Females
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--995
+[]|\T1/stix/m/n/10.03749 Missing
+ []
+
+
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 996--996
+[]|\T1/stix/m/n/10.03749 2.67[1.5,4.3]| 
+ []
+
+
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 997--997
+[]|\T1/stix/m/n/10.03749 0.84[0.1,2.5]| 
+ []
+
+
+Overfull \hbox (5.67342pt too wide) in paragraph at lines 998--998
+[]|\T1/stix/m/n/10.03749 South_Western| 
+ []
+
+
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 998--998
+[]|\T1/stix/m/n/10.03749 0.27[0.1,1.3]| 
+ []
+
+
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 999--999
+[]|\T1/stix/m/n/10.03749 1.27[0.1,3.2]| 
+ []
+
+
+Overfull \hbox (1.09973pt too wide) in paragraph at lines 1000--1000
+[]|\T1/stix/m/n/10.03749 2.74[0.4,6.3]| 
+ []
+
+
+Overfull \hbox (22.5231pt too wide) in paragraph at lines 992--1003
+ [][] 
+ []
 
 
 Package natbib Warning: Author undefined for citation`rugnao2019' 
-(natbib)                on page 13 on input line 980.
+(natbib)                on page 12 on input line 1008.
 
+[12 <./Paper_files/figure-latex/dist-1.pdf>]
+<Paper_files/figure-latex/region-1.pdf, id=252, 361.35pt x 241.90375pt>
+File: Paper_files/figure-latex/region-1.pdf Graphic file (type pdf)
+<use Paper_files/figure-latex/region-1.pdf>
+Package pdftex.def Info: Paper_files/figure-latex/region-1.pdf  used on input line 1068.
+(pdftex.def)             Requested size: 361.34912pt x 241.90315pt.
 
-LaTeX Warning: Reference `tab:exclusion' on page 13 undefined on input line 1007.
+LaTeX Warning: Reference `figure:region_age' on page 13 undefined on input line 1076.
 
+<Paper_files/figure-latex/region_age-1.pdf, id=253, 469.755pt x 325.215pt>
+File: Paper_files/figure-latex/region_age-1.pdf Graphic file (type pdf)
+<use Paper_files/figure-latex/region_age-1.pdf>
+Package pdftex.def Info: Paper_files/figure-latex/region_age-1.pdf  used on input line 1084.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[13]
 
-LaTeX Warning: Reference `fig:region' on page 13 undefined on input line 1013.
+LaTeX Warning: Text page 14 contains only floats.
 
-
-LaTeX Warning: Reference `figure:region_age' on page 13 undefined on input line 1021.
-
-[13] [14]
-<flag_EU.pdf, id=264, 597.23125pt x 845.1575pt>
+[14 <./Paper_files/figure-latex/region-1.pdf> <./Paper_files/figure-latex/region_age-1.pdf>] [15]
+<flag_EU.pdf, id=290, 597.23125pt x 845.1575pt>
 File: flag_EU.pdf Graphic file (type pdf)
 <use flag_EU.pdf>
-Package pdftex.def Info: flag_EU.pdf  used on input line 1158.
+Package pdftex.def Info: flag_EU.pdf  used on input line 1222.
 (pdftex.def)             Requested size: 40.60155pt x 57.45189pt.
-(./Paper.bbl [15 <./flag_EU.pdf>]
+(./Paper.bbl [16 <./flag_EU.pdf>]
 Underfull \hbox (badness 2277) in paragraph at lines 161--164
 []\T1/stix/m/n/10.03749 Audigier VCM, Resche-Rigon MIE. Micemd: Mul-ti-ple Impu-ta-tion by Chained Equations with Mul-ti-level Data.
  []
 
-) [16] (./Paper.aux)
+[17]) [18] (./Paper.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1083,18 +1182,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 20718 strings out of 477031
- 320906 string characters out of 5827206
- 645949 words of memory out of 5000000
- 41406 multiletter control sequences out of 15000+600000
+ 20754 strings out of 476931
+ 321991 string characters out of 5824419
+ 653331 words of memory out of 5000000
+ 41533 multiletter control sequences out of 15000+600000
  581095 words of font info for 168 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 87i,11n,91p,982b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,11n,91p,982b,659s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
-Output written on Paper.pdf (16 pages, 467888 bytes).
+Output written on Paper.pdf (18 pages, 492449 bytes).
 PDF statistics:
- 480 PDF objects out of 1000 (max. 8388607)
- 423 compressed objects within 5 object streams
- 125 named destinations out of 1000 (max. 500000)
- 295 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 513 PDF objects out of 1000 (max. 8388607)
+ 450 compressed objects within 5 object streams
+ 132 named destinations out of 1000 (max. 500000)
+ 305 words of extra memory for PDF output out of 10000 (max. 10000000)
 

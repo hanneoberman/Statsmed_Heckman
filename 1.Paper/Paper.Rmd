@@ -356,7 +356,7 @@ Processing times differ in the imputation methods evaluated, for example, for 10
 ### Results M(N)AR scenarios
 
 #### Continuous incomplete variable
- ```{r rhocont,fig.pos="!htb",fig.cap="\\label{fig:rhocont} Continuous incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+ ```{r rhocont,fig.align='center',fig.pos="!htb",fig.cap="\\label{fig:rhocont} Continuous incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_rho
  ```
 
@@ -379,7 +379,7 @@ Regarding the CI length of the 95th percentile of the estimated parameters, we o
 
 In case of a bivariate missing variable, we also find (Figure \ref{fig:bin}) that the 2l.Heckman method provides unbiased results on coefficient parameters and random effects when the missing variable is binary. However, we observe more variability in the estimates of random effects, reflected on longer confidence intervals on the Bias and RMSE criteria.
 
- ```{r rhobin,fig.pos="!htb",fig.cap="\\label{fig:bin} Binary incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+ ```{r rhobin,fig.align='center',fig.pos="!htb",fig.cap="\\label{fig:bin} Binary incomplete variable by varing $\\rho$, the dashed line depicts the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_bin
 ```
 
@@ -388,7 +388,7 @@ plot_bin
 We evaluated how robust our method was to variations in the number of clusters and also in the sample size of cluster (Figure \ref{fig:size}).
 
 
-```{r size,fig.pos="h",fig.cap="\\label{fig:size} Continuous incomplete variable under systematical missingness by varing: number of clusters (N); sample size per cluster ($n_i$), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+```{r size,fig.align='center',fig.pos="!htb",fig.cap="\\label{fig:size} Continuous incomplete variable under systematical missingness by varing: number of clusters (N); sample size per cluster ($n_i$), the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_N
 ```
 
@@ -401,7 +401,7 @@ When we reduced the sample size to 50 patients per study (Appendix), the bias an
 
 ### Sensitivity analysis: distributional assumptions
 
-```{r dist,fig.pos="!H",fig.cap="\\label{fig:dist} Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, where the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
+```{r dist,fig.align='center',fig.pos="!htb",fig.cap="\\label{fig:dist} Comparison of methods for continuous incomplete variable with deviations in distribution assumptions, where the dashed line depicts the true simulated parameter value",echo=FALSE,fig.keep="last",fig.height = 4, fig.width = 6}
 plot_S
 ```
 <!-- Ideally, the phrase " where the dashed line depicts the true simulated parameter" belongs in a note under the caption. -->
@@ -427,9 +427,9 @@ With respect to the Skewed-t scenario, only the bias of $\beta_0$ was affected. 
 
 # An illustrative study
 \label{example}
-```{r, include=FALSE}
+```{r, include=FALSE,cache = TRUE}
 library(here)
-# source(here('3.Ilustrative_study','Ilustrative_study.R'),local = knitr::knit_global())
+ source(here('3.Ilustrative_study','Ilustrative_study.R'),local = knitr::knit_global())
 ```
 
 Malaria is a mosquito-borne disease and, especially in children and pregnant women, is the leading cause of illness and death in Africa. To prevent the spread of the disease, long-lasting nets (LLINs) and indoor residual spraying (IRS) in at-risk households are used as control measures.
@@ -443,25 +443,25 @@ In each sub-district, a sample of households with at least one child aged 2-10 y
 For this example, we used data accessed directly from CliniEpiDB, [@staedke] where data were collected from 5195 households with verified consent, inhabited by 11137 residents aged 2-10 years. Blood samples were only taken from 8846 children, as 69 were excluded from the study due to lack of consent and 2222 were not present at the time of the survey. Although the original data set consists of 164 variables, here we only consider the variables described in Table \ref{tab:descriptive}, which were used as predictors in the imputation model.
 
 
-```{r descriptive, results = "asis", table.pos="!H", echo=FALSE}
-# if (!require("xtable")) install.packages("xtable")
-# xt <- xtable(sum.table,
-#              caption = "Descriptive analysis, predictor variables", label = "tab:descriptive",align= c("p{0.0\\textwidth}|",
-#                                    "p{0.11\\textwidth}|",
-#                                    "p{0.07\\textwidth}|",
-#                                    "p{0.07\\textwidth}|",
-#                                    "p{0.05\\textwidth}|",
-#                                    "p{0.10\\textwidth}|",
-#                                    "p{0.12\\textwidth}|",
-#                                    "p{0.07\\textwidth}|",
-#                                    "p{0.07\\textwidth}|",
-#                                    "p{0.07\\textwidth}|",
-#                                    "p{0.07\\textwidth}|"))
-# names(xt) <- c("Subregion","Districts (N)","Children (N)","Age mean (years)",
-#                 "Log10 Female Anopheline","Wealth index",
-#                 "Bednet (%)","Females (%)","Holidays (%)",
-#                 "Missing test(%)")
-# print(xt, comment = FALSE, include.rownames=FALSE)
+```{r descriptive,fig.align='center',cache = TRUE, results = "asis", table.pos="!htb", echo=FALSE}
+if (!require("xtable")) install.packages("xtable")
+xt <- xtable(sum.table,
+             caption = "Descriptive analysis, predictor variables", label = "tab:descriptive",align= c("p{0.0\\textwidth}|",
+                                   "p{0.11\\textwidth}|",
+                                   "p{0.07\\textwidth}|",
+                                   "p{0.07\\textwidth}|",
+                                   "p{0.05\\textwidth}|",
+                                   "p{0.10\\textwidth}|",
+                                   "p{0.12\\textwidth}|",
+                                   "p{0.07\\textwidth}|",
+                                   "p{0.07\\textwidth}|",
+                                   "p{0.07\\textwidth}|",
+                                   "p{0.07\\textwidth}|"))
+names(xt) <- c("Subregion","Districts (N)","Children (N)","Age mean (years)",
+                "Log10 Female Anopheline","Wealth index",
+                "Bednet (%)","Females (%)","Holidays (%)",
+                "Missing test(%)")
+print(xt, comment = FALSE, include.rownames=FALSE)
 ```
 
 <!-- I see you wrote both parasitemia and parasitaemia. Choose one -->
@@ -472,24 +472,24 @@ Under the MCAR assumption, prevalence was calculated on the basis of the recorde
 Under the MNAR assumption, we used the proposed 2l.Heckman method to impute missing test values.  The selection and outcome equation included the same predictor variables as used under the MAR approach. 
 In addition, we included a holiday indicator variable as ERV, which was calculated according to school vacation calendars and public holidays in Uganda in 2017. We examined the association of this ERV with the outcome variable (y) and with the selection indicator (ry), conditioned on the remaining imputation predictors. The model results in Table \ref{tab:exclusion} indicate that the holiday indicator could be a plausible ERV variable, as it was significantly associated with ry, but not with y.
 
-```{r ERV, results = "asis", table.pos="!H", echo=FALSE}
-# if (!require("xtable")) install.packages("xtable")
-# xt <- xtable(tablexc,
-#              caption = "Evaluation of Holidays as exclusion restriction variable", label = "tab:exclusion")
-# names(xt) <- c("","Test result (y)"," Missing indicator (ry)")
-# comment<- list( pos=list(0),command=NULL)
-# comment$pos[[1]]<-c(nrow(xt))
-# comment$command<-c(paste("\\hline",
-#                          "***p<0.01",sep=" "))
-# 
-# print(xt, comment = FALSE, include.rownames=FALSE,add.to.row = comment,
-#       hline.after = c(-1,0))
+```{r ERV,fig.align='center', cache = TRUE,results = "asis", table.pos="!htb", echo=FALSE}
+if (!require("xtable")) install.packages("xtable")
+xt <- xtable(tablexc,
+             caption = "Evaluation of Holidays as exclusion restriction variable", label = "tab:exclusion")
+names(xt) <- c("","Test result (y)"," Missing indicator (ry)")
+comment<- list( pos=list(0),command=NULL)
+comment$pos[[1]]<-c(nrow(xt))
+comment$command<-c(paste("\\hline",
+                         "***p<0.01",sep=" "))
+
+print(xt, comment = FALSE, include.rownames=FALSE,add.to.row = comment,
+      hline.after = c(-1,0))
 ```
 <!-- What are non-participants? Children with missing values? -->
 According to our imputation approach, non-participants were estimated to have a higher prevalence of malaria than participants in more than half of the districts analyzed. 
 As can be seen in Figure \ref{fig:region}, for each subregion the prevalence estimates of the approaches do not differ significantly between methods. However, prevalence estimates under the MNAR assumption (i.e. 2 level Heckman)  are higher than those estimated under the MAR or MCAR aproaches, except for the East-Central region. 
-```{r region,fig.width = 5, fig.asp =.67, fig.pos="!H", fig.cap="\\label{fig:region} Estimates of malaria prevalence by Uganda subregion",echo=FALSE,fig.keep="last"}
-# plot_dist
+```{r region,fig.align='center',fig.width = 5, fig.asp =.67, fig.pos="!htb", fig.cap="\\label{fig:region} Estimates of malaria prevalence by Uganda subregion",echo=FALSE,fig.keep="last",cache = TRUE}
+ plot_dist
 ```
 
 <!-- The age at which children start going to school is not universal, so you need to mention this. -->
@@ -497,8 +497,8 @@ In terms of prevalence by age, there are no significant differences between meth
 <!-- Can you explain in one sentence how mobility of children is related to prevalence here? -->
 
 
-```{r region_age, fig.pos="!H", fig.cap="\\label{fig:region_age} Estimation of malaria prevalence by region and age",echo=FALSE,fig.keep="last"}
-# plot_sdist_age
+```{r region_age,fig.align='center', fig.pos="!htb", fig.cap="\\label{fig:region_age} Estimation of malaria prevalence by region and age",echo=FALSE,fig.keep="last",cache = TRUE}
+plot_sdist_age
 ```
 
 However for school children, prevalences estimated with the Heckman method were found to be higher in the Mid-East and Southwest regions than those obtained with the other methods, whereas in the East-Central region the estimates with the Heckman method are lower. A possible reasons for selection bias in surveys of this type is, for example, that daytime visits might favor measurement in sick school children who stay home, leading to overestimated prevalence results as found in the East-Central region. [@thedhsprogram2020] Nevertheless, we were unable to find information that suggests or confirms the direction in which malaria prevalence is driven by selection bias in this Uganda study or in other studies similar to this one.
@@ -537,7 +537,7 @@ The data were simulated by attributing a constant correlation across all cluster
 Further, the method can also be extended to other types of variables such as count or ordinal variables. Similarly, less restrictive Heckman based models can be considered in terms of normality distribution of errors and no specification of exclusion variables such as those proposed by Ogundimu. 
 <!-- Add reference to Ogundimu -->
 
-### Conclusion
+## Conclusion
 <!-- Always add a conclusion, also in stats papers. I'm thinking it should mention the following. I am not so sure on especially the last sentence, so feel free to rephrase -->
 We have <!--(well actually you) --> proposed an extension to the Heckman model that can account for MNAR, MAR or MCAR of a continuous or binary variable in clustered data sets. Our simulations showed that it has favorable statistical properties, when assumptions were met, and provided that the sample size was sufficiently large. Regarding deviations from distributional assumptions of the error terms, the coefficient parameters were fairly robust in terms of bias, but the intercept was not.
 
