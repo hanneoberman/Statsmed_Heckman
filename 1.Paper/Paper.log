@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  10 NOV 2022 23:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  11 NOV 2022 09:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -939,11 +939,7 @@ File: l3backend-pdftex.def 2022-10-26 L3 backend support: PDF output (pdfTeX)
 LaTeX Warning: Unused global option(s):
     [AMA,STIX1COL].
 
-(./Paper.aux
-
-LaTeX Warning: Label `discussion' multiply defined.
-
-)
+(./Paper.aux)
 \openout1 = `Paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
@@ -1086,24 +1082,24 @@ LaTeX Font Info:    Trying to load font information for TS1+stix on input line 6
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ts1stix.fd
 File: ts1stix.fd 2015/04/17 v1.1.2-latex STIX TS1 font definitions
 ) [7] [8]
-<Paper_files/figure-latex/rhocont-1.pdf, id=171, 433.62pt x 289.08pt>
+<Paper_files/figure-latex/rhocont-1.pdf, id=173, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/rhocont-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/rhocont-1.pdf>
 Package pdftex.def Info: Paper_files/figure-latex/rhocont-1.pdf  used on input line 819.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 [9 <./Paper_files/figure-latex/rhocont-1.pdf>]
-<Paper_files/figure-latex/rhobin-1.pdf, id=196, 433.62pt x 289.08pt>
+<Paper_files/figure-latex/rhobin-1.pdf, id=198, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/rhobin-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/rhobin-1.pdf>
 Package pdftex.def Info: Paper_files/figure-latex/rhobin-1.pdf  used on input line 881.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
-<Paper_files/figure-latex/size-1.pdf, id=198, 433.62pt x 289.08pt>
+<Paper_files/figure-latex/size-1.pdf, id=200, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/size-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/size-1.pdf>
 Package pdftex.def Info: Paper_files/figure-latex/size-1.pdf  used on input line 898.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 [10 <./Paper_files/figure-latex/rhobin-1.pdf>]
-<Paper_files/figure-latex/dist-1.pdf, id=212, 433.62pt x 289.08pt>
+<Paper_files/figure-latex/dist-1.pdf, id=214, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/dist-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/dist-1.pdf>
 Package pdftex.def Info: Paper_files/figure-latex/dist-1.pdf  used on input line 925.
@@ -1123,24 +1119,17 @@ Overfull \hbox (3.61697pt too wide) in paragraph at lines 1020--1020
  []|\T1/stix/m/n/10.03749 Holiday
  []
 
-
-Package natbib Warning: Author undefined for citation`rugnao2019' 
-(natbib)                on page 12 on input line 1024.
-
 [12 <./Paper_files/figure-latex/dist-1.pdf>]
 Overfull \hbox (7.43141pt too wide) in paragraph at lines 1061--1061
 []|\T1/stix/m/n/10.03749 Predictors/response|  
  []
 
-<Paper_files/figure-latex/region-1.pdf, id=252, 361.35pt x 241.90375pt>
+<Paper_files/figure-latex/region-1.pdf, id=254, 361.35pt x 241.90375pt>
 File: Paper_files/figure-latex/region-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/region-1.pdf>
 Package pdftex.def Info: Paper_files/figure-latex/region-1.pdf  used on input line 1087.
 (pdftex.def)             Requested size: 361.34912pt x 241.90315pt.
-
-LaTeX Warning: Reference `figure:region_age' on page 13 undefined on input line 1095.
-
-<Paper_files/figure-latex/region_age-1.pdf, id=253, 469.755pt x 325.215pt>
+<Paper_files/figure-latex/region_age-1.pdf, id=256, 469.755pt x 325.215pt>
 File: Paper_files/figure-latex/region_age-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/region_age-1.pdf>
 Package pdftex.def Info: Paper_files/figure-latex/region_age-1.pdf  used on input line 1105.
@@ -1150,41 +1139,35 @@ Package pdftex.def Info: Paper_files/figure-latex/region_age-1.pdf  used on inpu
 LaTeX Warning: Text page 14 contains only floats.
 
 [14 <./Paper_files/figure-latex/region-1.pdf> <./Paper_files/figure-latex/region_age-1.pdf>] [15]
-
-Package natbib Warning: Author undefined for citation`ogundimu_collins19' 
-(natbib)                on page 16 on input line 1212.
-
-<flag_EU.pdf, id=291, 597.23125pt x 845.1575pt>
+<flag_EU.pdf, id=294, 597.23125pt x 845.1575pt>
 File: flag_EU.pdf Graphic file (type pdf)
 <use flag_EU.pdf>
 Package pdftex.def Info: flag_EU.pdf  used on input line 1243.
 (pdftex.def)             Requested size: 40.60155pt x 57.45189pt.
 (./Paper.bbl [16 <./flag_EU.pdf>]
-Underfull \hbox (badness 2277) in paragraph at lines 160--163
+Underfull \hbox (badness 5403) in paragraph at lines 132--134
+[]\T1/stix/m/n/10.03749 Gasparrini A, Sera F. Mixmeta: An Extended Mixed-Effects Frame-work for Meta-Analysis. https://CRAN.R-
+ []
+
+
+Underfull \hbox (badness 2277) in paragraph at lines 164--167
 []\T1/stix/m/n/10.03749 Audigier VCM, Resche-Rigon MIE. Micemd: Mul-ti-ple Impu-ta-tion by Chained Equations with Mul-ti-level Data.
  []
 
-[17]) [18] (./Paper.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+[17]) [18] (./Paper.aux) ) 
 Here is how much of TeX's memory you used:
- 21920 strings out of 476931
- 341414 string characters out of 5824419
- 683430 words of memory out of 5000000
- 42669 multiletter control sequences out of 15000+600000
+ 21924 strings out of 476931
+ 341516 string characters out of 5824419
+ 683431 words of memory out of 5000000
+ 42672 multiletter control sequences out of 15000+600000
  581095 words of font info for 168 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 87i,12n,91p,982b,655s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,12n,91p,982b,657s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
-Output written on Paper.pdf (18 pages, 492608 bytes).
+Output written on Paper.pdf (18 pages, 492697 bytes).
 PDF statistics:
- 514 PDF objects out of 1000 (max. 8388607)
- 451 compressed objects within 5 object streams
- 132 named destinations out of 1000 (max. 500000)
+ 518 PDF objects out of 1000 (max. 8388607)
+ 455 compressed objects within 5 object streams
+ 133 named destinations out of 1000 (max. 500000)
  305 words of extra memory for PDF output out of 10000 (max. 10000000)
 

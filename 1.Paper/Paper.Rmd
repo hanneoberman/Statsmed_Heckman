@@ -51,7 +51,7 @@ header-includes:
    - \usepackage{pdflscape}
    - \usepackage{tabu}
    - \usepackage{threeparttable}
-   - \usepackage{makecell}
+   - \usepackage{makecell}     
    - \usepackage{xcolor}
    - \usepackage{array}
      \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
@@ -84,11 +84,11 @@ Over the past few years, several extensions and adaptations to the Heckman selec
 
 In clustered data sets, multilevel imputation methods are needed to properly propagate uncertainty within and across clusters. [@audigier_etal18]  However, to our knowledge, existing multilevel imputation methods mainly focus  on situations where data are MAR, and do not adopt Heckman selection models. Although Hammon and Zinn (2020) [@hammon_zinn20] recently proposed an extension that allows for the inclusion of random intercept effects, it can only be used for binary missing variables and assume that the effect of explanatory variables on the missingness mechanisms is common across clusters. 
 
-Therefore, the aim of this paper is to develop a multilevel imputation method for incomplete continuous and binary variables that are MNAR. In section \ref{heckman} we provide an introduction to the Heckman model and its estimation, and we extended to a hierarchical setting. Then in section \ref{methodsn} we define the main steps of the proposed imputation method. In section \ref{simulation} we provide the settings and results of a Monte Carlo simulation study used to evaluate the performance of the proposed imputation method. In section \ref{example} we illustrate the method using the survey information collected in different sub-districts in Uganda to estimate the prevalence of malaria in children. 
-Finally we provide a discussion  in section \ref{discussion} about  the results, limitations and propose future extension of our method.
+Therefore, the aim of this paper is to develop a multilevel imputation method for incomplete continuous and binary variables that are MNAR. In section \ref{sec:heckman} we provide an introduction to the Heckman model and its estimation, and we extended to a hierarchical setting. Then in section \ref{sec:methods} we define the main steps of the proposed imputation method. In section \ref{sec:simulation} we provide the settings and results of a Monte Carlo simulation study used to evaluate the performance of the proposed imputation method. In section \ref{sec:illustration} we illustrate the method using the survey information collected in different sub-districts in Uganda to estimate the prevalence of malaria in children. 
+Finally we provide a discussion in section \ref{sec:discussion} about  the results, limitations and propose future extension of our method.
 
 # The Heckman model
-\label{heckman}
+\label{sec:heckman}
 The Heckman selection model was initially proposed as a method to correct for selection bias, in which individuals are not randomly selected from the population, leading to inconsistent estimates and erroneous conclusions. [@heckman1976]
 
 Selection bias occurs when the selection of a subject  or their observation into the sample is influenced by unobserved variables  (e.g., the respondent's level of trust toward healthcare entities may cause them to self-select out of the study or refuse to sign consent for a test), which in turn are correlated with unobserved variables related to a variable of interest (e.g., the result of a blood test). [@vella1998] 
@@ -152,7 +152,7 @@ In a random effects model, $\theta_i$ parameters are assumed to be drawn indepen
 
 
 # Method
-\label{methodsn}
+\label{sec:methods}
 We follow a similar approach proposed by Resche-Rigon and White (2018) [@resche-rigon2018] for multilevel imputation of data. Briefly, their method was developed to impute variables from a hierarchical structure (i.e., when there are samples unit grouped within a cluster or group).
 This method involves estimating an outcome equation (describing the relationships of the observed data to the missing variable) separately in each cluster, after which the parameter estimates of that equation are pooled using random effects meta-analysis. 
 
@@ -177,7 +177,7 @@ Below we describe each step in depth:
 
 #### Fit $p(y_{ij}^{obs}|\theta_i)$, the heckman selection model at group level
 
-Initially, we use the copulat method to estimate the set of cluster-specific parameters, $\widehat{\theta_i}=\{\widehat{\beta^O_i}, \widehat{\beta^S_i}, \widehat{\sigma_i}, \widehat{\rho_i}\}$, using all $j$ units with observable measurements $y_{ij}^{obs}$ within each group $i$. 
+Initially, we use the copula method to estimate the set of cluster-specific parameters, $\widehat{\theta_i}=\{\widehat{\beta^O_i}, \widehat{\beta^S_i}, \widehat{\sigma_i}, \widehat{\rho_i}\}$, using all $j$ units with observable measurements $y_{ij}^{obs}$ within each group $i$. 
 The Heckman model is estimated with the \textbf{gjrm} function of the GJRM R package, [@radiceGJRMGeneralisedJoint2021] under the bivariate model with the nonrandom sample selection (BSS) specification, from which we obtain not only the parameters' point estimates $\widehat{\theta_i}$, but also their corresponding $\widehat{S(\theta_i)}$ within-cluster variance-covariance matrix.
 
 <!-- Can you add a reference to the R package here? OK -->
@@ -191,7 +191,7 @@ In this step, we pool the parameters $\widehat{\theta_i}$ with a random effects 
 <!-- Read more here if you like: http://content.principia.edu/teaching-excellence/commenting-with-commas-when-and-where-to-use-them/ Thanks a lot you are a walking library :D, very appreciated all your lessons!! -->
 We also performed a univariate random effects meta_analysis on $\sigma'$, the log-transformed parameter of $\sigma$, and another on $\rho'$, the fisher-transformed parameter of $\rho$.
 
-The meta-analysis model is performed with the \textbf{mixmeta} function of the R package *mixmeta*, which allows the use of maximum likelihood (ML), restricted maximum likelihood (REML), and moments estimation methods. For the simulation and illustrative study, we used the restricted REML estimation method, which is recommended as it has a good balance between unbiasedness and efficiency. [@viechtbauer2005]
+The meta-analysis model is performed with the \textbf{mixmeta} function of the R package mixmeta[@gasparrini2021], which allows the use of maximum likelihood (ML), restricted maximum likelihood (REML), and moments estimation methods. For the simulation and illustrative study, we used the restricted REML estimation method, which is recommended as it has a good balance between unbiasedness and efficiency. [@viechtbauer2005]
 <!-- Insensitivity is not generally a good thing. I think you should either explain why it is a good thing here: "... it is insensitive to the true value of the mean of the distribution of random effects and it is efficient" (or something similar, feel free to rephrase) , or simplify it to "... a good balance between unbiasedness and efficiency. jajaj I think at certain point i used the translator to correct my writing and i did not notice that change unbiasedness by insensitive..But thanks God you have eagle eyes @@) .."  -->
 
 #### Draw $\theta^*_m$ the marginal parameters
@@ -251,7 +251,7 @@ The MICE package allows one to specify imputation methods to each of the missing
 
 
 # Simulation study
-\label{simulation}
+\label{sec:simulation}
 
 ## Aim
 We designed a simulation study aimed to compare the performance of imputation methods for imputing a missing variable in a hierarchical dataset, where the missingness follows a MNAR mechanism.
@@ -441,7 +441,7 @@ With respect to the Skewed-t scenario, only the bias of $\beta_0$ was affected. 
 
 
 # An illustrative study
-\label{example}
+\label{sec:illustration}
 ```{r, include=FALSE,cache = TRUE}
 library(here)
 
@@ -475,7 +475,7 @@ kbl(sum.table, booktabs = T, align="r",
 
 
 <!-- I see you wrote both parasitemia and parasitaemia. Choose one -->
-To illustrate our proposed method, following the article by @rugnao2019, we estimated the prevalence of parasitemia by subregion and by age after approximately 3 years of LLIN campaigns started.  We estimated parasitemia prevalence using 3 approaches that made different assumptions on the missingness mechanism: MCAR, MAR and MNAR. 
+To illustrate our proposed method, following the article by Rugnao et al. (2019),[@rugnao2019] we estimated the prevalence of parasitemia by subregion and by age after approximately 3 years of LLIN campaigns started.  We estimated parasitemia prevalence using 3 approaches that made different assumptions on the missingness mechanism: MCAR, MAR and MNAR. 
 
 Under the MCAR assumption, prevalence was calculated on the basis of the recorded tests, i.e., we only included patients with a test result. Under the MAR assumption, the test values of children who were not present during the survey were imputed with the 2l.2stage.bin method of the MICEMD package, where the community was taken as the cluster and the following factors previously associated with parasitemia were used as predictors in the imputation model: sex, two-person mosquito net.  In addition, we included age as a power 3 spline function, the cluster-level Log10 mean of the number of female anopheline mosquitoes per household estimated from the etymological survey, and the household wealth index from principal components analysis calculated specifically for the surveyed households.
 
@@ -502,7 +502,7 @@ As can be seen in Figure \ref{fig:region}, for each subregion the prevalence est
 ```
 
 <!-- The age at which children start going to school is not universal, so you need to mention this. done!! thanks -->
-In terms of prevalence by age, there are no significant differences between methods (Figure \ref{figure:region_age}). The prevalence estimates for children aged 2 to 6 years are very similar in all regions under the different assumptions. Assuming that children start going to school after the age of 6, the results could be partly explained by the mobility of 2-6 year olds compared to school-age children, i.e. school-age children spend more time outdoors and travel more than younger children.
+In terms of prevalence by age, there are no significant differences between methods (Figure \ref{fig:region_age}). The prevalence estimates for children aged 2 to 6 years are very similar in all regions under the different assumptions. Assuming that children start going to school after the age of 6, the results could be partly explained by the mobility of 2-6 year olds compared to school-age children, i.e. school-age children spend more time outdoors and travel more than younger children.
 <!-- Can you explain in one sentence how mobility of children is related to prevalence here? OK-->
 
 
@@ -516,7 +516,7 @@ However for school children, prevalences estimated with the Heckman method were 
 
 
 # Discussion
-\label{discussion}
+\label{sec:discussion}
 We have extended and evaluated methods for multiple imputation of clustered datasets, in situations where some incomplete variables follow a MNAR mechanism.
 For clustered datasets, only imputation methods under the MAR mechanism had previously been proposed. Although imputation methods exist to handle MNAR they have only been designed for individual studies. This makes them limited in common IPD situations such as systematic missingness or when the proportion of missingness of a variable is very high in one of the included studies.   In this context, we proposed a new multiple imputation method to handle continuous and binary MNAR covariates specifically for a clustered dataset, which also allows appropriate borrowing of information between the clusters to obtain more reliable imputation results at the individual cluster level.
 <!-- If you say " a new multiple imputation method was proposed", it is unclear who proposed it. It is fine to say " We proposed a new multiple imputation method" (which is also shorter). thanks :D-->
@@ -545,7 +545,7 @@ The data were simulated by attributing a constant correlation across all cluster
 
 <!-- Does my suggestion make sense? yes!!! thanks a lot-->
 
-Further, the method can also be extended to other types of variables such as count or ordinal variables. Similarly, less restrictive Heckman based models can be considered in terms of normality distribution of errors and no specification of exclusion variables such as those proposed by @ogundimu_collins19. 
+Further, the method can also be extended to other types of variables such as count or ordinal variables. Similarly, less restrictive Heckman based models can be considered in terms of normality distribution of errors and no specification of exclusion variables such as those proposed by Ogundimu & Collins (2019).[@ogundimu_collins19]. 
 <!-- Add reference to Ogundimu -->
 
 ## Conclusion
