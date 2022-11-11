@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  11 NOV 2022 09:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  11 NOV 2022 09:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1164,7 +1164,7 @@ Here is how much of TeX's memory you used:
  40 hyphenation exceptions out of 8191
  87i,12n,91p,982b,657s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
-Output written on Paper.pdf (18 pages, 492697 bytes).
+Output written on Paper.pdf (18 pages, 492700 bytes).
 PDF statistics:
  518 PDF objects out of 1000 (max. 8388607)
  455 compressed objects within 5 object streams
