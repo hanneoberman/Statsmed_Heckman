@@ -3,10 +3,14 @@ title: Multiple imputation of incomplete multilevel data using Heckman selection
 author:
 - name: Johanna Munoz*
   num: a
+- name: Matthias Egger 
+  num: d  
+- name: Orestis Efthimiou
+  num: d
 - name: Valentijn M. T. de Jong
-  num: a,b
+  num: a,b,e
 - name: Thomas. P. A. Debray
-  num: a,c
+  num: a,c,e
 address:
 - num: a
   org: Julius Center for Health Sciences and Primary Care, University Medical Center Utrecht, Utrecht University, Utrecht, The Netherlands
@@ -14,6 +18,10 @@ address:
   org: Data Analytics and Methods Task Force, European Medicines Agency, Amsterdam, The Netherlands
 - num: c
   org: Smart Data Analysis and Statistics, Utrecht, The Netherlands 
+- num: d
+  org: University of Bern, Switzerland
+- num: e
+  org: These authors contributed equally 
    
 corres: "* Johanna Munoz. \\email{j.munozavila@umcutrecht.nl}"
 presentaddress: Julius Center for Health Sciences and Primary Care, University Medical Center Utrecht, Universiteitsweg 100, 3584 CG Utrecht, the Netherlands

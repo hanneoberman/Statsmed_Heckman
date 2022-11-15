@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  11 NOV 2022 09:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.11.10)  15 NOV 2022 11:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1029,39 +1029,39 @@ Package hyperref Info: Link coloring OFF on input line 41.
 LaTeX Info: Command `\dddot' is already robust on input line 41.
 LaTeX Info: Command `\ddddot' is already robust on input line 41.
 \c@lstlisting=\count448
-LaTeX Font Info:    Trying to load font information for LS1+stixscr on input line 90.
+LaTeX Font Info:    Trying to load font information for LS1+stixscr on input line 94.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls1stixscr.fd
 File: ls1stixscr.fd 2015/04/17 v1.1.2-latex STIX script LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixex on input line 90.
+LaTeX Font Info:    Trying to load font information for LS2+stixex on input line 94.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls2stixex.fd
 File: ls2stixex.fd 2015/04/17 v1.1.2-latex STIX extentions LS2 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixfrak on input line 90.
+LaTeX Font Info:    Trying to load font information for LS1+stixfrak on input line 94.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls1stixfrak.fd
 File: ls1stixfrak.fd 2015/04/17 v1.1.2-latex STIX fraktur LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixbb on input line 90.
+LaTeX Font Info:    Trying to load font information for LS1+stixbb on input line 94.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls1stixbb.fd
 File: ls1stixbb.fd 2015/04/17 v1.1.2-latex STIX blackboard LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixcal on input line 90.
+LaTeX Font Info:    Trying to load font information for LS2+stixcal on input line 94.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls2stixcal.fd
 File: ls2stixcal.fd 2015/04/17 v1.1.2-latex STIX calligraphic LS2 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS1+stixsf on input line 90.
+LaTeX Font Info:    Trying to load font information for LS1+stixsf on input line 94.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls1stixsf.fd
 File: ls1stixsf.fd 2015/04/17 v1.1.2-latex STIX sans-serif LS1 font definitions
 )
-LaTeX Font Info:    Trying to load font information for LS2+stixtt on input line 90.
+LaTeX Font Info:    Trying to load font information for LS2+stixtt on input line 94.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ls2stixtt.fd
 File: ls2stixtt.fd 2015/04/17 v1.1.2-latex STIX typewriter LS2 font definitions
 )
-Overfull \hbox (346.99213pt too wide) in paragraph at lines 90--90
+Overfull \hbox (346.99213pt too wide) in paragraph at lines 94--94
 [][] | || []|[][] 
  []
 
-LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 90.
+LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 94.
 
 Overfull \vbox (6.46347pt too high) has occurred while \output is active []
 
@@ -1070,69 +1070,69 @@ Overfull \vbox (6.46347pt too high) has occurred while \output is active []
 \openout3 = `Paper.pag'.
 
 ] [2]
-<DAG_heckman.png, id=53, 478.78876pt x 289.08pt>
+<DAG_heckman.png, id=52, 478.78876pt x 289.08pt>
 File: DAG_heckman.png Graphic file (type png)
 <use DAG_heckman.png>
-Package pdftex.def Info: DAG_heckman.png  used on input line 235.
+Package pdftex.def Info: DAG_heckman.png  used on input line 239.
 (pdftex.def)             Requested size: 167.57857pt x 101.1795pt.
 [3 <./DAG_heckman.png>] [4]
-LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 451.
+LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 455.
 [5] [6]
-LaTeX Font Info:    Trying to load font information for TS1+stix on input line 672.
+LaTeX Font Info:    Trying to load font information for TS1+stix on input line 676.
 (/Users/jmunozav/Library/TinyTeX/texmf-dist/tex/latex/stix/ts1stix.fd
 File: ts1stix.fd 2015/04/17 v1.1.2-latex STIX TS1 font definitions
 ) [7] [8]
 <Paper_files/figure-latex/rhocont-1.pdf, id=173, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/rhocont-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/rhocont-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/rhocont-1.pdf  used on input line 819.
+Package pdftex.def Info: Paper_files/figure-latex/rhocont-1.pdf  used on input line 823.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 [9 <./Paper_files/figure-latex/rhocont-1.pdf>]
 <Paper_files/figure-latex/rhobin-1.pdf, id=198, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/rhobin-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/rhobin-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/rhobin-1.pdf  used on input line 881.
+Package pdftex.def Info: Paper_files/figure-latex/rhobin-1.pdf  used on input line 885.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 <Paper_files/figure-latex/size-1.pdf, id=200, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/size-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/size-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/size-1.pdf  used on input line 898.
+Package pdftex.def Info: Paper_files/figure-latex/size-1.pdf  used on input line 902.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 [10 <./Paper_files/figure-latex/rhobin-1.pdf>]
 <Paper_files/figure-latex/dist-1.pdf, id=214, 433.62pt x 289.08pt>
 File: Paper_files/figure-latex/dist-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/dist-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/dist-1.pdf  used on input line 925.
+Package pdftex.def Info: Paper_files/figure-latex/dist-1.pdf  used on input line 929.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 [11 <./Paper_files/figure-latex/size-1.pdf>]
-Overfull \hbox (1.77008pt too wide) in paragraph at lines 1020--1020
+Overfull \hbox (1.77008pt too wide) in paragraph at lines 1024--1024
  []|\T1/stix/m/n/10.03749 District
  []
 
 
-Overfull \hbox (6.65834pt too wide) in paragraph at lines 1020--1020
+Overfull \hbox (6.65834pt too wide) in paragraph at lines 1024--1024
  []|\T1/stix/m/n/10.03749 Children
  []
 
 
-Overfull \hbox (3.61697pt too wide) in paragraph at lines 1020--1020
+Overfull \hbox (3.61697pt too wide) in paragraph at lines 1024--1024
  []|\T1/stix/m/n/10.03749 Holiday
  []
 
 [12 <./Paper_files/figure-latex/dist-1.pdf>]
-Overfull \hbox (7.43141pt too wide) in paragraph at lines 1061--1061
+Overfull \hbox (7.43141pt too wide) in paragraph at lines 1065--1065
 []|\T1/stix/m/n/10.03749 Predictors/response|  
  []
 
 <Paper_files/figure-latex/region-1.pdf, id=254, 361.35pt x 241.90375pt>
 File: Paper_files/figure-latex/region-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/region-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/region-1.pdf  used on input line 1087.
+Package pdftex.def Info: Paper_files/figure-latex/region-1.pdf  used on input line 1091.
 (pdftex.def)             Requested size: 361.34912pt x 241.90315pt.
 <Paper_files/figure-latex/region_age-1.pdf, id=256, 469.755pt x 325.215pt>
 File: Paper_files/figure-latex/region_age-1.pdf Graphic file (type pdf)
 <use Paper_files/figure-latex/region_age-1.pdf>
-Package pdftex.def Info: Paper_files/figure-latex/region_age-1.pdf  used on input line 1105.
+Package pdftex.def Info: Paper_files/figure-latex/region_age-1.pdf  used on input line 1109.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [13]
 
@@ -1142,7 +1142,7 @@ LaTeX Warning: Text page 14 contains only floats.
 <flag_EU.pdf, id=294, 597.23125pt x 845.1575pt>
 File: flag_EU.pdf Graphic file (type pdf)
 <use flag_EU.pdf>
-Package pdftex.def Info: flag_EU.pdf  used on input line 1243.
+Package pdftex.def Info: flag_EU.pdf  used on input line 1247.
 (pdftex.def)             Requested size: 40.60155pt x 57.45189pt.
 (./Paper.bbl [16 <./flag_EU.pdf>]
 Underfull \hbox (badness 5403) in paragraph at lines 132--134
@@ -1156,15 +1156,15 @@ Underfull \hbox (badness 2277) in paragraph at lines 164--167
 
 [17]) [18] (./Paper.aux) ) 
 Here is how much of TeX's memory you used:
- 21924 strings out of 476931
- 341516 string characters out of 5824419
- 683431 words of memory out of 5000000
- 42672 multiletter control sequences out of 15000+600000
+ 21928 strings out of 476931
+ 341536 string characters out of 5824419
+ 683437 words of memory out of 5000000
+ 42676 multiletter control sequences out of 15000+600000
  581095 words of font info for 168 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  87i,12n,91p,982b,657s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-ts1.enc}{/Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Bold.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Italic.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/STIXGeneral-Regular.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathcal.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathex.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathit.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathrm.pfb></Users/jmunozav/Library/TinyTeX/texmf-dist/fonts/type1/public/stix/stix-mathsf.pfb>
-Output written on Paper.pdf (18 pages, 492700 bytes).
+Output written on Paper.pdf (18 pages, 492828 bytes).
 PDF statistics:
  518 PDF objects out of 1000 (max. 8388607)
  455 compressed objects within 5 object streams
