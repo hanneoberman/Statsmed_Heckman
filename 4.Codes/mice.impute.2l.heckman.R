@@ -59,7 +59,7 @@
 #' @export
 #'
 
-mice.impute.4l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_method ="reml",...) {
+mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_method ="reml",...) {
   
   
   # 1. Define variables and dataset----

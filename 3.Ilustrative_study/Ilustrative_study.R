@@ -228,7 +228,7 @@ pred["test","sage2"]<- 1
 
 #3.3. Multiple imputation with heckman model----
 meth<-ini$method
-meth[c("test")]<-"4l.heckman"
+meth[c("test")]<-"2l.heckman"
 
 #Full correlation of parameters
 data_heck <- mice(hdataF0f, # dataset with missing values
