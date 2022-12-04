@@ -139,8 +139,8 @@ mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_meth
     }
   }
   
-  
-  # 4. Get theta_k and var(theta_k) from full conditional distribution ----
+
+   # 4. Get theta_k and var(theta_k) from full conditional distribution ----
   if (Grp_est == 1) { # Applies imputation at cluster level
     for (i in names.clust) { #Loop across studies
       

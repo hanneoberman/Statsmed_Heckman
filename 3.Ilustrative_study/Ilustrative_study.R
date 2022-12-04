@@ -9,65 +9,57 @@ library(ggplot2)
 
 
 #0. Additional required function ----
-# 0.1 Functions to pool estimates first graph ----
-logit <- function(x) {log(x/(1-x))}
-inv.logit <- function(x) {1/(1+exp(-x))}
-inv.logit.SE<- function(logit.se, c) {logit.se * (c*(1-c))}
+# Prevalence functions 
+logit <- function(x){log(x/(1-x))}
+inv_logit <- function(x){exp(x)/(1+exp(x))}
 
-#Function for calculating absolute risk
+#Function for calculating prevalence CI
 f.prevalence <- function(data,outcome_name) {
   a<-summary(data[,get(outcome_name)])
   b<-prop.test(x = a[[2]], n = sum(a), correct = TRUE)
   prop<-b$estimate[[1]]
   ci<-b$conf
-  return(list(prevalence= prop,ci.l=ci[1], ci.u=ci[2]))
+  se<-(ci[2]-ci[1])/(2*1.96)
+  #Replace 0's by 0.000001
+  prevalence<-ifelse(prop==0,1e-10,ifelse(prop==1,1-1e-10,prop))
+  return(list(prev= prevalence,prev_se=se))
 }
-
 
 #Function to calculate absolute risk of an outcome per study and per imputed dataset
 f.abs.perstudy<-function(data, outcome_name,study_name) {
-  
   #Calculate absolute risk of outcome per study
-  inc.outcome<-setDT(data)[, f.prevalence(data=.SD, outcome_name=outcome_name), by = list(get(study_name),.imp)]
-  
-  #Replace 0's by 0.000001
-  inc.outcome$prevalence[inc.outcome$prevalence==0]<-0.000001
-  inc.outcome$ci.l[inc.outcome$ci.l==0]<-0.000001
+  prev_group<-setDT(data)[, f.prevalence(data=.SD, outcome_name=outcome_name), by = list(get(study_name),.imp)]
   
   #Logit transformation
-  inc.outcome[,logit.prevalence:=logit(prevalence)]
-  inc.outcome[,logit.ci.l:=logit(ci.l)]
-  inc.outcome[,logit.ci.u:=logit(ci.u)]
-  inc.outcome[,logit.se:=(logit.ci.u-logit.ci.l)/(2*1.96)]
-  inc.outcome
-}
-
-#Function to pool the absolute risks per study per imputed dataset using rubins rules
-#Results in absolute risk per study
-
+  prev_group[,prev_logit:=logit(prev)] 
+  prev_group[,prev_se_logit:=prev_se/(prev*(1-prev))]
+  return(prev_group)
+}  
 f.pool<-function(data,m){
-  logit.abs <- mean(data$logit.prevalence)
-  within <- mean(data$logit.se^2)
-  between <- (1 + (1/m)) * var(data$logit.prevalence)
-  logit.var <- within + between
-  logit.se <- sqrt(logit.var)
-  logit.ci.lb <- logit.abs + qnorm(0.05/2)     * logit.se
-  logit.ci.ub <- logit.abs + qnorm(1 - 0.05/2) * logit.se
-  prevalence<-inv.logit(logit.abs)*100
-  ci.lb<-inv.logit(logit.ci.lb)*100
-  ci.ub<-inv.logit(logit.ci.ub)*100
-  return(list(prevalence=prevalence,ci.lb=ci.lb,ci.ub=ci.ub))
+  # Pool cluster estimates
+  pool_est_logit <- mean(data$prev_logit)# pool est
+  w_var_logit <- mean(data$prev_se_logit^2) #within var
+  b_var_logit <- var(data$prev_logit) #between var
+  pool_se_logit <- sqrt(w_var_logit + (1 + (1/m)) * b_var_logit) #pool se
+  r <- (1 + 1 / m) * (b_var_logit / w_var_logit)
+  v <- (m - 1) * (1 + (1/r))^2
+  t <- qt(0.975, v) # t critical value for 95% CI
+  pool_LC_logit=pool_est_logit-pool_se_logit*t
+  pool_UC_logit=pool_est_logit+pool_se_logit*t
+  
+  prevalence<-inv_logit(pool_est_logit)*100
+  ci.lb<-inv_logit(pool_LC_logit)*100
+  ci.ub<-inv_logit(pool_UC_logit)*100
+  return(data.frame(cbind(prevalence=prevalence,ci.lb=ci.lb,ci.ub=ci.ub)))
 }
-
 
 f.abs.poolrubin <-function(data,study_name) {
   abs.outcome<-setDT(data)[, f.pool(data=.SD, m<-max(data$.imp)), by = list(get)]
   setnames(abs.outcome, "get", study_name)
-  return(abs.outcome)
-}
+  return(abs.outcome)}
 
 
-# 0.2. Functions to pool estimates second graph ----
+# Functions to pool estimates second graph 
 pool_coef <- function(x){
   colMeans(t(sapply(x$analyses, coef)))
 }
@@ -79,7 +71,7 @@ pool_variance <- function(x){
   total_var <- within + (1 + 1 / m) * between
 }
 
-#Prediction imputated data 
+#Prediction imputed data 
 pred_model<-function(model,source){
   mm   <- as.matrix(model.matrix(model$analyses[[1]]))
   coef <- as.matrix(pool_coef(model),nrow=1)
@@ -93,8 +85,6 @@ pred_model<-function(model,source){
   mod[,ub:=fn(fit + 1.96 * se.fit)*100]
   mod[,source:=source]
 }
-
-
 
 
 # 1. Subset original dataset ----
@@ -255,9 +245,9 @@ data_mar <- mice( hdataF0f, # dataset with missing values
 #save(data_mar,file=(here('3.Ilustrative_study','MalariaMAR.RData')))
 #load(file=here('3.Ilustrative_study','MalariaMAR.RData'))
 
-# 4.1 Prevalence plot ----
+# 4.Prevalence plot ----
 
-# Prevalence per subregion----
+# 4.1. Prevalence per subregion----
 
 hdataF0f[,pts_num:=ifelse(is.na(test),NA,ifelse(test=="1",1,0))]
 data_MCAR<-hdataF0f[, .(count = .N, positives = sum(pts_num,na.rm=TRUE), NAs=sum(is.na(pts_num))), by = subreg_id]
@@ -308,19 +298,16 @@ plot_dist<-ggplot(data_wide, aes(x = subreg_id, y = p, colour = Parameter)) +
 
 
 
-
-
-# 5.Prevalence per subregion and age ----
+# 4.2. Prevalence per subregion and age ----
 
 # Complete case dataset
 hdataF0f<-as.data.table(hdataF0f)
 m0 <- gam(test ~ subreg_id + s(age,k=3,by = subreg_id), family=binomial,data = hdataF0f)
 mod0 <- tidymv::predict_gam(m0)
 
-fn<- function(x){exp(x)/(1+exp(x))}
-mod0$pred <- with(mod0, fn(fit)*100)
-mod0$lb <- with(mod0, fn(fit - 1.96 * se.fit)*100)
-mod0$ub <- with(mod0, fn(fit + 1.96 * se.fit)*100)
+mod0$pred <- with(mod0, inv_logit(fit)*100)
+mod0$lb <- with(mod0, inv_logit(fit - 1.96 * se.fit)*100)
+mod0$ub <- with(mod0, inv_logit(fit + 1.96 * se.fit)*100)
 mod0$source<-"CC"
 
 # MNAR imputed dataset no full
@@ -360,46 +347,3 @@ plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) +
  theme(strip.background =element_rect(fill="white"),legend.position="bottom",legend.margin=margin(t=-10))
 
 ##### END CODE########
-# Prevalence per subregion----
-# 
-# hdataF0f[,pts_num:=ifelse(is.na(test),NA,ifelse(test=="1",1,0))]
-# data_MCAR<-hdataF0f[, .(subreg_id=subreg_id[[1]],count = .N, positives = sum(pts_num,na.rm=TRUE), NAs=sum(is.na(pts_num))), by = dis_id]
-# data_MCAR[,Miss:=(NAs)/(count)*100]
-# data_MCAR[,p_MCAR:=positives/(count-NAs)*100]
-# data_MCAR[,LC_MCAR:=(positives)/(count)*100]
-# data_MCAR[,UC_MCAR:=(positives+NAs)/(count)*100]
-# data_MCAR[,positives:=NULL]
-# data_MCAR[,NAs:=NULL]
-# 
-# #Under MAR assumption, calculate the prevalence of the outcome in every study separate and in every imputed dataset
-# prev.outcome_mar<-f.abs.perstudy(data=complete(data_mar, "long"),outcome_name = "test",study_name="dis_id")
-# #under MNAR assumption, pool the prevalence over the imputed datasets, resulting in absolute risks per study
-# abs.outcome_mar<-f.abs.poolrubin(data=prev.outcome_mar,study_name="dis_id")
-# colnames(abs.outcome_mar)<-c("dis_id","p_MAR","LC_MAR","UC_MAR")
-# 
-# prev.outcome_mnar<-f.abs.perstudy(data=complete(data_heck, "long"),outcome_name = "test",study_name="dis_id")
-# #under MNAR assumption, pool the prevalence over the imputed datasets, resulting in absolute risks per study
-# abs.outcome_mnar<-f.abs.poolrubin(data=prev.outcome_mnar,study_name="dis_id")
-# colnames(abs.outcome_mnar)<-c("dis_id","p_MNAR","LC_MNAR","UC_MNAR")
-# 
-# data_prev<-merge(data_MCAR, abs.outcome_mar,by="dis_id")
-# data_prev<-merge(data_prev,abs.outcome_mnar,by="dis_id")
-# 
-# data_long<- setDT(melt(data_prev, 
-#                        measure.vars = c( "p_MCAR","p_MAR","p_MNAR",
-#                                          "LC_MCAR","LC_MAR","LC_MNAR",
-#                                          "UC_MCAR","UC_MAR","UC_MNAR"),
-#                        variable.name = "Statistic", value.name = "Value"))
-# 
-# data_long[, c("Statistic", "Parameter") := tstrsplit(Statistic, "_", fixed=TRUE)]
-# data_wide<- setDT(dcast(data_long,subreg_id+ dis_id + count+ Miss+Parameter ~ Statistic, value.var = "Value"))
-# data_wide[,Parameter:=factor(Parameter,levels=c("MCAR","MAR","MNAR"))]
-# levels(data_wide$Parameter)<-c("CC","2l.MAR","2l.Heckman")
-# 
-# pd <- position_dodge(width = 0.4)
-# plot_dist2<-ggplot(data_wide, aes(x = dis_id, y = p, colour = Parameter)) +
-#   geom_errorbar(aes(ymax = UC, ymin = LC),position = pd) + 
-#   geom_point(position = pd,size=0.5)+ theme_light()+
-#   ylab("Parasite prevalence (%)")+xlab("Sub region")+
-#   scale_color_brewer(palette="Dark2")+facet_grid(subreg_id~.)
-
