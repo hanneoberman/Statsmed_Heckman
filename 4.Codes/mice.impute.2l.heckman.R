@@ -18,6 +18,8 @@
 #' -3: Predictor only in the selection model, -4: Predictor only in the outcome 
 #' model}
 #' @param pmm  predictive mean matching can be applied only for for missing continuous variables: "TRUE","FALSE"
+#' @param ypmm vector of possible y values to perform predictive mean matching, in case ypmm is not provided it
+#' uses the observable variables of y.
 #' @param meta_method meta_analysis estimation method for random effects :
 #' "ml" (maximum likelihood), "reml" (restricted maximum likelihood) or "mm"
 #' method of moments.
@@ -59,7 +61,7 @@
 #' @export
 #'
 
-mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_method ="reml",...) {
+mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, ypmm=NULL, meta_method ="reml",...) {
   
   
   # 1. Define variables and dataset----
@@ -72,10 +74,10 @@ mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_meth
   
   # # Define y type
   if (class(y) == "factor" & nlevels(y) == 2){
-    message("the missing variable is assumed to be binomially distributed")
+    message("the missing variable is treated as binary")
     family <- "binomial"
   }else{
-    message("the missing variable is assumed to be normally distributed")
+    message("the missing variable is treated as normal")
     family <- "gaussian"
   }
   
@@ -159,7 +161,7 @@ mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_meth
         y.star <- gen_y_star( Xm= Xm, sel_name = sel_name, bos_name = bos_name,
                               out_name =out_name, beta_s_star = star$beta_s_star,
                               beta_o_star = star$beta_o_star, sigma_star = star$sigma_star,
-                              rho_star = star$rho_star, pmm = pmm, y = y, ry = ry)
+                              rho_star = star$rho_star, pmm = pmm, ypmm=ypmm, y = y, ry = ry)
         
         y[!ry & x[, group_name] == as.numeric(i)] <- y.star
       }
@@ -173,7 +175,7 @@ mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, meta_meth
       y.star <- gen_y_star( Xm= Xm, sel_name = sel_name, bos_name = bos_name,
                             out_name =out_name, beta_s_star = star$beta_s_star,
                             beta_o_star = star$beta_o_star, sigma_star = star$sigma_star,
-                            rho_star = star$rho_star, pmm = pmm, y = y, ry = ry)
+                            rho_star = star$rho_star, pmm = pmm, ypmm=ypmm, y = y, ry = ry)
       y[!ry] <- y.star
     }
   }
@@ -466,7 +468,7 @@ star_sporadic <- function(Heck_mod, coef_list_i, Vb_list_i, selnam, outnam, fami
 # F 0.8 Generate the imputation values
 
 gen_y_star <- function(Xm, sel_name, bos_name, out_name, beta_s_star, beta_o_star,
-                       sigma_star,rho_star, pmm, y, ry) {
+                       sigma_star,rho_star, pmm, ypmm, y, ry) {
   
   XOBO <- data.matrix(Xm[,colnames(Xm) %in% c("Int",bos_name,out_name)]) %*% as.vector(beta_o_star)
   XSBS <- data.matrix(Xm[,colnames(Xm) %in% c("Int",sel_name,bos_name)]) %*% as.vector(beta_s_star)
@@ -479,8 +481,13 @@ gen_y_star <- function(Xm, sel_name, bos_name, out_name, beta_s_star, beta_o_sta
       rnorm(nrow(XSBS), 0, sd = sigma_star)
     
     if (pmm == TRUE) {
+      if (is.null(ypmm)){
       idx <- mice::matchindex(y[ry == 1], y.star)
       y.star <- y[ry == 1][idx]
+      }else{
+        idx <- mice::matchindex(ypmm, y.star)
+        y.star <- ypmm[idx]   
+      }
     }
     
   } else { #binomial missing variable

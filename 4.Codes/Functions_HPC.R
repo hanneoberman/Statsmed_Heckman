@@ -305,7 +305,7 @@ par_imp1<-list(dm=dm,pred=pred_list,meth=meth_list)
 
 # 2.2. 2l.Heckman imputation method ----
 source("/Users/jmunozav/Desktop/Statsmed_Heckman/4.Codes/mice.impute.2l.heckman.R")
-#source("/Users/jmunozav/Desktop/Statsmed_Heckman/4.Codes/mice.impute.3l.heckman.R")
+
 #2.3. Get estimates from imputed datasets ----
 get_estimates <- function( data = data, # data with missing values
                            DataID = DataID, #data ID
