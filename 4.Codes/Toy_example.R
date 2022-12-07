@@ -75,16 +75,14 @@ pred["Weight","Time"]  <- -3 # Exclusion restriction
 pred["Weight",c("Height","FAVC")]  <- -4 # Exclusion restriction
 
 # Imputation of weight variable without pmm 
-
-imp <- mice(data = data, meth = meth, pred = pred, maxit = 5, m = 5, seed = 1)
-
+imp <- mice(data = data, meth = meth, pred = pred, maxit = 1, m = 5, seed = 1)
 densityplot(imp)
 
 
 # Imputation of weight variable with (predictive mean matching) pmm: we can also use the ppm approach, by setting pmm= TRUE and providing a vector of donnors ypmm,
 # for instance in this case the vector or donnors are weight from 25 to 200 kilograms and the imputed values are given in this range of values.
 
-imp_pmm <- mice(data = data, meth = meth, pred = pred, maxit = 5, m = 5, seed = 1,pmm=TRUE,ypmm=seq(25,200,0.1))
+imp_pmm <- mice(data = data, meth = meth, pred = pred, maxit = 1, m = 5, seed = 1,pmm=TRUE,ypmm=seq(25,200,0.1))
 
 densityplot(imp_pmm)
 
