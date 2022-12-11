@@ -380,7 +380,7 @@ In addition, in the appendix table we reported the empirical standard errors (Em
 ## Software
 For the simulation study and illustrative examples we used R version 4.0.4 in a linux environment. [@Rpackage]
 
-The Heckman 2L imputation method is available in the micemd R package [@audigier2021] (as \textbf{mice.2l.heckman()}) and also on the github repository \url{https://github.com/johamunoz/Statsmed_Heckman} where you can also find all the codes accompanying this paper and a toy example that explains how to implement the method in mice. 
+The Heckman 2L imputation method is available in the micemd R package [@audigier2021] (as \textbf{mice.2l.2stage.heckman()}) and also on the github repository \url{https://github.com/johamunoz/Statsmed_Heckman} where you can also find all the codes accompanying this paper and a toy example that explains how to implement the method in mice. 
 
 ## Results from the simulation study
 

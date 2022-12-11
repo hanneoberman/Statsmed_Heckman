@@ -3,7 +3,7 @@
 #' Imputes outcome and predictor variables that follow an MNAR mechanism
 #' according to Heckman's model and come from a multilevel database such as
 #' individual participant data.
-#' @aliases mice.impute.2l.heckman 2l.heckman
+#' @aliases mice.impute.2l.2stage.heckman 2l.2stage.heckman
 #' @param y Vector to be imputed
 #' @param ry Logical vector of length \code{length(y)} indicating the
 #' the subset \code{y[ry]} of elements in \code{y} to which the imputation
@@ -17,14 +17,15 @@
 #' 1: Predictor in both the outcome and selection,-2: Cluster id (study id),
 #' -3: Predictor only in the selection model, -4: Predictor only in the outcome 
 #' model}
-#' @param pmm  predictive mean matching can be applied only for for missing continuous variables: "TRUE","FALSE"
-#' @param ypmm vector of possible y values to perform predictive mean matching, in case ypmm is not provided it
-#' uses the observable variables of y.
+#' @param pmm  predictive mean matching can be applied only for for missing 
+#' continuous variables: "FALSE","TRUE"
+#' @param ypmm vector of donor values of y to perform the predictive mean matching, 
+#' in case ypmm is not provided, the observable values of y are used.
 #' @param meta_method meta_analysis estimation method for random effects :
 #' "ml" (maximum likelihood), "reml" (restricted maximum likelihood) or "mm"
 #' method of moments.
 #' @param ... Other named arguments. Not used.
-#' @name mice.impute.2l.heckman
+#' @name mice.impute.2l.2stage.heckman
 #' @return Vector with imputed data, of type binary or continuous
 #' @details Imputes systematically and sporadically missing binary and continuous
 #'  univariate variables that follow a MNAR mechanism according to the Heckman 
@@ -43,25 +44,10 @@
 #' @author Julius Center Methods Group UMC, 2022
 #' @family univariate imputation functions
 #' @keywords datagen
-#' @examples
-#' \dontrun{
-#' library(GJRM)
-#' data(hiv) # load and subset dataset
-#' hivdata <- hiv[c("hiv","age","marital","condom","smoke","region")]
-#' hivdata$region <- as.integer(hivdata$region) # Study/group variable has to be recoded as integer
-#' hivdata$hiv <- as.factor(hivdata$hiv) # Binary missing variables should be recorded as factors
-#' ini <- mice(hivdata, maxit = 0)
-#' meth <- ini$method
-#' meth["hiv"] <- "2l.heckman" 
-#' pred <- ini$predictorMatrix
-#' pred["hiv","region"] <- -2 # Cluster variable
-#' pred["hiv","smoke"]  <- -3 # Exclusion restriction
-#' imp <- mice(data = hivdata, meth = meth, pred = pred, maxit = 1, m = 1, seed = 1)
-#' }
 #' @export
 #'
 
-mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, ypmm=NULL, meta_method ="reml",...) {
+mice.impute.2l.2stage.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, ypmm=NULL, meta_method ="reml",...) {
   
   
   # 1. Define variables and dataset----
@@ -74,10 +60,8 @@ mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, ypmm=NULL
   
   # # Define y type
   if (class(y) == "factor" & nlevels(y) == 2){
-    message("the missing variable is treated as binary")
     family <- "binomial"
   }else{
-    message("the missing variable is treated as normal")
     family <- "gaussian"
   }
   
@@ -136,13 +120,13 @@ mice.impute.2l.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, ypmm=NULL
     message("The Heckman model cannot be estimated marginally, so systematically missing groups will be imputed with the Heckman model based on the full dataset.")
     Heck_mod <- copulaIPD( data = data, sel = sel, out = out, family = family, send = send)
     
-    if(Heck_mod[[3]] == 0 &(Grp_est==0|Syst_nest==0)){
+    if(Heck_mod[[2]] == 0 &(Grp_est==0|Syst_nest==0)){
       stop("There is insufficient information to impute the Heckman model at the marginal or study level.")
     }
   }
   
-
-   # 4. Get theta_k and var(theta_k) from full conditional distribution ----
+  
+  # 4. Get theta_k and var(theta_k) from full conditional distribution ----
   if (Grp_est == 1) { # Applies imputation at cluster level
     for (i in names.clust) { #Loop across studies
       
@@ -201,8 +185,6 @@ copulaIPD <- function(data, sel, out, family, send) {
                          parscale = TRUE),
              silent = TRUE)
   
-  
-  
   if (!any(inherits(fit, "try-error"))) {
     # model is estimable
     ev <- eigen(fit$fit$hessian, symmetric = TRUE, only.values = TRUE)$values
@@ -226,20 +208,20 @@ copulaIPD <- function(data, sel, out, family, send) {
     fit <- NULL
     gam1 <- try(mgcv::gam(formula=sel,data = data,family = "binomial", method ="REML"))
     gam2 <- try(mgcv::gam(formula=out,data = data,family = family, method ="REML"))
-    
+    fit_ind <- 0
     if(!any(inherits(gam1, "try-error"))&!any(inherits(gam2, "try-error"))){
-      coefficients <- c(gam1$coefficients,gam2$coefficients)
-      if(all(!is.na(coefficients))){
+      vp<-c(diag(gam1$Vp),diag(gam2$Vp))
+      if(all(c(!is.na(coefficients),vp!=0))){
         s     <- ifelse(family != "binomial",1,0) 
         ncol1 <- ncol(gam1$Vp)
         ncol2 <- ncol(gam2$Vp)
         Vb    <- matrix(0,ncol = ncol1+ncol2+1+s, nrow = ncol1+ncol2+1+s)
         Vb[1:ncol1,1:ncol1] <- gam1$Vp
         Vb[(ncol1+1):(ncol1+ncol2),(ncol1+1):(ncol1+ncol2)] <- gam2$Vp
-        
+        Vb[nrow(Vb),nrow(Vb)]<-1/nrow(data)
         if (family != "binomial") {
           coefficients <- c(coefficients, sigma.star = log(sqrt(gam2$scale)))
-          Vb[(ncol1+ncol2+1),(ncol1+ncol2+1)] <- gam2$V.sp}
+          Vb[(nrow(Vb)-1),(nrow(Vb)-1)] <- gam2$V.sp}
         
         fit$coefficients <- c(coefficients,theta.star=0)
         fit$Vb  <- Vb
@@ -482,8 +464,8 @@ gen_y_star <- function(Xm, sel_name, bos_name, out_name, beta_s_star, beta_o_sta
     
     if (pmm == TRUE) {
       if (is.null(ypmm)){
-      idx <- mice::matchindex(y[ry == 1], y.star)
-      y.star <- y[ry == 1][idx]
+        idx <- mice::matchindex(y[ry == 1], y.star)
+        y.star <- y[ry == 1][idx]
       }else{
         idx <- mice::matchindex(ypmm, y.star)
         y.star <- ypmm[idx]   
