@@ -3,7 +3,6 @@
 \alias{2l.2stage.heckman}
 \alias{dataObs}
 
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Imputation based on Heckman model for multilevel data.
 }
