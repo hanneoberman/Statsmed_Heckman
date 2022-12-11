@@ -23,6 +23,7 @@ data[,Ages:=scale(Age)]
 data[,Times:=scale(Time)]
 
 MAR_model <- with(data, lme4::lmer(Weight~Gender+Ages+Heights+FAVC+(1+Heights+Gender+Ages|Cluster)))
+summary(MAR_model)
 # Generate outcome variable
 data[,XOBO:=predict(MAR_model)+15]
 
@@ -135,7 +136,7 @@ geom_histogram(aes(color = as.factor(Cluster),fill= as.factor(Cluster)),
 #3. Imputation model
 # Imputation considering weight is MAR
 
-seed=12345
+seed=123
 
 ini <- mice(dataObs, maxit = 0)
 meth <- ini$method
@@ -168,12 +169,13 @@ meth["Weight"] <- "2l.2stage.heckman"
 #belonging to the selection and outcome as "1", the exclusion restrictions or predictor variables that are only included in the selection equation 
 #as "-3" and those that are only included in the outcome equation as "-4".
 
-pred["Weight","Time"]  <- -3 # Exclusion restriction
+pred["Weight","Time"]  <- -3 # Variable only affects the selection model (Exclusion restriction)
 pred["Weight",c("Height","FAVC")]  <- -4 # Variables only affect the outcome model
 # As Age and Gender are predictors in both selection and outcome model are set as 1
 head(dataObs)
-# Imputation of weight variable without pmm 
 
+
+# Imputation of weight variable without pmm 
 imp <- mice(data = dataObs, meth = meth, pred = pred, seed = seed)
 plot(imp)
 ggmice(imp, ggplot2::aes(x = Weight, group = .imp)) +
@@ -184,13 +186,12 @@ ggmice(imp, ggplot2::aes(x = Weight, group = .imp)) +
   ggplot2::theme(legend.position = "none")+
   facet_wrap(~Cluster)
 
-(summary(complete(imp,"long")$Weight))
 
 # Imputation of weight variable with (predictive mean matching) pmm: we can also use the ppm approach, by setting pmm= TRUE and providing a vector of donnors ypmm,
 # for instance in this case the vector or donnors are weight from 35 to 180 kilograms and the imputed values are given in this range of values.
 
 imp_pmm <- mice(data = dataObs, meth = meth, pred = pred, seed = seed, pmm=TRUE,ypmm=seq(35,180,0.1))
-plot(imp_pmm)
+plot(imp_pmm) #Check convergence
 ggmice(imp_pmm, ggplot2::aes(x = Weight, group = .imp)) +
   ggplot2::geom_density() 
 ggmice(imp_pmm, ggplot2::aes(x = Weight, group = .imp)) + 
@@ -199,7 +200,17 @@ ggmice(imp_pmm, ggplot2::aes(x = Weight, group = .imp)) +
   ggplot2::theme(legend.position = "none")+
   facet_wrap(~Cluster)
 
+
 # Summary three imputation methods
 (summary(complete(imp0,"long")$Weight))
 (summary(complete(imp,"long")$Weight))
 (summary(complete(imp_pmm,"long")$Weight))
+
+# Model
+library(broom.mixed)
+model_MAR <- with(imp0, lmer(Weight~Gender+Age+Height+FAVC+(1|Cluster)))
+model_MNAR <- with(imp, lmer(Weight~Gender+Age+Height+FAVC+(1|Cluster)))
+model_MNAR_pmm <- with(imp_pmm, lmer(Weight~Gender+Age+Height+FAVC+(1|Cluster)))
+summary(pool(model_MAR))
+summary(pool(model_MNAR))
+summary(pool(model_MNAR_pmm))
