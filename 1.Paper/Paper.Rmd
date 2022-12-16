@@ -143,7 +143,7 @@ The interpretation of $\rho_i$ is fairly straightforward. When $\rho_i=0$, the p
 Under the BVN assumption, the parameters of the Heckman model coefficients can be estimated using the two-step Heckman method (H2S) [@heckman1976] or the full information maximum likelihood method (FIML).[@amemiya1984] However, both methods may lead to inconsistent estimators when the true underlying distribution is not the BVN. [@gomes_etal20] To overcome this problem, other approaches have been proposed that relax the distribution assumptions, among them copula models. [@smith03] The copula approach uses a function, known as a copula, that joins the marginal distribution of the error terms of the selection and outcome equation which are specified separately. The Heckman model can be expressed with the following bivariate normal copula:
 $$ F(\boldsymbol{r^*_{i}},\boldsymbol{y^*_{i}}) =\Phi\left(\boldsymbol{r^*_{i}}-\boldsymbol{X^S_{i}}\boldsymbol{\beta^S_{i}},\frac{\boldsymbol{y^*_{i}}-\boldsymbol{X^O_{i}}\boldsymbol{\beta^O_{i}}}{\sigma_i}, \rho_i\right),$$
 where $\Phi$ is the bivariate standard normal cumulative distribution function.
-Thus, to estimate the parameters of the Heckman method, it is sufficient to specify the marginal distributions of the error terms, and link them with a suitable copula function. In our imputation method we estimate the Heckman model using the copula method, as in real life data generating mechanism may deviate a BVN distribution.
+Thus, to estimate the parameters of the Heckman method, it is sufficient to specify the marginal distributions of the error terms, and link them with a suitable copula function. In our imputation method we estimate the Heckman model using the copula method for non-random selection [@wojtys2018] which is a flexible approach that allows the specification of different parametric distributions of the selection and outcome variables and also different types of dependence structure between the two equations. 
 
 ## Hierarchical model
 
@@ -203,20 +203,22 @@ Thus, we can denote the study specific coefficients
 $$\boldsymbol{\hat{\beta^O}_i} = \boldsymbol{\beta^O} +\boldsymbol{ b^O_i} + \boldsymbol{\epsilon'^O_{i}}$$
 $$\boldsymbol{\hat{\beta^S}_i} = \boldsymbol{\beta^S} + b^S_i + \boldsymbol{\epsilon'^S_{i}}$$
 using the random effects 
- $b^O_i \sim N(0,\boldsymbol{\Psi^O})$ and $b^S_i\sim N(0,\boldsymbol{\Psi^S})$ with $\epsilon'^O_{i}\sim N(0,\sigma^O_{i}(X^O_i{X^O_i}^T))$ and $\epsilon'^S_{i}\sim N(0,\sigma^S_{i}(X^S_i{X^S_i}^T))$. From the meta model we obtain the estimates of parameters $\boldsymbol{\beta^S}$,$\boldsymbol{\beta^O}$, $\boldsymbol{\Psi^S}$,$\boldsymbol{\Psi^O}$.
+ $b^O_i \sim N(0,\boldsymbol{\Psi^O})$ and $b^S_i\sim N(0,\boldsymbol{\Psi^S})$ with $\epsilon'^O_{i}\sim N(0,\sigma^O_{i}(X^O_i{X^O_i}^T))$ and $\epsilon'^S_{i}\sim N(0,\sigma^S_{i}(X^S_i{X^S_i}^T)^{-1})$.
 
-Assuming that  $\sigma_i$ and $\rho_i$ are random variables comming from a populational distribution, they can express as:
+We assume that  $\sigma_i$ and $\rho_i$ are random variables coming from a population distribution, so we can express them as:
 $$ log(\sigma_i) \sim N( log(\sigma),\psi^{\sigma})$$
 $$ tanh^{-1}(\rho_i)\sim N( tanh^{-1}(\rho),\psi^{\rho})$$ 
-For each of them, we perform a univariate random effects meta_analysis. The model for $\sigma_i$ is given by the model:
+For each of them, we perform a univariate random effects meta-analysis. The model for $\sigma_i$ is given by the model:
 $$log(\hat\sigma_i) = \sigma + b^{\sigma}_i + \epsilon^{\sigma}_{i}$$
 with $b_i^{\sigma} \sim N(0,\psi^{\sigma})$, and $\epsilon_i^{\sigma} \sim N(0,var(log(\hat{\sigma}_i)))$ and  the model for $\rho_i$ is:
 $$tanh^{-1}(\hat\rho_i) = \rho + b^{\rho}_i + \epsilon^{\rho}_{i}$$
 with $b_i^{\rho} \sim N(0,\psi^{\rho})$, and $\epsilon_i^{\rho} \sim N(0,var(tanh^{-1}(\hat{\rho}_i)))$. 
 
+In the case of an incomplete binary variable, the $\sigma$ parameter is not specified, so it is not necessary to perform a random effects meta-analysis model of $\sigma$ or to include it in any of the following steps in the imputation model.
+
 #### Draw the marginal parameters $\boldsymbol{\Theta}$
 
-From the meta-analysis model, we obtain the marginal estimates $\boldsymbol{\widehat{\Theta}}=\{\widehat{\boldsymbol{\beta^S}},\widehat{\boldsymbol{\beta^O}},\hat{\sigma},\hat{\rho}\}$ and the between-cluster variance matrix $\boldsymbol{\widehat{\psi}}$,i.e. variance-covariance matrix of the random effects, with their corresponding variance-covariance matrices $\boldsymbol{\widehat{S_{\Theta}}}$ and $\boldsymbol{\widehat{S_{\psi}}}$, which are used to draw the $\boldsymbol{\Theta^*}$ and $\boldsymbol{\psi^*}$ parameters, from their posterior distribution as follows: [@resche-rigon2013]
+From the meta-analysis model, we obtain the marginal estimates $\boldsymbol{\widehat{\Theta}}=\{\widehat{\boldsymbol{\beta^S}},\widehat{\boldsymbol{\beta^O}},\hat{\sigma},\hat{\rho}\}$ and the between-cluster variance matrix $\boldsymbol{\widehat{\psi}}=\{\boldsymbol{\Psi^S},\boldsymbol{\Psi^O},\psi^{\sigma},\psi^{\rho}\}$, i.e. variance-covariance matrix of the random effects, with their corresponding variance-covariance matrices $\boldsymbol{\widehat{S_{\Theta}}}$ and $\boldsymbol{\widehat{S_{\psi}}}$, which are used to draw the $\boldsymbol{\Theta^*}$ and $\boldsymbol{\psi^*}$ parameters, from their posterior distribution as follows: [@resche-rigon2013]
 
 \begin{align*}
 \boldsymbol{\Theta^*}& \sim N(\boldsymbol{\widehat{\Theta}},\boldsymbol{\widehat{S_{\Theta}}})\\
@@ -301,7 +303,7 @@ kbl(data2, booktabs = T, align="l",
     column_spec(c(5), width = "2.7cm")%>%
   kable_styling(latex_options = c("striped"))
 ```
-For each dataset, we generated $X_{1i}$ a treatment indicator variable from a Bernoulli distribution with a probability of treatment on each cluster equal to 0.6. Next, we simulated the mean of two continuous covariates from a multivariate normal distribution $\mu_h\sim N(\begin{psmallmatrix}0\\0\end{psmallmatrix},\begin{psmallmatrix}0.2 & 0.015\\0.015 & 0.2\end{psmallmatrix})$, with $h=\{2,3\}$. We then simulated for each cluster a baseline covariate $X_{2i}\sim N(\mu_2,1)$ and a exclusion restriction variable  $X_{3i} \sim N(\mu_3,0.5)$.
+For each dataset, we generated $X_{1i}$ a treatment indicator variable from a Bernoulli distribution with a probability of treatment on each cluster equal to 0.6. Next, we simulated the mean of two continuous covariates from a multivariate normal distribution $\begin{psmallmatrix}\mu_2\\\mu_3\end{psmallmatrix}\sim N\left(\begin{psmallmatrix}0\\0\end{psmallmatrix},\begin{psmallmatrix}0.2 & 0.015\\0.015 & 0.2\end{psmallmatrix}\right)$. We then simulated for each cluster a baseline covariate $X_{2i}\sim N(\mu_2,1)$ and a exclusion restriction variable  $X_{3i} \sim N(\mu_3,0.5)$.
 
 Here, we considered $X_{1i}$ and $X_{2i}$ as predictors in the outcome equation, i.e., $\boldsymbol{X_i}^O=[1,\boldsymbol{X_{1i}},\boldsymbol{X_{2i}}]$. For the selection equation we included both variables and the $X_{3i}$ exclusion restriction variable, $\boldsymbol{X_i^S}=[1,\boldsymbol{X_{1i}},\boldsymbol{X_{2i}},\boldsymbol{X_{3i}}]$. Then in case of a missing continuous variable, we calculate the latent variables  $\boldsymbol{y_{i}^*}$ and $\boldsymbol{r^*_{i}}$ as follows:
 \begin{align*}
@@ -341,7 +343,7 @@ As regards the error terms, they were bivariate normal distributed as:
 \rho\sigma_i & 1
 \end{pmatrix}\right)
 \]
-whose $\sigma_i^2$ is variable across clusters and distributed as $log(\sigma_i) \sim N(0,0.05)$. 
+whose $\sigma_i^2$ is a random parameter across clusters distributed as $log(\sigma_i) \sim N(0,0.05)$. 
 
 
 ## Adittional scenarios
