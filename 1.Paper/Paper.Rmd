@@ -85,7 +85,7 @@ To address the presence of missing data, it is important to consider the missing
 
 Registries are notoriously prone to incomplete variables that are MNAR, due complex recording processes. [@liu2021] For example, laboratory tests are taken only in certain patients based on symptoms that are often incompletely recorded. Data from randomized trials may also suffer from MNAR, for example when study participants that experience unfavorable results drop out of the study. Also, heterogeneity of the primary objective or resources of the studies may result in variables relevant to explain the missing process not being recorded at all in some of the studies.
 
-Modelling data under MNAR mechanism implies to specify information about the missingness process in addition to assumptions about the observed data. A popular approach to address MNAR mechanism is selection models such as the one proposed by Heckman (1976). [@heckman1976] Briefly, the Heckman selection model corrects for selection bias by estimating two linked equations: a outcome equation, where the missing variable is associated with predictors, and a selection equation, that accounts for the inclusion of observations in the sample.   An important feature of the Heckman selection model is that it does not assume data to be MNAR, so that it can also be used when data are MCAR or MAR. It therefore offers an appealing solution to incomplete data sets when the missingness mechanism is not precisely known.
+Modelling data under MNAR mechanism implies to specify information about the missingness process in addition to assumptions about the observed data. Two major approach have been used to address MNAR mechanism: pattern mixture models[@little1996] and selection models [@vella1998]. One of the most popular techniques within selection models is the one proposed byHeckman (1976). [@heckman1976] Briefly, the Heckman selection model corrects for selection bias by estimating two linked equations: a outcome equation, where the missing variable is associated with predictors, and a selection equation, that accounts for the inclusion of observations in the sample. An important feature of the Heckman selection model is that it does not assume data to be MNAR, so that it can also be used when data are MCAR or MAR. It therefore offers an appealing solution to incomplete data sets when the missingness mechanism is not precisely known.
 
 Over the past few years, several extensions and adaptations to the Heckman selection model have been proposed for multiple imputation. Among them, Galimard et al.(2016) [@galimard_etal16] implemented a chained equations imputation method for continuous variables, which was extended to binary and categorical variables by employing copula estimates. [@galimard_etal18]  Also, Ogundimu and Collins (2019) [@ogundimu_collins19] proposed a chained equations imputation method that is less dependent on normality assumptions.
 
@@ -143,29 +143,38 @@ The interpretation of $\rho_i$ is fairly straightforward. When $\rho_i=0$, the p
 Under the BVN assumption, the parameters of the Heckman model coefficients can be estimated using the two-step Heckman method (H2S) [@heckman1976] or the full information maximum likelihood method (FIML).[@amemiya1984] However, both methods may lead to inconsistent estimators when the true underlying distribution is not the BVN. [@gomes_etal20] To overcome this problem, other approaches have been proposed that relax the distribution assumptions, among them copula models. [@smith03] The copula approach uses a function, known as a copula, that joins the marginal distribution of the error terms of the selection and outcome equation which are specified separately. The Heckman model can be expressed with the following bivariate normal copula:
 $$ F(\boldsymbol{r^*_{i}},\boldsymbol{y^*_{i}}) =\Phi\left(\boldsymbol{r^*_{i}}-\boldsymbol{X^S_{i}}\boldsymbol{\beta^S_{i}},\frac{\boldsymbol{y^*_{i}}-\boldsymbol{X^O_{i}}\boldsymbol{\beta^O_{i}}}{\sigma_i}, \rho_i\right),$$
 where $\Phi$ is the bivariate standard normal cumulative distribution function.
-Thus, to estimate the parameters of the Heckman method, it is sufficient to specify the marginal distributions of the error terms, and link them with a suitable copula function. In our imputation method we estimate the Heckman model using the copula method, as in real life data generating mechanism may deviate a BVN distribution. <!-- This facilitates the Heckman model estimation and makes it more robust to deviations of distributional assumptions. -->
+Thus, to estimate the parameters of the Heckman method, it is sufficient to specify the marginal distributions of the error terms, and link them with a suitable copula function. In our imputation method we estimate the Heckman model using the copula method, as in real life data generating mechanism may deviate a BVN distribution.
 
 ## Hierarchical model
 
- The Heckman model can be extended to hierarchical settings, i.e., in cases when individuals or sampling units are nested within clusters, as is the case in EHR or IPD. <!--In this case, sample units from the same cluster are expected to share some characteristics (e.g., the distribution of variables and correlations between them, relationships between exposure and outcomes, missing processes).
+ The Heckman model can be extended to hierarchical settings, i.e., in cases when individuals or sampling units are nested within clusters, as is the case in EHR or IPD.  This hierarchical complexity must not only be taken into account in the analysis model, but also when dealing with missing data, thus requiring imputation models that are congenial to the analysis model, i.e. that make the same assumptions about the data.
 
-Since most statistical analyses assume that the sample units are independent of each other, more complex hierarchical models dealing with nested data are required. --> This hierarchical complexity must not only be taken into account in the analysis model, but also when dealing with missing data, thus requiring imputation models that are congenial to the analysis model, i.e. that make the same assumptions about the data.
+Different procedures can be adopted to combine information between clusters; however, in our imputation method we opted for the two-stage approach that is often used in meta-analyses.[@simmonds2005] This is because such an approach is computationally less intensive and could potentially generate fewer convergence problems in the estimation of the Heckman hierarchical model compared to other approaches. Our method is based on the following conditional imputation model, whose parameters are $\boldsymbol{\theta}=\{\boldsymbol{\beta^O},\boldsymbol{\beta^S},\boldsymbol{\Psi^S},\boldsymbol{\Psi^O},(\sigma_i,\rho_i)_{1<=i<=N}\}$
+\begin{align*}
+\boldsymbol{y^*_{i}}&=\boldsymbol{X^O_{i}}(\boldsymbol{\beta^O}+b^O_{i})+\boldsymbol{\epsilon^O_{i}}\\
+\boldsymbol{r^*_{i}}&=\boldsymbol{X^S_{i}}(\boldsymbol{\beta^S}+b^S_{i})+\boldsymbol{\epsilon^S_{i}}\\
+b^O_{i}&\sim N(0,\boldsymbol{\Psi^O})\\
+b^S_{i}&\sim N(0,\boldsymbol{\Psi^S})
+\end{align*}
+\[\begin{pmatrix}
+\boldsymbol{\epsilon^O_{i}} \\
+\boldsymbol{\epsilon^S_{i}}
+\end{pmatrix}\sim N\left(\begin{pmatrix}
+0 \\
+0
+\end{pmatrix},\begin{pmatrix}
+\sigma^2_i & \rho_i\sigma_i \\
+\rho_i\sigma_i & 1
+\end{pmatrix}\right)
+\]
 
-Different procedures can be adopted to combine information between clusters; however, in our imputation method we opted for the two-stage approach that is often used in meta-analyses.[@simmonds2005] This is because such an approach is computationally less intensive and could potentially generate fewer convergence problems in the estimation of the Heckman hierarchical model compared to other approaches. 
+Briefly, in a first stage  we estimate the cluster specific parameters of the Heckman model $\boldsymbol{\theta_i}=\{\boldsymbol{\hat{\beta}_i^O},\boldsymbol{\hat{\beta}_i^S},\hat{\sigma}_i,\hat{\rho}_i\}$, for all $i$ between 1 and $N$ clusters.That is, we estimate separately for each of the clusters, the parameters of the two equations in each study, the outcome model (\ref{eq:1}) and the selection model (\ref{eq:2}) via a copula model.
 
-Briefly, in a first stage  we estimate $\boldsymbol{\theta_i}=\{\boldsymbol{\beta_i^O},\boldsymbol{\beta_i^S},\sigma_i,\rho_i\}$, for all $i$ between 1 and $N$ clusters, the cluster specific parameters of the Heckman model. That is, we estimate separately for each of the clusters, the parameters of the two equations in each study, the outcome model (\ref{eq:1}) and the selection model (\ref{eq:2}). In the second stage, we combine all $\boldsymbol{\theta_i}$  by using a random effects multivariate meta-analysis model. 
-
-In a random effects model, $\boldsymbol{\theta_i}$ parameters are assumed to be drawn independently and identically from a latent multivariate normal distribution of parameters with a  population mean $\boldsymbol{\Theta}$ and a population variance $\boldsymbol{\psi}$. [@higgins2009] Thus, we can write $\boldsymbol{\theta_i}=\boldsymbol{\Theta} + \boldsymbol{b_i}$  using $\boldsymbol{b_i} \sim N(0,\boldsymbol{\psi})$ random effects to allow for between-study heterogeneity in observed data relationships, and between-study heterogeneity in missing patterns.
-
+In a second stage, we estimate random effects multivariate meta-analysis model for the coefficient parameters. Here $\boldsymbol{\beta_i^O}$ and $\boldsymbol{\beta_i^S}$parameters are assumed to be drawn independently and identically from a latent multivariate normal distribution of parameters with a  population means $\boldsymbol{\beta^O}$ and $\boldsymbol{\beta^S}$ and population variance covariance $\boldsymbol{\psi^O}$ and $\boldsymbol{\psi^S}$ respectively. [@higgins2009].Here we assume that $\sigma_i$ and $\rho_i$ are random variables that come from a populational distribution and we estimate random effects univariate meta-analysis models for these parameters.
 
 # Using the Heckman model to impute missing data
 \label{sec:methods}
-We follow a similar approach proposed by Resche-Rigon and White (2018) [@resche-rigon2018] for multilevel imputation of data. Briefly, their method was developed to impute variables from a hierarchical structure (i.e., when there are units grouped within a cluster).
-This method involves estimating an outcome equation (describing the relationships of the observed data to the missing variable) separately in each cluster, after which the parameter estimates of that equation are pooled using random effects meta-analysis. 
-
-With this method, values can be imputed in very common scenarios in IPD, e.g., sporadic and systematic missing patterns. In particular, when the response variable is systematically missing within a group, i.e., when $y_{ij}$ are totally missing within a cluster, the imputation values are drawn from a (generalized) linear model conditional on $\boldsymbol{\Theta}$ the marginal population parameters, i.e., those estimated after pooling the cluster-specific parameters $\boldsymbol{\theta_i}$. On the other hand, when the variable is sporadically missing within the cluster, i.e., there are some observed $y_{ij}$ within the cluster, the imputation model is conditional on the shrunk-cluster parameters, i.e., those coming from the shrinkage of $\boldsymbol{\theta_i}$ towards $\boldsymbol{\Theta}$.
-
-Our imputation approach differs crucially from the previous approach as here we estimate two correlated equations (instead of a single outcome equation) in each cluster, thus obtaining $\boldsymbol{\theta_i}=\{\boldsymbol{\beta_i^O},\boldsymbol{\beta_i^S},\sigma_i,\rho_i\}$ parameters from both equations which are then pooled into a $\boldsymbol{\Theta}$ parameter set at the marginal or population level. Our imputation method was created for imputing datasets with a single missing outcome or covariate variable, but it can also be used to impute multiple incomplete variables in a data set.
+We follow a similar approach proposed by Resche-Rigon and White (2018) [@resche-rigon2018] for multilevel data imputation, which allows us to impute values in very common scenarios in IPD, e.g., sporadic and systematic missingness patterns.  Our imputation method was created to impute datasets with a single missing outcome variable or covariate, but it can also be used to impute multiple incomplete variables in a dataset, as it can be implemented under a multivariate imputation by chain equations (MICE) approach.
 
 In the following subsections, we explain the method when the incomplete variable is the outcome variable but this method can also be used to impute any incomplete MNAR predictor variable in the dataset. In the latter case, in the outcome equation (\ref{eq:1}), the incomplete predictor variable must be specified as the dependent variable and $\boldsymbol{X^O_{i}}$ as the set of covariates associated with it. On the other hand, in the selection model(\ref{eq:2}), $\boldsymbol{r^*_{i}}$ corresponds to the latent variable of selection of the incomplete predictor variable together with its $\boldsymbol{X^S_{i}}$ associated set of predictors.  
 
@@ -185,20 +194,29 @@ Below we describe each step in depth:
 
 #### Fit $p(y_{ij}^{obs}|\boldsymbol{\theta_i})$, the heckman selection model at cluster level
 
-Initially, we use the copula method to estimate the set of cluster-specific parameters, $\boldsymbol{\widehat{\theta_i}}=\boldsymbol{\{\widehat{\beta^O_i}}, \boldsymbol{\widehat{\beta^S_i}}, \widehat{\sigma_i}, \widehat{\rho_i}\}$, using all $j$ units with observable measurements $y_{ij}^{obs}$ within each cluster $i$. 
-The Heckman model is estimated with the \textbf{gjrm} function of the GJRM R package[@radiceGJRMGeneralisedJoint2021],  under the bivariate model with the nonrandom sample selection (BSS) specification, from which we obtain not only the parameters' point estimates $\boldsymbol{\widehat{\theta_i}}$, but also their corresponding $\boldsymbol{\widehat{S(\theta_i)}}$ within-cluster variance-covariance matrix.
+Initially, we use the copula method to estimate the set of cluster-specific parameters, $\boldsymbol{\widehat{\theta_i}}=\boldsymbol{\{\widehat{\beta^O_i}}, \boldsymbol{\widehat{\beta^S_i}}, \widehat{\sigma_i}, \widehat{\rho_i}\}$, using all $j$ units with observable measurements $y_{ij}^{obs}$ within each cluster $i$. Here we obtain the estimates not only the parameters' point estimates $\boldsymbol{\widehat{\theta_i}}$, but also their corresponding $\boldsymbol{\widehat{S(\theta_i)}}$ within-cluster variance-covariance matrix.
 
 #### Fit a meta-analysis model
 
 In this step, we pool the parameters $\boldsymbol{\widehat{\theta_i}}$ with a random effects meta-analysis model using only the clusters with observable information, i.e., those with no systematically missing outcome. In particular, we pool the $p$ coefficients of the $\boldsymbol{\beta^O}$ in the outcome equation and estimate a multivariate random effects meta-analysis model with them. Similarly we combine all $q$ coefficient parameters of the $\boldsymbol{\beta^S}$ in the selection equation. 
+Thus, we can denote the study specific coefficients
+$$\boldsymbol{\hat{\beta^O}_i} = \boldsymbol{\beta^O} +\boldsymbol{ b^O_i} + \boldsymbol{\epsilon'^O_{i}}$$
+$$\boldsymbol{\hat{\beta^S}_i} = \boldsymbol{\beta^S} + b^S_i + \boldsymbol{\epsilon'^S_{i}}$$
+using the random effects 
+ $b^O_i \sim N(0,\boldsymbol{\Psi^O})$ and $b^S_i\sim N(0,\boldsymbol{\Psi^S})$ with $\epsilon'^O_{i}\sim N(0,\sigma^O_{i}(X^O_i{X^O_i}^T))$ and $\epsilon'^S_{i}\sim N(0,\sigma^S_{i}(X^S_i{X^S_i}^T))$. From the meta model we obtain the estimates of parameters $\boldsymbol{\beta^S}$,$\boldsymbol{\beta^O}$, $\boldsymbol{\Psi^S}$,$\boldsymbol{\Psi^O}$.
 
-We also perform a univariate random effects meta_analysis on $\sigma'$, the log-transformed parameter of $\sigma$, and another on $\rho'$, the fisher-transformed parameter of $\rho$.
-
-The meta-analysis model is performed with the \textbf{mixmeta} function of the R package mixmeta[@gasparrini2021], which allows the use of maximum likelihood (ML), restricted maximum likelihood (REML), and moments estimation methods. For the simulation and illustrative study, we use the restricted REML estimation method, which is recommended as it has a good balance between unbiasedness and efficiency. [@viechtbauer2005]
+Assuming that  $\sigma_i$ and $\rho_i$ are random variables comming from a populational distribution, they can express as:
+$$ log(\sigma_i) \sim N( log(\sigma),\psi^{\sigma})$$
+$$ tanh^{-1}(\rho_i)\sim N( tanh^{-1}(\rho),\psi^{\rho})$$ 
+For each of them, we perform a univariate random effects meta_analysis. The model for $\sigma_i$ is given by the model:
+$$log(\hat\sigma_i) = \sigma + b^{\sigma}_i + \epsilon^{\sigma}_{i}$$
+with $b_i^{\sigma} \sim N(0,\psi^{\sigma})$, and $\epsilon_i^{\sigma} \sim N(0,var(log(\hat{\sigma}_i)))$ and  the model for $\rho_i$ is:
+$$tanh^{-1}(\hat\rho_i) = \rho + b^{\rho}_i + \epsilon^{\rho}_{i}$$
+with $b_i^{\rho} \sim N(0,\psi^{\rho})$, and $\epsilon_i^{\rho} \sim N(0,var(tanh^{-1}(\hat{\rho}_i)))$. 
 
 #### Draw the marginal parameters $\boldsymbol{\Theta}$
 
-From the meta-analysis model, we obtain the marginal estimates $\boldsymbol{\widehat{\Theta}}$ and the between-cluster variance matrix $\boldsymbol{\widehat{\psi}}$,i.e. variance-covariance matrix of the random effects, with their corresponding variance-covariance matrices $\boldsymbol{\widehat{S_{\Theta}}}$ and $\boldsymbol{\widehat{S_{\psi}}}$, which are used to draw the $\boldsymbol{\Theta^*}$ and $\boldsymbol{\psi^*}$ parameters, from their posterior distribution as follows: [@resche-rigon2013]
+From the meta-analysis model, we obtain the marginal estimates $\boldsymbol{\widehat{\Theta}}=\{\widehat{\boldsymbol{\beta^S}},\widehat{\boldsymbol{\beta^O}},\hat{\sigma},\hat{\rho}\}$ and the between-cluster variance matrix $\boldsymbol{\widehat{\psi}}$,i.e. variance-covariance matrix of the random effects, with their corresponding variance-covariance matrices $\boldsymbol{\widehat{S_{\Theta}}}$ and $\boldsymbol{\widehat{S_{\psi}}}$, which are used to draw the $\boldsymbol{\Theta^*}$ and $\boldsymbol{\psi^*}$ parameters, from their posterior distribution as follows: [@resche-rigon2013]
 
 \begin{align*}
 \boldsymbol{\Theta^*}& \sim N(\boldsymbol{\widehat{\Theta}},\boldsymbol{\widehat{S_{\Theta}}})\\
@@ -249,6 +267,10 @@ Particularly, our imputation method has been implemented according to the struct
 Briefly, MICE (multiple imputation of chained equations) was built under the fully conditional specification framework, where for each incomplete variable a conditional imputation model is specified based on another variables in the dataset. This process is carried out iteratively, so that in each iteration the missing values of an incomplete variable are drawn from the conditional distribution based on the updated variables in the previous iteration.
 
 Our imputation model can then be used in the imputation of any incomplete variable in a dataset following an MNAR mechanism, even if it is an outcome, predictor or auxiliary variable of the main analysis model. Furthermore, as implemented according to the MICE framework, the imputation method could be used simultaneously with other imputation methods available in MICE or in add-in packages such as micemd [@audigier2021], to impute datasets with multiple incomplete variables that differ in type and missing mechanism.
+
+## Technical details of the implementation 
+The Heckman model is estimated with the \textbf{gjrm} function of the GJRM R package[@radiceGJRMGeneralisedJoint2021],  under the bivariate model with the nonrandom sample selection (BSS) specification.
+The meta-analysis model is performed with the \textbf{mixmeta} function of the R package mixmeta[@gasparrini2021], which allows the use of maximum likelihood (ML), restricted maximum likelihood (REML), and moments estimation methods. For the simulation and illustrative study, we use the restricted REML estimation method, which is recommended as it has a good balance between unbiasedness and efficiency. [@viechtbauer2005].
 
 # Simulation study
 \label{sec:simulation}
@@ -370,7 +392,7 @@ To calculate the coverage of the parameter coefficients' 95\% confidence interva
 
 We calculated the following measures, usually employed to evaluate imputation methods[@buuren18c], according to the formulas provided in Morris et al.(2019)[@morris2019]: 
 
-- \textbf{Bias:} Bias on the coefficient and random effect parameters.
+- \textbf{Bias:} Bias on the coefficient and variance-covariance matrix terms.
 - \textbf{Coverage:} Coverage of the 95\% confidence intervals for the coefficient  parameters.
 - \textbf{Width}: Average width of the confidence interval on the coefficient parameters.
 - \textbf{RMSE:} Root mean squared error of the coefficient  and random effect parameters.

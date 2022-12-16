@@ -85,5 +85,5 @@ summary(pool(model_MNAR_pmm))
 }
 
 \references{
-Munoz J,Hufstedler H,Gustafson P, Bärnighausen T, De Jong V, Debray T. Dealing with missing data using the Heckman selection model: methods primer for epidemiologists.IJE,December 2022.
+Munoz J,Hufstedler H,Gustafson P, Bärnighausen T, De Jong V, Debray T. Dealing with missing data using the Heckman selection model: methods primer for epidemiologists.IJE,December 2022. DOI:	10.1093/ije/dyac237
 }

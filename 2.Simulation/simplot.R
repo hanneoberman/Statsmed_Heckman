@@ -19,32 +19,38 @@ data<- setDT(melt(data, measure.vars = c( paste0("p_Bias_",0:6), paste0("p_Cover
 data[, c("Type","Statistic", "Parameter") := tstrsplit(Statistic, "_", fixed=TRUE)]
 data<- setDT(dcast(data, Scenario+ Variation+ Method +  Parameter+Statistic~Type, value.var = "Value"))
 param_val <- c("0"="beta_0", "1"="beta_1", "2"="beta_2", 
-               "3"="sigma_b0", "4"="sigma_b1", "5"="sigma_b2","6"= "sigma_e")
+               "3"="psi_b0", "4"="psi_b1", "5"="psi_b2","6"= "psi_e")
 data[,Method:=factor(Method, levels = c("CC","1l.Heckman","2l.MAR","2l.Heckman"))]
 
 data[,Parameter := as.factor(param_val[data$Parameter])]
-data[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","sigma_b0","sigma_b1","sigma_b2","sigma_e"),
+data[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","psi_b0","psi_b1","psi_b2","psi_e"),
                           ordered = TRUE, labels=c(expression(beta[0]),expression(beta[1]),expression(beta[2]),
-                                                   expression(sigma[b*0]),expression(sigma[b*1]),expression(sigma[b*2]),
-                                                   expression(sigma[e])))]
+                                                   expression(sqrt(psi[oo])),expression(sqrt(psi[11])),expression(sqrt(psi[22])),
+                                                   expression(psi[e])))]
 
 
 plotsim<-function(Scenariov,levelsvar,yaxis){
 datagraph<-data[Scenario==Scenariov,]
-datalines <- data.table(Parameter = c("beta_0","beta_1", "beta_2","sigma_b0", "sigma_b1","sigma_b2","sigma_e"),
+datalines <- data.table(Parameter = c("beta_0","beta_1", "beta_2","psi_b0", "psi_b1","psi_b2","psi_e"),
                         Z = c(rep(0,7),rep(0.95,7),rep(0,7),rep(0,7)),
                         Statistic=c(rep("Bias",7),rep("Coverage",7),rep("RMSE",7),rep("Width",7)))
-datalines[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","sigma_b0","sigma_b1","sigma_b2","sigma_e"),
+
+
+datalines[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","psi_b0","psi_b1","psi_b2","psi_e"),
                                ordered = TRUE, labels=c(expression(beta[0]),expression(beta[1]),expression(beta[2]),
-                                                        expression(sigma[b*0]),expression(sigma[b*1]),expression(sigma[b*2]),
-                                                        expression(sigma[e])))]
+                                                        expression(sqrt(psi[oo])),expression(sqrt(psi[11])),expression(sqrt(psi[22])),
+                                                        expression(psi[e])))]
+
+
+
+unique(datalines$Parameter)
 datagraph[, Variation:=as.factor(Variation)]
 datagraph[, Variation:=factor(Variation,levels=levelsvar)]
 
 pd = position_dodge(.1)
-datalines1<-datalines[Parameter%in%c("beta[0]","beta[1]","beta[2]","sigma[b * 0]","sigma[b * 1]","sigma[b * 2]")]
+datalines1<-datalines[!Parameter%in%c("psi[e]")]
 
-plot<-ggplot(datagraph[Parameter%in%c("beta[0]","beta[1]","beta[2]","sigma[b * 0]","sigma[b * 1]","sigma[b * 2]")],
+plot<-ggplot(datagraph[!Parameter%in%c("psi[e]")],
        aes(y= Variation, x     = p, color = Method)) +
   geom_point(shape = 1,size  = 1,position = pd) +
   geom_vline(data = datalines1, aes(xintercept = Z),linetype='dotted')+
