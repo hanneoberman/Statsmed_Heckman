@@ -312,24 +312,24 @@ Here, we considered $X_{1i}$ and $X_{2i}$ as predictors in the outcome equation,
 \end{align*}
 Here we assumed that all coefficient parameters varied across studies, by including cluster-specific random effects as:
 \begin{align*}
- \beta_{hi}^O&= \beta_h^O + b_{hi}^O\\
- \beta_{hi}^S&= \beta_h^S + b_{hi}^S
+ \beta_{i}^O&= \beta^O + b_{i}^O\\
+ \beta_{i}^S&= \beta^S + b_{i}^S
 \end{align*}
-We fixed coefficients $\beta_h^O=\{0.3,1,1\}$  and $\beta_h^S=\{-0.8,1.3,-0.7,1.2\}$ in order to get around 40\% of sporadically missing values on the response $y_{ij}$ in the entire data set. Additionally, we ensured that the $y_{ij}^*$ observations were systematically missing in 20% of the clusters included in the data set, by removing the outcome values in the 20% of the clusters. 
+We fixed coefficients $\beta^O=\{0.3,1,1\}$  and $\beta^S=\{-0.8,1.3,-0.7,1.2\}$ in order to get around 40\% of sporadically missing values on the response $y_{ij}$ in the entire data set. Additionally, we ensured that the $y_{ij}^*$ observations were systematically missing in 20% of the clusters included in the data set, by removing the outcome values in the 20% of the clusters. 
 
-We assumed that random effects were independent within equations ($b_{h0}^O\indep b_{h1}^O \indep b_{h2}^O$ and $b_{h0}^S \indep b_{h1}^S \indep b_{h2}^S$), but were linked between both selection and outcome equations through a bivariate normal distributed as: 
+We assumed that random effects were independent within equations ($b_{0}^O\indep b_{1}^O \indep b_{2}^O$ and $b_{0}^S \indep b_{1}^S \indep b_{2}^S\indep b_{3}^S$), but were linked between both selection and outcome equations through a bivariate normal distributed as: 
 \[\begin{pmatrix}
-b^O_{h} \\
-b^S_{h}
+b^O \\
+b^S
 \end{pmatrix}\sim N\left(\begin{pmatrix}
 0 \\
 0
-\end{pmatrix},\sigma_{bh}^2\begin{pmatrix}
+\end{pmatrix},0.4^2\begin{pmatrix}
 1 & \rho*0.4 \\
 \rho*0.4 &1 
 \end{pmatrix}\right)
 \]
-with the parameters $\sigma_{b0}^2=\sigma_{b1}^2=\sigma_{b2}^2=0.4$.  We considered that the correlation parameter of the random effects between equations is 40% of the value of the assumed correlation parameter between error terms $\rho$. In addition, we included a random effect on the exclusion restriction variable given by $b_3\sim N(0,0.2)$ assuming that the intracluster variation in the exclusion restriction effect is lower than the variation on other coefficient parameters effects. The $\rho$ parameter was given different values depending on the simulated missing mechanism (Table \ref{tab:scenarios}) .
+for the coefficients of intercept,$X_1$,$X_2$ and $X_3$.  We considered that the correlation parameter of the random effects between equations is 40% of the value of the assumed correlation parameter between error terms $\rho$. In addition, we included a random effect on the exclusion restriction variable given by $b_3\sim N(0,0.2^2)$ assuming that the intracluster variation in the exclusion restriction effect is lower than the variation on other coefficient parameters effects. The $\rho$ parameter was given different values depending on the simulated missing mechanism (Table \ref{tab:scenarios}) .
 
 As regards the error terms, they were bivariate normal distributed as:
 \[\begin{pmatrix}
@@ -368,8 +368,15 @@ In addition to the basic scenario described above, we explored additional data g
   
 
 ## Estimands
-The estimands were the parameter coefficients of the outcome equation $\beta^O=\{\beta^O_0,\beta^O_1,\beta^O_2\}$, with special emphasis on the treatment effect parameter $\beta^0_1$. We also report the estimated variance of the random effects and residual errors $\sigma_{b0}^2$,$\sigma_{b1}^2$,$\sigma_{b2}^2$,$\sigma_{e}^2$.
+The estimands were the parameter coefficients of the outcome equation $\beta^O=\{\beta^O_0,\beta^O_1,\beta^O_2\}$, with special emphasis on the treatment effect parameter $\beta^0_1$. We also report the estimated standard deviation from the covariance matrix of the random effects, i.e.,  $\sqrt{\psi_{00}}$,$\sqrt{\psi_{11}}$,$\sqrt{\psi_{22}}$.
 
+#### Estimating procedures:
+
+After the imputation procedure, we estimated the following (generalized) mixed linear effect model using the *lmer()* function from the *lme4* R package.[@bates2022]
+$y_{i}=\beta_i^OX_i^O+\epsilon^O_{i}$
+In case of missing binary variable, we used the same matrix of predictors but on a binary model estimated with the *glmer()* function from the *lme4* R package. Then, we pooled the estimates of the $\beta_i^O$ and the variance of the random effect and residual errors of the multiple imputed datasets according to Rubin's rule[@rubin1987], over which we calculated the performance measures on the estimands. 
+
+To calculate the coverage of the parameter coefficients' 95\% confidence intervals (CI), we estimate CI with the Wald method. <!-- Although it is possible to obtain CI through the profile or bootstrap method for the variances of the random effects, we prefer not to estimate them (and hence the coverage) for the random effects parameters due to computational time.  -->
 
 ## Imputation methods
 
@@ -380,15 +387,6 @@ For each scenario we simulated 500 datasets over which we evaluated the followin
 - \textbf{2l.MAR}: Multiple imputation assuming MAR for hierarchical datasets, we used the multilevel imputation model ( 2l.2stage.norm and 2l.2stage.bin) from the micemd R package[@audigier2021], which are described in Audigier et al. (2018) paper. [@audigier_etal18]
 
 - \textbf{2l.Heckman}: The proposed imputation method based on the Heckman model for hierarchical datasets.
-
-## Estimating procedures
-
-After the imputation procedure, we estimated the following (generalized) mixed linear effect model using the *lmer()* function from the *lme4* R package.[@bates2022]
-$y_{i}=\beta_i^OX_i^O+\epsilon^O_{i}$
-In case of missing binary variable, we used the same matrix of predictors but on a binary model estimated with the *glmer()* function from the *lme4* R package. Then, we pooled the estimates of the $\beta_i^O$ and the variance of the random effect and residual errors of the multiple imputed datasets according to Rubin's rule[@rubin1987], over which we calculated the performance measures on the estimands. 
-
-To calculate the coverage of the parameter coefficients' 95\% confidence intervals (CI), we estimate CI with the Wald method. <!-- Although it is possible to obtain CI through the profile or bootstrap method for the variances of the random effects, we prefer not to estimate them (and hence the coverage) for the random effects parameters due to computational time.  -->
-
 
 ## Performance measures
 
@@ -441,7 +439,7 @@ Regarding the width of the 95\% CI of the estimated parameters, we observed that
 
 #### Bivariate incomplete variable
 
-In the case of a missing bivariate variable, we also found (Figure \ref{fig:rhobin}) that the 2l.Heckman method provided the least unbiased results on the coefficient parameters. However, we observed more unbiased estimates and a larger 95th percentile amplitude in the estimates of the variance of the random effects, especially in the $\sigma_{b2}$ compared to the estimates obtained in the continuous incomplete outcome scenario.
+In the case of a missing bivariate variable, we also found (Figure \ref{fig:rhobin}) that the 2l.Heckman method provided the least unbiased results on the coefficient parameters. However, we observed more unbiased estimates and a larger 95th percentile amplitude in the estimates of the standard deviations of the random effects, especially in the $\sqrt{\psi_{22}}$ compared to the estimates obtained in the continuous incomplete outcome scenario.
 
 ```{r rhobin,fig.align='center',fig.pos="!htb",fig.cap="Binary incomplete variable by varing $\\rho$, where dashed lines depict the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 3.9, fig.width = 6}
 plot_bin
@@ -452,7 +450,7 @@ We evaluated how robust our method was to variations in the number of clusters a
 
 By increasing N, the number of clusters, from 10 to 100, we observed that the bias was not affected but the width of the 95\% CI of the estimates decreased (larger precision) and hence the RMSE decreased. On the other hand, by reducing the number of units per cluster (from $n_i$=1000 to $n_i$=100) the precision decreased for all coefficients, the bias on coefficient estimates were not drastically affected but the bias of random effects did. 
 
-When we reduced the sample size to 50 patients per study, the bias and RMSE of the $\sigma_b2$ were drastically affected (not shown here but in the Appendix). This could be explained in part due to the scarce information on certain clusters, which affects directly the estimation of the Heckman model on those clusters.
+When we reduced the sample size to 50 patients per study, the bias and RMSE of the $\sqrt{\psi_{22}}$ were drastically affected (not shown here but in the Appendix). This could be explained in part due to the scarce information on certain clusters, which affects directly the estimation of the Heckman model on those clusters.
 
 ```{r size,fig.align='center',fig.pos="!htb",fig.cap="Continuous incomplete variable under systematical missingness by varing: number of clusters (N); sample size per cluster ($n_i$), where dashed lines depict the target performance criteria value",echo=FALSE,fig.keep="last",fig.height = 3.9, fig.width = 6}
 plot_N
@@ -461,9 +459,9 @@ plot_N
 
 ### Sensitivity analysis: distributional assumptions
 
-When using the Heckman model in an explicit MNAR process, i.e. when the probability of loss is associated with the value of the missing variable, we observe that under all imputation methods we obtain biased estimators, with poor coverage.  Particularly when estimating the intercept we observed more biased estimates compared to those obtained for the other estimated parameters B2 with coverage below 60%. 
+When using the Heckman model in an explicit MNAR process, i.e. when the probability of loss is associated with the value of the missing variable, we observe that under all imputation methods we obtain biased estimators, with poor coverage.  Particularly when estimating the intercept we observed more biased estimates compared to those obtained for the other estimated parameters $\beta_2$ with coverage below 60%. 
 
-Our model may not be fully suitable for this type of scenario, especially if the main analysis is focused on estimating absolute prevalence estimates, as it is greatly affected by the bias of the intercept parameter ($\beta_0$) and the width of the 95th percentile CI of all coefficient parameters. Also the imputation method was affected in terms of the bias of the random-effects parameters $\sigma_{b2}$. 
+Our model may not be fully suitable for this type of scenario, especially if the main analysis is focused on estimating absolute prevalence estimates, as it is greatly affected by the bias of the intercept parameter ($\beta_0$) and the width of the 95th percentile CI of all coefficient parameters. Also the imputation method was affected in terms of the bias of the standard deviation of the random-effects parameters $\sqrt{\psi_{22}}$. 
 
 With respect to the Skewed-t scenario, only the bias of $\beta_0$ was affected for all imputation methods applied. But $\beta_0$ estimates for both the 1l.Heckman and 2l.Heckman were drastically affected in terms of bias, with very poor coverage (below 25%).Therefore, the applicability of our method could be questionable in scenarios that do not conform to the BNV assumption. 
 
