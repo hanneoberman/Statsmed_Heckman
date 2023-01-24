@@ -24,8 +24,8 @@ data[,Method:=factor(Method, levels = c("CC","1l.Heckman","2l.MAR","2l.Heckman")
 
 data[,Parameter := as.factor(param_val[data$Parameter])]
 data[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","psi_b0","psi_b1","psi_b2","psi_e"),
-                          ordered = TRUE, labels=c(expression(beta[0]),expression(beta[1]),expression(beta[2]),
-                                                   expression(sqrt(psi[oo])),expression(sqrt(psi[11])),expression(sqrt(psi[22])),
+                          ordered = TRUE, labels=c(expression(beta[0]**O),expression(beta[1]**O),expression(beta[2]**O),
+                                                   expression(sqrt(psi[oo]**O)),expression(sqrt(psi[11]**O)),expression(sqrt(psi[22]**O)),
                                                    expression(psi[e])))]
 
 
@@ -37,8 +37,8 @@ datalines <- data.table(Parameter = c("beta_0","beta_1", "beta_2","psi_b0", "psi
 
 
 datalines[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","psi_b0","psi_b1","psi_b2","psi_e"),
-                               ordered = TRUE, labels=c(expression(beta[0]),expression(beta[1]),expression(beta[2]),
-                                                        expression(sqrt(psi[oo])),expression(sqrt(psi[11])),expression(sqrt(psi[22])),
+                               ordered = TRUE, labels=c(expression(beta[0]**O),expression(beta[1]**O),expression(beta[2]**O),
+                                                        expression(sqrt(psi[oo]**O)),expression(sqrt(psi[11]**O)),expression(sqrt(psi[22]**O)),
                                                         expression(psi[e])))]
 
 
