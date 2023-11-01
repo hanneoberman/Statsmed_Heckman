@@ -215,7 +215,7 @@ pred["test","sage2"]<- 2
 
 #3.3. Multiple imputation with heckman model----
 meth<-ini$method
-meth[c("test")]<-"3l.2stage.heckman"
+meth[c("test")]<-"2l.2stage.heckman"
 quickpred(hdataF0f)
 #Full correlation of parameters
 data_heck <- mice(hdataF0f, # dataset with missing values
