@@ -7,11 +7,7 @@ library(tidymv)
 library(ggplot2)
 
 
-
 #0. Additional required function ----
-# Prevalence functions 
-logit <- function(x){log(x/(1-x))}
-inv_logit <- function(x){exp(x)/(1+exp(x))}
 
 #Function for calculating prevalence CI
 f.prevalence <- function(data,outcome_name) {
@@ -31,7 +27,7 @@ f.abs.perstudy<-function(data, outcome_name,study_name) {
   prev_group<-setDT(data)[, f.prevalence(data=.SD, outcome_name=outcome_name), by = list(get(study_name),.imp)]
   
   #Logit transformation
-  prev_group[,prev_logit:=logit(prev)] 
+  prev_group[,prev_logit:=qlogis(prev)] 
   prev_group[,prev_se_logit:=prev_se/(prev*(1-prev))]
   return(prev_group)
 }  
@@ -47,9 +43,9 @@ f.pool<-function(data,m){
   pool_LC_logit=pool_est_logit-pool_se_logit*t
   pool_UC_logit=pool_est_logit+pool_se_logit*t
   
-  prevalence<-inv_logit(pool_est_logit)*100
-  ci.lb<-inv_logit(pool_LC_logit)*100
-  ci.ub<-inv_logit(pool_UC_logit)*100
+  prevalence<-plogis(pool_est_logit)*100
+  ci.lb<-plogis(pool_LC_logit)*100
+  ci.ub<-plogis(pool_UC_logit)*100
   return(data.frame(cbind(prevalence=prevalence,ci.lb=ci.lb,ci.ub=ci.ub)))
 }
 
@@ -80,9 +76,9 @@ pred_model<-function(model,source){
   mod[,age := as.numeric(age)]
   mod[,fit := mm%*%coef]
   mod[,se.fit := sqrt(diag(mm %*% pool_variance(model) %*% t(mm)))]
-  mod[,pred := fn(fit)*100]
-  mod[,lb:=fn(fit - 1.96 * se.fit)*100]
-  mod[,ub:=fn(fit + 1.96 * se.fit)*100]
+  mod[,pred := plogis(fit)*100]
+  mod[,lb:=plogis(fit - 1.96 * se.fit)*100]
+  mod[,ub:=plogis(fit + 1.96 * se.fit)*100]
   mod[,source:=source]
 }
 
@@ -92,7 +88,7 @@ pred_model<-function(model,source){
 data_original <- read.delim(here('3.Ilustrative_study','ISASimple_Gates_LLINE-UP_rct_RSRC.txt')) # Dataset retrieved from https://clinepidb.org/ce/app/workspace/analyses/DS_7c4cd6bba9/new/details#AccessRequest
 dist <- readxl::read_xlsx(here('3.Ilustrative_study','Districts.xlsx')) #district specification
 source(here('3.Ilustrative_study','Additional_functions.R'))
-source(here('4.Codes','mice.impute.2l.heckman.R'))
+source(here('4.Codes','mice.impute.2l.2stage.heckman.R'))
 
 
 data <- data.table()
@@ -207,19 +203,20 @@ hdataF0f[,fundays:=as.factor(fundays)]
 #3.2. Set prediction matrix and methods -----
 ini <- mice(hdataF0f, maxit = 0)
 pred <- ini$pred
+pred[pred==1]<-2
 pred[,"dis_id"] <- -2
 pred[,"dis_name"] <- 0
 pred[,"subreg_id"] <- 0
 pred["age",] <- 0
 pred[,"age"] <- 0
 pred["test","fundays"] <- -3
-pred["test","sage2"]<- 1
+pred["test","sage2"]<- 2
 
 
 #3.3. Multiple imputation with heckman model----
 meth<-ini$method
-meth[c("test")]<-"2l.heckman"
-
+meth[c("test")]<-"3l.2stage.heckman"
+quickpred(hdataF0f)
 #Full correlation of parameters
 data_heck <- mice(hdataF0f, # dataset with missing values
                   m = 20,   # number of imputations
@@ -228,9 +225,9 @@ data_heck <- mice(hdataF0f, # dataset with missing values
                   pred = pred, #imputation predictors matrix
                   maxit=1,
                   meta_method="reml",
-                  pmm=FALSE)
-#save(data_heck,file=(here('3.Ilustrative_study','MalariaMNAR.RData')))
-#load(file=here('3.Ilustrative_study','MalariaMNAR.RData'))
+                  pmm=FALSE,
+                  pred_std=FALSE)
+
 
 #3.4. Multiple imputation with  2l.2stage.bin method----
 
@@ -242,8 +239,6 @@ data_mar <- mice( hdataF0f, # dataset with missing values
                        meth = meth, #imputation method vector
                        pred = pred, #imputation predictors matrix
                        maxit=1)
-#save(data_mar,file=(here('3.Ilustrative_study','MalariaMAR.RData')))
-#load(file=here('3.Ilustrative_study','MalariaMAR.RData'))
 
 # 4.Prevalence plot ----
 
@@ -251,10 +246,15 @@ data_mar <- mice( hdataF0f, # dataset with missing values
 
 hdataF0f[,pts_num:=ifelse(is.na(test),NA,ifelse(test=="1",1,0))]
 data_MCAR<-hdataF0f[, .(count = .N, positives = sum(pts_num,na.rm=TRUE), NAs=sum(is.na(pts_num))), by = subreg_id]
+data_MCAR[,N:=count-NAs]
+MCAR<-t(sapply(1:nrow(data_MCAR),function(x){test<-prop.test(x=data_MCAR[[x,3]],n=data_MCAR[[x,5]])
+                                     return(c(test$estimate,test$conf.int[1],test$conf.int[2])*100)}))
+colnames(MCAR)<-c("p_MCAR","LC_MCAR","UC_MCAR")
+data_MCAR<-cbind(data_MCAR,MCAR)
 data_MCAR[,Miss:=(NAs)/(count)*100]
-data_MCAR[,p_MCAR:=positives/(count-NAs)*100]
-data_MCAR[,LC_MCAR:=(positives)/(count)*100]
-data_MCAR[,UC_MCAR:=(positives+NAs)/(count)*100]
+data_MCAR[,p_Extreme:=p_MCAR]
+data_MCAR[,LC_Extreme:=(positives)/(count)*100]
+data_MCAR[,UC_Extreme:=(positives+NAs)/(count)*100]
 data_MCAR[,positives:=NULL]
 data_MCAR[,NAs:=NULL]
 
@@ -273,30 +273,44 @@ data_prev<-merge(data_MCAR, abs.outcome_mar,by="subreg_id")
 data_prev<-merge(data_prev,abs.outcome_mnar,by="subreg_id")
 
 data_long<- setDT(melt(data_prev,
-                  measure.vars = c( "p_MCAR","p_MAR","p_MNAR",
-                                    "LC_MCAR","LC_MAR","LC_MNAR",
-                                    "UC_MCAR","UC_MAR","UC_MNAR"),
+                  measure.vars = c( "p_Extreme","p_MCAR","p_MAR","p_MNAR",
+                                    "LC_Extreme","LC_MCAR","LC_MAR","LC_MNAR",
+                                    "UC_Extreme","UC_MCAR","UC_MAR","UC_MNAR"),
                   variable.name = "Statistic", value.name = "Value"))
 
 data_long[, c("Statistic", "Parameter") := tstrsplit(Statistic, "_", fixed=TRUE)]
 data_wide<- setDT(dcast(data_long, subreg_id + count+ Miss+Parameter ~ Statistic, value.var = "Value"))
-data_wide[,Parameter:=factor(Parameter,levels=c("MCAR","MAR","MNAR"))]
-levels(data_wide$Parameter)<-c("CC","2l.MAR","2l.Heckman")
-levels(data_wide$subreg_id)<-c("East\nCentral","Mid\nEastern","Mid\nWestern","North\nEast","South\nWestern")
-pd <- position_dodge(width = 0.4)
-plot_dist<-ggplot(data_wide, aes(x = subreg_id, y = p, colour = Parameter)) +
-                  geom_pointrange(aes(ymax = UC, ymin = LC),position = pd) +
-                  geom_point(position = pd)+ theme_light()+
-                  ylab("Parasitemia prevalence (%)")+xlab("Sub-region")+
-                  scale_color_brewer(palette="Dark2")+labs(color='Method')+
+
+data_wide1 <- data_wide[Parameter!="Extreme",]
+data_wide1[,Parameter:=factor(Parameter,levels=c("MCAR","MAR","MNAR"))]
+levels(data_wide1$Parameter)<-c("CC","2l.MAR","2l.2stage.heckman")
+levels(data_wide1$subreg_id)<-c("East\nCentral","Mid\nEastern","Mid\nWestern","North\nEast","South\nWestern")
+
+data_wide2<-data_wide[Parameter!="MCAR",]
+data_wide2[,Parameter:=ifelse(Parameter =="Extreme","MCAR",Parameter)]
+data_wide2[,Parameter:=factor(Parameter,levels=c("MCAR","MAR","MNAR"))]
+levels(data_wide2$Parameter)<-c("CC","2l.MAR","2l.2stage.heckman")
+levels(data_wide2$subreg_id)<-c("East\nCentral","Mid\nEastern","Mid\nWestern","North\nEast","South\nWestern")
+pd <-position_dodge(width=0.4)
+plot_dist<-ggplot(data_wide1, aes(x = subreg_id, colour = Parameter)) +
+                  geom_errorbar(aes(y = p,ymax = UC, ymin = LC),position = pd, width=0.2) +
+                  geom_pointrange(data=data_wide2, aes(y=p,ymax = UC, ymin = LC),position=pd,linetype="dashed")+
+                  geom_point(aes(y = p),position = pd) + theme_light()+
+                  ylab("Parasitemia prevalence (%)")+xlab("Region")+
+                  labs(color='Method')+
                   theme(strip.background =element_rect(fill="white"),legend.position="bottom",legend.margin=margin(t=-12))+
                   theme(axis.text.x = element_text(size=7),
                         axis.text.y = element_text(size=7),
                         axis.title=element_text(size=8),
                         legend.text=element_text(size=6),
-                        legend.title=element_text(size=7))
+                        legend.title=element_text(size=7))+
+                  scale_color_brewer(palette="Dark2")
+                 
 
-
+width=5
+height=width/1.1
+plot_dist
+ggsave(filename = "Figure6.png", width = width, height = height, dpi=380)
 
 # 4.2. Prevalence per subregion and age ----
 
@@ -305,14 +319,14 @@ hdataF0f<-as.data.table(hdataF0f)
 m0 <- gam(test ~ subreg_id + s(age,k=3,by = subreg_id), family=binomial,data = hdataF0f)
 mod0 <- tidymv::predict_gam(m0)
 
-mod0$pred <- with(mod0, inv_logit(fit)*100)
-mod0$lb <- with(mod0, inv_logit(fit - 1.96 * se.fit)*100)
-mod0$ub <- with(mod0, inv_logit(fit + 1.96 * se.fit)*100)
+mod0$pred <- with(mod0, plogis(fit)*100)
+mod0$lb <- with(mod0, plogis(fit - 1.96 * se.fit)*100)
+mod0$ub <- with(mod0, plogis(fit + 1.96 * se.fit)*100)
 mod0$source<-"CC"
 
 # MNAR imputed dataset no full
 mod.mnarf <- with(data_heck, gam(test ~ subreg_id + s(age,k=3,by = subreg_id), family=binomial))
-mod1<-pred_model(model=mod.mnarf,source="2l.Heckman")
+mod1<-pred_model(model=mod.mnarf,source="2l.2stage.heckman")
 
 
 # MAR imputed dataset
@@ -322,7 +336,7 @@ mod2<-pred_model(model=mod.mar,source="2l.MAR")
 #Combine datasets
 mod<-rbind(mod0,mod1,mod2)
 setDT(mod)[,source:=as.factor(source)]
-mod[,source:=factor(source,levels=c("CC","2l.MAR","2l.Heckman"))]
+mod[,source:=factor(source,levels=c("CC","2l.MAR","2l.2stage.heckman"))]
 levels(mod$subreg_id)<-c("East Central","Mid Eastern","Mid Western","North East","South Western")
 #Prevalence plot
 plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) +
@@ -333,7 +347,7 @@ plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) +
   facet_wrap(~subreg_id)+
   scale_y_continuous(limits=c(0,100)) +
   scale_x_continuous(limits=c(2,10)) +
-  xlab("Age (years)")+ylab("Parasite prevalence (%)")+
+  xlab("Age (years)")+ylab("Parasitemia prevalence (%)")+
   theme_bw() +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
@@ -345,5 +359,9 @@ plot_sdist_age <- ggplot(mod, aes(x = age, y = pred, group = source)) +
         legend.text=element_text(size=6),
         strip.text.x = element_text(size = 7))+
  theme(strip.background =element_rect(fill="white"),legend.position="bottom",legend.margin=margin(t=-10))
+
+plot_sdist_age
+ggsave(filename = "Figure7.png", width = width, height = height, dpi=380)
+
 
 ##### END CODE########

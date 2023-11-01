@@ -36,7 +36,8 @@ copulaIPD <- function(data, sel, out, family, send) {
     gam2 <- try(mgcv::gam(formula=out,data = data,family = family, method ="REML"))
     fit_ind <- 0
     if(!any(inherits(gam1, "try-error"))&!any(inherits(gam2, "try-error"))){
-      vp<-c(diag(gam1$Vp),diag(gam2$Vp))
+      coefficients <- c(gam1$coefficients,gam2$coefficients)
+      vp <- c(diag(gam1$Vp),diag(gam2$Vp))
       if(all(c(!is.na(coefficients),vp!=0))){
         s     <- ifelse(family != "binomial",1,0) 
         ncol1 <- ncol(gam1$Vp)

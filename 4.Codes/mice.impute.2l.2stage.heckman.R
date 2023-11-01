@@ -1,29 +1,34 @@
+library(lme4)
+library(data.table)
+library(mvtnorm)
+library(fMultivar)
+library(data.table)
+library(mgcv)
+library(GJRM)
+library(Matrix)
+library(mixmeta)
+library(mvtnorm)
+library(pbivnorm)
+library(mice)
+library(micemd)
+library(glmmTMB)
+
+
 #' Imputation based on Heckman model for multilevel data.
-#'
 #' Imputes outcome and predictor variables that follow an MNAR mechanism
 #' according to Heckman's model and come from a multilevel database such as
 #' individual participant data.
 #' @aliases mice.impute.2l.2stage.heckman 2l.2stage.heckman
+#'
 #' @param y Vector to be imputed
-#' @param ry Logical vector of length \code{length(y)} indicating the
-#' the subset \code{y[ry]} of elements in \code{y} to which the imputation
-#' model is fitted. The \code{ry} generally distinguishes the observed
-#' (\code{TRUE}) and missing values (\code{FALSE}) in \code{y}.
-#' @param x Numeric design matrix with \code{length(y)} rows with predictors for
-#' \code{y}. Matrix \code{x} may have no missing values.
-#' @param wy Logical vector of length \code{length(y)}. A \code{TRUE} value
-#' indicates locations in \code{y} for which imputations are created.
-#' @param type type of the variable in the prediction model {0: No predictor,
-#' 1: Predictor in both the outcome and selection,-2: Cluster id (study id),
-#' -3: Predictor only in the selection model, -4: Predictor only in the outcome 
-#' model}
-#' @param pmm  predictive mean matching can be applied only for for missing 
-#' continuous variables: "FALSE","TRUE"
-#' @param ypmm vector of donor values of y to perform the predictive mean matching, 
-#' in case ypmm is not provided, the observable values of y are used.
-#' @param meta_method meta_analysis estimation method for random effects :
-#' "ml" (maximum likelihood), "reml" (restricted maximum likelihood) or "mm"
-#' method of moments.
+#' @param ry Logical vector of length \code{length(y)} indicating the subset \code{y[ry]} of elements in \code{y} to which the imputation model is fitted. The \code{ry} generally distinguishes the observed (\code{TRUE}) and missing values (\code{FALSE}) in \code{y}.
+#' @param x Numeric design matrix with \code{length(y)} rows with predictors for \code{y}. Matrix \code{x} may have no missing values.
+#' @param wy Logical vector of length \code{length(y)}. A \code{TRUE} value indicates locations in \code{y} for which imputations are created.
+#' @param type type of the variable in the prediction model {0: No predictor, 1: Predictor in both the outcome and selection,-2: Cluster id (study id),-3: Predictor only in the selection model, -4: Predictor only in the outcome model}
+#' @param pmm predictive mean matching can be applied only for for missing continuous variables: "FALSE","TRUE"
+#' @param ypmm vector of donor values of y to perform the predictive mean matching, in case ypmm is not provided, the observable values of y are used.
+#' @param meta_method meta_analysis estimation method for random effects :"ml" (maximum likelihood), "reml" (restricted maximum likelihood) or "mm" method of moments.
+#' @param pred_std standardize internally the predictors (default = TRUE)
 #' @param ... Other named arguments. Not used.
 #' @name mice.impute.2l.2stage.heckman
 #' @return Vector with imputed data, of type binary or continuous
@@ -32,7 +37,6 @@
 #'  selection model and come from a clustered dataset. 
 #'  The imputation method uses a two-stage approach in which the Heckman model 
 #'  parameters at the cluster level are estimated using the copula method.
-#'
 #' @note
 #'Missing binary variables should be included as two-level factor type variables. 
 #'When the cluster variable is not defined in the predictor matrix as "-2", the imputation
@@ -46,15 +50,17 @@
 #' @keywords datagen
 #' @export
 #'
-
-mice.impute.2l.2stage.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, ypmm=NULL, meta_method ="reml",...) {
+mice.impute.2l.2stage.heckman <- function(y, ry, x, wy=NULL, type, pmm=FALSE, ypmm=NULL, meta_method ="reml", pred_std = FALSE,...){
   
+  if (pred_std == TRUE){
+        x <- apply(x, MARGIN = 2, FUN = function(X) (if(length(unique(X))<=2&sum(unique(X))==1){X} else{scale(X)}))
+  }
   
   # 1. Define variables and dataset----
   
   # Rename covariates
   colnames(x) <- paste0("x_", 1:length(colnames(x))) #change the covariates name for avoiding conflicts when y is covariate
-  bos_name <- colnames(x)[type ==  1] # names of variables present in both outcome and selection model
+  bos_name <- colnames(x)[type ==  2] # names of variables present in both outcome and selection model
   sel_name <- colnames(x)[type == -3] # names of variables in selection model alone
   out_name <- colnames(x)[type == -4] # names of variables in outcome model alone
   
@@ -64,7 +70,6 @@ mice.impute.2l.2stage.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, yp
   }else{
     family <- "gaussian"
   }
-  
   
   # Check if group variable is defined
   if (length(colnames(x)[type == -2]) == 0) {
@@ -86,6 +91,7 @@ mice.impute.2l.2stage.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, yp
   sel <- as.formula(paste0("ry", "~", paste(c(sel_name, bos_name), collapse = "+")))
   
   # Define data & prediction matrix
+  
   data <- data.frame(ry, y, x[, order])
   X <- data.frame(cbind(Int=rep(1, nrow(x)), x[, order]))
   
@@ -124,7 +130,6 @@ mice.impute.2l.2stage.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, yp
       stop("There is insufficient information to impute the Heckman model at the marginal or study level.")
     }
   }
-  
   
   # 4. Get theta_k and var(theta_k) from full conditional distribution ----
   if (Grp_est == 1) { # Applies imputation at cluster level
@@ -167,10 +172,79 @@ mice.impute.2l.2stage.heckman <-function(y,ry,x,wy = NULL, type, pmm = FALSE, yp
   return(y[!ry])
 }
 
+star_sporadic <- function(Heck_mod, coef_list_i, Vb_list_i, selnam, outnam, family){
+  
+  beta_s_star = beta_o_star = sigma_star = rho_star = NA
+  cond <- ifelse(is.null(Heck_mod$Mvma_est),0,Heck_mod$Mvma_est)
+  
+  if (cond == 1){ # Draw study parameters from conditional distribution
+    beta_o_star <- draw_cond_theta( theta_mar = Heck_mod$beta_o, theta_k = coef_list_i,
+                                    var_theta_k = Vb_list_i, vnames = outnam)
+    beta_s_star <- draw_cond_theta( theta_mar = Heck_mod$beta_s,theta_k = coef_list_i,
+                                    var_theta_k = Vb_list_i, vnames = selnam)
+    
+    rho_star <- tanh( draw_cond_theta( theta_mar = Heck_mod$rho_t,
+                                       theta_k = coef_list_i,
+                                       var_theta_k = Vb_list_i,
+                                       vnames = "theta.star")) #copula package calls atanh(rho) as theta.star
+    
+    if (family == "gaussian") {
+      sigma_star <- exp(draw_cond_theta( theta_mar = Heck_mod$sigma_t,
+                                         theta_k = coef_list_i,
+                                         var_theta_k = Vb_list_i,
+                                         vnames = "sigma.star"))#copula package calls log(sigma) as sigma.star
+    }
+    
+    
+  } else { # Draw from study parameters from study distribution
+    
+    beta_o_star <- MASS::mvrnorm(n = 1,mu = coef_list_i[outnam],Sigma = Vb_list_i[outnam, outnam])
+    beta_s_star <- MASS::mvrnorm(n = 1,mu = coef_list_i[selnam],Sigma = Vb_list_i[selnam, selnam])
+    rho_star <- tanh(MASS::mvrnorm( n = 1, mu = coef_list_i["theta.star"],
+                                    Sigma = Vb_list_i["theta.star", "theta.star"]))
+    if (family == "gaussian") {
+      sigma_star <- exp(MASS::mvrnorm( n = 1, mu = coef_list_i["sigma.star"],
+                                       Sigma = Vb_list_i["sigma.star", "sigma.star"]))#copula package calls log(sigma) as sigma.star
+    }
+    
+  }
+  
+  return (list ( beta_s_star = beta_s_star,
+                 beta_o_star = beta_o_star,
+                 rho_star = rho_star,
+                 sigma_star = sigma_star))
+}
 
-# 0. Define additional functions ----
+star_systematic <- function(Heck_mod, send, oend, family){
+  
+  if (is.null(Heck_mod$Mvma_est)){ # From total data model
+    star <- mvtnorm::rmvnorm( 1, mean = Heck_mod[[1]]$coefficients,
+                              sigma = Heck_mod[[1]]$Vb, method = "svd")
+    
+    beta_o_star <- star[(send + 1):oend]
+    beta_s_star <- star[1:send]
+    rho_star <- tanh(star[, "theta.star"])
+    sigma_star <- ifelse(family=="gaussian",
+                         exp(star[, "sigma.star"]), NA)
+    
+    
+  } else { # From meta model
+    
+    beta_o_star <- MASS::mvrnorm(n = 1, mu = Heck_mod$beta_o[[1]],Sigma =Heck_mod$beta_o[[2]])
+    beta_s_star <- MASS::mvrnorm(n = 1, mu = Heck_mod$beta_s[[1]],Sigma = Heck_mod$beta_s[[2]])
+    rho_star <- tanh(MASS::mvrnorm( n = 1, mu = Heck_mod$rho_t[[1]],Sigma = Heck_mod$rho_t[[2]]))
+    if (family =="gaussian") {
+      sigma_star <- exp(MASS::mvrnorm( n = 1, mu = Heck_mod$sigma_t[[1]],
+                                       Sigma = Heck_mod$sigma_t[[2]])) #copula package calls log(sigma) as sigma.star
+    } else { #binomial
+      sigma_star <- NA}
+  }
+  
+  return (list (beta_s_star = beta_s_star,
+                beta_o_star = beta_o_star,
+                rho_star = rho_star,
+                sigma_star = sigma_star))}
 
-# F 0.1. CopulaIPD: Apply Binomial or Gaussian model depending on y type
 
 copulaIPD <- function(data, sel, out, family, send) {
   
@@ -210,7 +284,8 @@ copulaIPD <- function(data, sel, out, family, send) {
     gam2 <- try(mgcv::gam(formula=out,data = data,family = family, method ="REML"))
     fit_ind <- 0
     if(!any(inherits(gam1, "try-error"))&!any(inherits(gam2, "try-error"))){
-      vp<-c(diag(gam1$Vp),diag(gam2$Vp))
+      coefficients <- c(gam1$coefficients,gam2$coefficients)
+      vp<- c(diag(gam1$Vp),diag(gam2$Vp))
       if(all(c(!is.na(coefficients),vp!=0))){
         s     <- ifelse(family != "binomial",1,0) 
         ncol1 <- ncol(gam1$Vp)
@@ -230,7 +305,7 @@ copulaIPD <- function(data, sel, out, family, send) {
     
   }
   
-  if (fit_ind != 0) {
+  if (fit_ind !=0) {
     names <- c(paste0(names(fit$coefficients)[1:send], "_s"),
                names(fit$coefficients[(send + 1):length(names(fit$coefficients))]))
     names(fit$coefficients) <- names
@@ -243,15 +318,21 @@ copulaIPD <- function(data, sel, out, family, send) {
   
 }
 
-# F 0.2. cov_mat_vector: Transform covariance matrix in a ordered vector
 cov_mat_vector <- function(cov_mat, vnames) {
   cov_mat[upper.tri(cov_mat)] <- "Up"
   cov_vec <- as.vector(cov_mat[vnames, vnames])
   cov_vec <- as.numeric(cov_vec[cov_vec != "Up"])
   return(cov_vec)
-  
 }
-# F 0.3. draw_theta_psi_mar: Estimate true effect size and draw a marginal theta and psi=var(theta) .
+
+draw_cond_theta <- function(theta_mar, theta_k, var_theta_k, vnames) {
+  W_m <- MASS::ginv(theta_mar[[2]])
+  W_k <- MASS::ginv(var_theta_k[vnames, vnames])
+  S <- MASS::ginv(W_m + W_k)
+  mu <- S %*% (W_k %*% as.vector(theta_k[vnames]) + W_m %*% as.vector(theta_mar[[1]]))
+  theta_star_i <- MASS::mvrnorm(n = 1, mu = as.vector(mu), Sigma = S)
+  return(theta_star_i)
+}
 
 draw_theta_psi_mar <- function(coef_mat_s, Vb_list, meta_method, Mvma_est, vnames = NULL) {
   
@@ -314,141 +395,6 @@ draw_theta_psi_mar <- function(coef_mat_s, Vb_list, meta_method, Mvma_est, vname
   return(list(theta_star, psi_star, Mvma_est))
   
 }
-
-# F 0.4 Conditional posterior distribution
-draw_cond_theta <- function(theta_mar, theta_k, var_theta_k, vnames) {
-  W_m <- MASS::ginv(theta_mar[[2]])
-  W_k <- MASS::ginv(var_theta_k[vnames, vnames])
-  S <- MASS::ginv(W_m + W_k)
-  mu <- S %*% (W_k %*% as.vector(theta_k[vnames]) + W_m %*% as.vector(theta_mar[[1]]))
-  theta_star_i <- MASS::mvrnorm(n = 1, mu = as.vector(mu), Sigma = S)
-  return(theta_star_i)
-}
-
-
-# F 0.5 Get marginal draws
-get_marginal <- function(coef_mat_s, Vb_list, selnam, outnam, meta_method ){
-  
-  beta_s = beta_o = rho_t = sigma_t = NA
-  Mvma_est <- 1
-  
-  # separate the set of parameters in beta_out, beta_s and rho
-  
-  beta_o <- draw_theta_psi_mar( coef_mat_s = coef_mat_s,
-                                Vb_list = Vb_list,
-                                vnames = outnam,
-                                meta_method = meta_method,
-                                Mvma_est = Mvma_est)
-  beta_s <- draw_theta_psi_mar( coef_mat_s = coef_mat_s,
-                                Vb_list = Vb_list,
-                                vnames = selnam,
-                                meta_method = meta_method,
-                                Mvma_est = beta_o[[3]])
-  rho_t <- draw_theta_psi_mar( coef_mat_s = coef_mat_s,
-                               Vb_list = Vb_list,
-                               vnames = "theta.star",
-                               meta_method = meta_method,
-                               Mvma_est = beta_s[[3]]) #copula package calls atanh(rho) as theta.star
-  
-  if ("sigma.star"%in%colnames(coef_mat_s)) {
-    sigma_t <- draw_theta_psi_mar( coef_mat_s = coef_mat_s,
-                                   Vb_list = Vb_list,
-                                   vnames = "sigma.star",
-                                   meta_method = meta_method,
-                                   Mvma_est = rho_t[[3]]) #copula package calls log(sigma) as sigma.star
-    Mvma_est <- sigma_t[[3]]
-  }
-  
-  
-  
-  return (list ( beta_s = beta_s,
-                 beta_o = beta_o,
-                 rho_t = rho_t,
-                 sigma_t = sigma_t,
-                 Mvma_est = Mvma_est))
-}
-
-
-
-# F 0.6 Get draw from systematically missing groups
-star_systematic <- function(Heck_mod, send, oend, family){
-  
-  if (is.null(Heck_mod$Mvma_est)){ # From total data model
-    star <- mvtnorm::rmvnorm( 1, mean = Heck_mod[[1]]$coefficients,
-                              sigma = Heck_mod[[1]]$Vb, method = "svd")
-    
-    beta_o_star <- star[(send + 1):oend]
-    beta_s_star <- star[1:send]
-    rho_star <- tanh(star[, "theta.star"])
-    sigma_star <- ifelse(family=="gaussian",
-                         exp(star[, "sigma.star"]), NA)
-    
-    
-  } else { # From meta model
-    
-    beta_o_star <- MASS::mvrnorm(n = 1, mu = Heck_mod$beta_o[[1]],Sigma =Heck_mod$beta_o[[2]])
-    beta_s_star <- MASS::mvrnorm(n = 1, mu = Heck_mod$beta_s[[1]],Sigma = Heck_mod$beta_s[[2]])
-    rho_star <- tanh(MASS::mvrnorm( n = 1, mu = Heck_mod$rho_t[[1]],Sigma = Heck_mod$rho_t[[2]]))
-    if (family =="gaussian") {
-      sigma_star <- exp(MASS::mvrnorm( n = 1, mu = Heck_mod$sigma_t[[1]],
-                                       Sigma = Heck_mod$sigma_t[[2]])) #copula package calls log(sigma) as sigma.star
-    } else { #binomial
-      sigma_star <- NA}
-  }
-  
-  return (list (beta_s_star = beta_s_star,
-                beta_o_star = beta_o_star,
-                rho_star = rho_star,
-                sigma_star = sigma_star))}
-
-
-## F 0.7 Get draw from sporadically missing groups
-star_sporadic <- function(Heck_mod, coef_list_i, Vb_list_i, selnam, outnam, family){
-  
-  beta_s_star = beta_o_star = sigma_star = rho_star = NA
-  cond <- ifelse(is.null(Heck_mod$Mvma_est),0,Heck_mod$Mvma_est)
-  
-  if (cond == 1){ # Draw study parameters from conditional distribution
-    beta_o_star <- draw_cond_theta( theta_mar = Heck_mod$beta_o, theta_k = coef_list_i,
-                                    var_theta_k = Vb_list_i, vnames = outnam)
-    beta_s_star <- draw_cond_theta( theta_mar = Heck_mod$beta_s,theta_k = coef_list_i,
-                                    var_theta_k = Vb_list_i, vnames = selnam)
-    
-    rho_star <- tanh( draw_cond_theta( theta_mar = Heck_mod$rho_t,
-                                       theta_k = coef_list_i,
-                                       var_theta_k = Vb_list_i,
-                                       vnames = "theta.star")) #copula package calls atanh(rho) as theta.star
-    
-    if (family == "gaussian") {
-      sigma_star <- exp(draw_cond_theta( theta_mar = Heck_mod$sigma_t,
-                                         theta_k = coef_list_i,
-                                         var_theta_k = Vb_list_i,
-                                         vnames = "sigma.star"))#copula package calls log(sigma) as sigma.star
-    }
-    
-    
-  } else { # Draw from study parameters from study distribution
-    
-    beta_o_star <- MASS::mvrnorm(n = 1,mu = coef_list_i[outnam],Sigma = Vb_list_i[outnam, outnam])
-    beta_s_star <- MASS::mvrnorm(n = 1,mu = coef_list_i[selnam],Sigma = Vb_list_i[selnam, selnam])
-    rho_star <- tanh(MASS::mvrnorm( n = 1, mu = coef_list_i["theta.star"],
-                                    Sigma = Vb_list_i["theta.star", "theta.star"]))
-    if (family == "gaussian") {
-      sigma_star <- exp(MASS::mvrnorm( n = 1, mu = coef_list_i["sigma.star"],
-                                       Sigma = Vb_list_i["sigma.star", "sigma.star"]))#copula package calls log(sigma) as sigma.star
-    }
-    
-  }
-  
-  return (list ( beta_s_star = beta_s_star,
-                 beta_o_star = beta_o_star,
-                 rho_star = rho_star,
-                 sigma_star = sigma_star))
-}
-
-
-# F 0.8 Generate the imputation values
-
 gen_y_star <- function(Xm, sel_name, bos_name, out_name, beta_s_star, beta_o_star,
                        sigma_star,rho_star, pmm, ypmm, y, ry) {
   
@@ -487,3 +433,43 @@ gen_y_star <- function(Xm, sel_name, bos_name, out_name, beta_s_star, beta_o_sta
   
   return(y.star)
 }
+
+get_marginal <- function(coef_mat_s, Vb_list, selnam, outnam, meta_method ){
+  
+  beta_s = beta_o = rho_t = sigma_t = NA
+  Mvma_est <- 1
+  
+  # separate the set of parameters in beta_out, beta_s and rho
+  
+  beta_o <- draw_theta_psi_mar( coef_mat_s = coef_mat_s,
+                                Vb_list = Vb_list,
+                                vnames = outnam,
+                                meta_method = meta_method,
+                                Mvma_est = Mvma_est)
+  beta_s <- draw_theta_psi_mar( coef_mat_s = coef_mat_s,
+                                Vb_list = Vb_list,
+                                vnames = selnam,
+                                meta_method = meta_method,
+                                Mvma_est = beta_o[[3]])
+  rho_t <- draw_theta_psi_mar( coef_mat_s = coef_mat_s,
+                               Vb_list = Vb_list,
+                               vnames = "theta.star",
+                               meta_method = meta_method,
+                               Mvma_est = beta_s[[3]]) #copula package calls atanh(rho) as theta.star
+  
+  if ("sigma.star"%in%colnames(coef_mat_s)) {
+    sigma_t <- draw_theta_psi_mar( coef_mat_s = coef_mat_s,
+                                   Vb_list = Vb_list,
+                                   vnames = "sigma.star",
+                                   meta_method = meta_method,
+                                   Mvma_est = rho_t[[3]]) #copula package calls log(sigma) as sigma.star
+    Mvma_est <- sigma_t[[3]]
+  }
+  
+  return (list ( beta_s = beta_s,
+                 beta_o = beta_o,
+                 rho_t = rho_t,
+                 sigma_t = sigma_t,
+                 Mvma_est = Mvma_est))
+}
+

@@ -21,7 +21,7 @@ data<- setDT(dcast(data, Scenario+ Variation+ Method +  Parameter+Statistic~Type
 param_val <- c("0"="beta_0", "1"="beta_1", "2"="beta_2", 
                "3"="psi_b0", "4"="psi_b1", "5"="psi_b2","6"= "psi_e")
 data[,Method:=factor(Method, levels = c("CC","1l.Heckman","2l.MAR","2l.Heckman"))]
-
+levels(data$Method)<-c("CC","1l.heckman","2l.MAR","2l.2stage.heckman")
 data[,Parameter := as.factor(param_val[data$Parameter])]
 data[,Parameter := factor(Parameter, levels = c("beta_0","beta_1","beta_2","psi_b0","psi_b1","psi_b2","psi_e"),
                           ordered = TRUE, labels=c(expression(beta[0]**O),expression(beta[1]**O),expression(beta[2]**O),
@@ -72,8 +72,19 @@ plot<-ggplot(datagraph[!Parameter%in%c("psi[e]")],
 return(plot)
 }
 
+width=5
+height=width/1.1
+width/height
 
 plot_rho<-plotsim(Scenariov="Rho",levelsvar=c("0","0.3","0.6","0.9"),yaxis=expression(rho))
+plot_rho
+ggsave(filename = "Figure2.png", width = width, height = height, dpi=380)
 plot_bin<-plotsim(Scenariov="Bin",levelsvar=c("0","0.3","0.6","0.9"),yaxis=expression(rho))
+plot_bin
+ggsave(filename = "Figure3.png", width = width, height = height, dpi=380)
 plot_N<-plotsim(Scenariov="N",levelsvar=c("10;50","10;100","10;1000","50;1000","100;1000"),yaxis="Number of clusters; sample size per cluster")
-plot_S<-plotsim(Scenariov="S",levelsvar=c("Skewed-t","Normal","Explicit"),yaxis="Missing process")
+plot_N
+ggsave(filename = "Figure4.png", width = width, height = height, dpi=380)
+plot_S<-plotsim(Scenariov="S",levelsvar=c("Skewed-t","Normal","Self-masking"),yaxis="Missing process")
+plot_S
+ggsave(filename = "Figure5.png", width = width, height = height, dpi=380)

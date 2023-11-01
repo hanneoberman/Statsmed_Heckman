@@ -11,3 +11,11 @@ gamm4
 tidymv
 xtable
 kableExtra
+dplyr
+knitr
+mvtnorm
+fMultivar
+GJRM
+mixmeta
+pbivnorm
+glmmTMB

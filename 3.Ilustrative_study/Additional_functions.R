@@ -43,16 +43,26 @@ f.abs.perstudy<-function(data, outcome_name,study_name) {
 #Results in absolute risk per study
 
 f.pool<-function(data,m){
-  logit.abs <- mean(data$logit.prevalence)
-  within <- mean(data$logit.se^2)
-  between <- (1 + (1/m)) * var(data$logit.prevalence)
-  logit.var <- within + between
-  logit.se <- sqrt(logit.var)
-  logit.ci.lb <- logit.abs + qnorm(0.05/2)     * logit.se
-  logit.ci.ub <- logit.abs + qnorm(1 - 0.05/2) * logit.se
-  prevalence<-inv.logit(logit.abs)*100
-  ci.lb<-inv.logit(logit.ci.lb)*100
-  ci.ub<-inv.logit(logit.ci.ub)*100
+
+  alpha <- 0.05
+  tr_est <- data$logit.prevalence
+  tr_se  <- data$logit.se
+  n <- length(tr_est)  #number observations
+  mu <- mean(tr_est, na.rm = T) # pool estimate
+  w_var <- mean(tr_se^2, na.rm = T) # within variance
+  b_var <- var(tr_est, na.rm = T) # between variance
+  t_var <- sum(w_var,b_var,b_var/n,na.rm=T) # total variance
+  t_se <- sqrt(t_var) # total standard error
+  r <-  sum(b_var,(b_var / n),na.rm=T)/ w_var # relative increase variance due to missing values
+  v <- (n - 1) * (1 + r^-1)^2 # degrees of freedom
+  t <- qt(1-alpha/2, v) #t criteria
+  if (is.infinite(v)|is.na(v)){ # t can not be calculated e.g 1 only observation it is aprox to normal 
+    t <- qnorm(1-alpha/2)
+  }
+  
+  prevalence <- inv.logit(mu)*100 # mean(est, na.rm = T)
+  ci.lb <- inv.logit(mu - t_se*t)*100
+  ci.ub <- inv.logit(mu + t_se*t)*100
   return(list(prevalence=prevalence,ci.lb=ci.lb,ci.ub=ci.ub))
 }
 
@@ -62,14 +72,6 @@ f.abs.poolrubin <-function(data,study_name) {
   setnames(abs.outcome, "get", study_name)
   return(abs.outcome)
 }
-
-
-f.abs.poolrubinall <-function(data,study_name) {
-  abs.outcome<-setDT(data)[, f.pool(data=.SD, m<-max(data$.imp)), by = list(get)]
-  setnames(abs.outcome, "get", study_name)
-  return(abs.outcome)
-}
-
 
 
 # 2. Functions to pool estimates second graph ----
@@ -84,7 +86,7 @@ pool_variance <- function(x){
   total_var <- within + (1 + 1 / m) * between
 }
 
-#Prediction imputated data 
+#Prediction imputed data 
 pred<-function(model,source){
   mm   <- as.matrix(model.matrix(model$analyses[[1]]))
   coef <- as.matrix(pool_coef(model),nrow=1)
